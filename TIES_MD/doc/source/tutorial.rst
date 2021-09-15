@@ -225,7 +225,7 @@ in with information such as the lambda schedule or which MD engine was used. If 
 Some information is missing from these config files which must be filled out. The missing information is for the names
 of the ``system``, ``ligand`` and ``thermodynamic_leg`` directories. Add the names of the ``thermodynamic_leg`` to the
 config file ``analysis.cfg`` under the option ``legs`` and add the ``system`` and ``ligand`` names into ``exp.dat`` instead of ``'SYSTEM NAME'``
-and ``'LIGAND NAME'``. As an example see the option `legs <https://github.com/UCL-CCS/TIES_analysis/blob/main/example/analysis.cfg#L4>`_
+and ``'LIGAND NAME'``. As an example see the option `legs <https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L4>`_
 in this example script for the analysis of protein-ligand binding calculation with two thermodynamic legs named
 ``'lig'`` and ``'com'``. This example analysis input also has the ``exp.dat`` `file <https://github.com/UCL-CCS/TIES_analysis/blob/main/example/exp.dat>`_
 populated for the protein target named ``ptp1b`` and a ligand transformation in that protein named l6-l14, this transformation
