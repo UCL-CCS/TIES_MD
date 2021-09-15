@@ -26,7 +26,7 @@ Contents
     HPC_submissions
     parallelization
     theory
-    🚀Github <https://github.com/adw62/TIES>
+    🚀Github <https://github.com/UCL-CCS/TIES>
 
 Code Documentation
 ===================
