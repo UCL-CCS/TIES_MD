@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Parallelization &mdash; TIES_MD 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theory" href="theory.html" />
+    <link rel="prev" title="HPC Submission scripts" href="HPC_submissions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #D7ECD9" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> TIES_MD
+          
+
+          
+            
+            <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Parallelization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ties-openmm">TIES-OpenMM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ties-namd">TIES-NAMD</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/adw62/TIES">🚀Github</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">TIES_MD</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TIES_MD</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Parallelization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/parallelization.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="parallelization">
+<h1>Parallelization<a class="headerlink" href="#parallelization" title="Permalink to this headline">¶</a></h1>
+<p>Alchemical free energy calculations can be parallelized over numerous domains. Some domains of parallelization can be used in
+any kind of molecular dynamics simulation, such as the spatial domain were a simulation box is decomposed into smaller cells
+all run in parallel. These domains are, in general, more difficult to achieve parallelization across than the ones we discuss here which
+focus on alchemical calculations. The two domains we focus on here are repeat/ensemble simulations and alchemical windows.
+Ensemble simulation are critical to control the aleatoric error inherent in chaotic molecular dynamics simulation. Each simulation
+in an ensemble has no communication with the other simulations and so this is an embarrassingly parallel problem, or a problem for which
+parallelization is easy to implement. Likewise there is no communication between individual alchemical windows of the simulation
+and so parallelizing these windows is also easy. The remainder of this page will explore how to achieve this parallelization
+using OpenMM and <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> with <code class="docutils literal notranslate"><span class="pre">TIES</span></code>.</p>
+<div class="section" id="ties-openmm">
+<h2>TIES-OpenMM<a class="headerlink" href="#ties-openmm" title="Permalink to this headline">¶</a></h2>
+<p>For <a class="reference external" href="https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1">reference</a> we will consider
+running an example system from our <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> <code class="docutils literal notranslate"><span class="pre">Github</span></code> page. This example can be run without parallelization using this line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span>
+</pre></div>
+</div>
+<p>This would use 1 available GPU to execute all 6 alchemical windows and the 1 repeat specified in the config file <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>
+If we wanted to parallelize 2 repeats over 2 GPUs on one node we would change the option repeats in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code> to equal 2
+and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> device 0 will then run 6 windows of the first repeat and CUDA device 1 will run 6 windows of the second repeat.
+Equally ths could be spit into to runs of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> masked to only see one device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;_alpha&quot;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;_beta&quot;</span>
+</pre></div>
+</div>
+<p>To run in this configuration the options <code class="docutils literal notranslate"><span class="pre">total_reps=2</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec=1</span></code> are set in TIES.cfg to tell <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> that
+there are a total of 2 replicas being run and that each execution of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> should run only one. Also note we have set
+<code class="docutils literal notranslate"><span class="pre">--node_id</span></code> to some different strings for otherwise identical run lines and this ensures these parallel runs write output
+to unique locations. <code class="docutils literal notranslate"><span class="pre">--node_id</span></code> only needs to be set when identical replicas of a simulation are run in separate executions
+of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>.</p>
+<p>If we need further parallelization over alchemical windows we can use the command line option <code class="docutils literal notranslate"><span class="pre">--windows_mask</span></code>
+this option takes a <code class="docutils literal notranslate"><span class="pre">Python</span></code> range (start inclusive and end exclusive) of the windows which that instance of
+<code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> should run. So returning to the original reference example with one repeat we would run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">1</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">2</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">3</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">4</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">5</span><span class="o">&amp;</span>
+</pre></div>
+</div>
+<p>These commands run submitted to a node with 6 GPUS would run one window on each GPU. To scale over multiple node
+we could use the resource allocator of the HPC for example <a class="reference external" href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=SSWRJV_10.1.0/jsm/jsrun.html">jsrun</a>
+on Summit <code class="docutils literal notranslate"><span class="pre">ORNL</span></code> would allow us to run with 2 replicas of 6 windows as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=&quot;_alpha&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=&quot;_alpha&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=&quot;_alpha&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=&quot;_alpha&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=&quot;_alpha&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=&quot;_alpha&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=&quot;_beta&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=&quot;_beta&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=&quot;_beta&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=&quot;_beta&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=&quot;_beta&quot;&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=&quot;_beta&quot;&amp;
+</pre></div>
+</div>
+<p>Note here we do not set <code class="docutils literal notranslate"><span class="pre">--devices</span></code> as the masking of GPUs is handled by the resource allocator. If a resource allocator
+is not available an alternative method to run multiple simulations across nodes is to use a message passing interface
+(<code class="docutils literal notranslate"><span class="pre">MPI</span></code>). The use of <code class="docutils literal notranslate"><span class="pre">MPI</span></code> can vary from system to system and there is no universal solution to running across many node
+for all HPC systems, however we provide an example here for reference which would work with
+<a class="reference external" href="https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview">ThetaGPU</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mpirun -host $node1 -np 1 TIES_MD --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=&quot;_alpha&quot;&amp;
+mpirun -host $node1 -np 1 TIES_MD --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=&quot;_alpha&quot;&amp;
+mpirun -host $node1 -np 1 TIES_MD --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=&quot;_alpha&quot;&amp;
+mpirun -host $node1 -np 1 TIES_MD --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=&quot;_alpha&quot;&amp;
+mpirun -host $node1 -np 1 TIES_MD --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=&quot;_alpha&quot;&amp;
+mpirun -host $node1 -np 1 TIES_MD --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=&quot;_alpha&quot;&amp;
+mpirun -host $node2 -np 1 TIES_MD --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=&quot;_beta&quot;&amp;
+mpirun -host $node2 -np 1 TIES_MD --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=&quot;_beta&quot;&amp;
+mpirun -host $node2 -np 1 TIES_MD --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=&quot;_beta&quot;&amp;
+mpirun -host $node2 -np 1 TIES_MD --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=&quot;_beta&quot;&amp;
+mpirun -host $node2 -np 1 TIES_MD --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=&quot;_beta&quot;&amp;
+mpirun -host $node2 -np 1 TIES_MD --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=&quot;_beta&quot;&amp;
+</pre></div>
+</div>
+</div>
+<div class="section" id="ties-namd">
+<h2>TIES-NAMD<a class="headerlink" href="#ties-namd" title="Permalink to this headline">¶</a></h2>
+<p>Under construction</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="theory.html" class="btn btn-neutral float-right" title="Theory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="HPC_submissions.html" class="btn btn-neutral float-left" title="HPC Submission scripts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, UCL CCS.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

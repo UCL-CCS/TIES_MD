@@ -1,0 +1,94 @@
+HPC Submission scripts
+======================
+
+Here we provide some example submission scripts for various HPC systems.
+
+NAMD
+----
+
+Here is an example of a submission script for a large system (≈100k atoms) running on
+`SuperMUC-NG <https://doku.lrz.de/display/PUBLIC/SuperMUC-NG>`_::
+
+    #!/bin/bash
+    #SBATCH --job-name=LIGPAIR
+    #SBATCH -o ./%x.%j.out
+    #SBATCH -e ./%x.%j.err
+    #SBATCH -D ./
+    #SBATCH --nodes=130
+    #SBATCH --tasks-per-node=48
+    #SBATCH --no-requeue
+    #SBATCH --export=NONE
+    #SBATCH --get-user-env
+    #SBATCH --account=XXX
+    #SBATCH --partition=general
+    #SBATCH --time=10:00:00
+
+    module load slurm_setup
+    module load namd/2.14-gcc8-impi
+
+    #--nodes and nodes_per_namd can be scaled up for large simulations
+    nodes_per_namd=10
+    cpus_per_namd=480
+
+    echo $nodes_per_namd
+    echo $cpus_per_namd
+
+    #change this line to point to your project
+    ties_dir=/hppfs/work/pn98ve/di67rov/test_TIES/study/prot/ties-l2-l1/com
+
+    for stage in {0..2}; do
+    win_id=0
+    for lambda in 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0;
+    do
+            cd $ties_dir/replica-confs
+            srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain eq$stage-replicas.conf $lambda $win_id&
+            (( win_id++ ))
+            sleep 1
+    done
+    wait
+    done
+
+    for stage in {1..1}; do
+    win_id=0
+    for lambda in 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0;
+    do
+            cd $ties_dir/replica-confs
+            srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda $win_id&
+            (( win_id++ ))
+            sleep 1
+    done
+    wait
+    done
+
+The first 20 lines of this script could be adapted for a smaller system (≈10k atoms) as follows::
+
+
+    #!/bin/bash
+    #SBATCH --job-name=LIGPAIR
+    #SBATCH -o ./%x.%j.out
+    #SBATCH -e ./%x.%j.err
+    #SBATCH -D ./
+    #SBATCH --nodes=13
+    #SBATCH --tasks-per-node=45
+    #SBATCH --no-requeue
+    #SBATCH --export=NONE
+    #SBATCH --get-user-env
+    #SBATCH --account=XXX
+    #SBATCH --partition=micro
+    #SBATCH --time=10:00:00
+
+    module load slurm_setup
+    module load namd/2.14-gcc8-impi
+
+    #--nodes and nodes_per_namd can be scaled up for large simulations
+    nodes_per_namd=1
+    cpus_per_namd=45
+
+
+
+OpenMM
+------
+
+
+
+

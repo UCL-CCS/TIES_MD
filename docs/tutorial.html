@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Tutorial &mdash; TIES_MD 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="HPC Submission scripts" href="HPC_submissions.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #D7ECD9" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> TIES_MD
+          
+
+          
+            
+            <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simulation-preparation">Simulation Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-simulations">Running Simulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/adw62/TIES">🚀Github</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">TIES_MD</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TIES_MD</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Tutorial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a package which is intended to be used on the command line and submitted to a HPC system. In this document
+we will outline what commands should be run to calculate binding free energies. To start with any free energy calculations
+we must first outline what are the expected input files to the <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> program.</p>
+</div>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> expects a number of input files, these are two essential files files, e.g. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> and <code class="docutils literal notranslate"><span class="pre">complex.prmtop</span></code>.
+These files contain information about the position, topology and parameters for the system. Currently we only support
+the <code class="docutils literal notranslate"><span class="pre">AMBER</span></code> based format <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> but provide a utility to <a class="reference external" href="https://ccs-ties.org/ties/">build</a> them online. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> also
+contains the alchemical indexes denoting which atoms will appear and disappear during the simulation. There is also
+an optional input file, <code class="docutils literal notranslate"><span class="pre">constraints.pdb</span></code>, and this contains indexes denoting which atoms, if any, are constrained
+during the pre-production simulation. This input should all be placed in a directory named build located
+where the user wishes to run the simulation. Examples of these files can be found <a class="reference external" href="https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples">here</a>.
+We suggest using the directory structure <code class="docutils literal notranslate"><span class="pre">study/system/ligand/thermodynamic_leg/build</span></code> this will allow the analysis scripts to
+understand the structure and perform analysis automatically. <code class="docutils literal notranslate"><span class="pre">study</span></code>, <code class="docutils literal notranslate"><span class="pre">system</span></code>, <code class="docutils literal notranslate"><span class="pre">ligand</span></code> and <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code>
+can be renamed to anything but the name of the <code class="docutils literal notranslate"><span class="pre">build</span></code> directory is fixed. If input for novel ligand transformations is desired the
+<a class="reference external" href="https://github.com/UCL-CCS/TIES20">TIES20</a> program can be used to generate all required inputs.</p>
+<p>The only non standard input to <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a configuration file (<code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>) which specifies options which the user my wish to
+occasionally change. This file must be placed alongside the build directory. Here we provide an example of such a file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#################################################################</span>
+<span class="c1">#                                                               #</span>
+<span class="c1">#                             TIES                              #</span>
+<span class="c1">#                                                               #</span>
+<span class="c1">#################################################################</span>
+
+<span class="c1">#Which molecular dynamics engine will be used, valid options are namd/openmm</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">openmm</span>
+
+<span class="c1">#Target temperature for the thermostat</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">kelvin</span>
+
+<span class="c1">#Target pressure for barostat</span>
+<span class="n">pressure</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">atmospheres</span>
+
+<span class="c1">#How much production sampling to run per alchemical window.</span>
+<span class="n">sampling_per_window</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">picosecond</span>
+
+<span class="c1">#How much equilibration to run per alchemical window.</span>
+<span class="n">equili_per_window</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">picoseconds</span>
+
+<span class="c1">#Which estimators to use. Valid options are: TI, FEP</span>
+<span class="n">methods</span> <span class="o">=</span> <span class="n">FEP</span><span class="p">,</span> <span class="n">TI</span>
+
+<span class="c1">#How many total replicas of each window are run (we recommend at least 5).</span>
+<span class="n">total_reps</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1">#How many replicas should each instance of TIES_MD run.</span>
+<span class="n">reps_per_exec</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1">#Where in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.</span>
+<span class="n">elec_edges</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span>
+
+<span class="c1">#Where in lambda schedule (0-&gt;1) should the Lennard_Jones potentials begin, stop appearing.</span>
+<span class="n">ster_edges</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span>
+
+<span class="c1">#The value the global controlling parameter takes in each window.</span>
+<span class="n">global_lambdas</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.0</span>
+
+<span class="c1">#The name of the pdb file with constraints in the build directory, i.e. cons.pdb If no constraints pass na</span>
+<span class="n">constraint_file</span> <span class="o">=</span> <span class="n">na</span>
+
+<span class="c1">#Which column in pdb are constraints provided valid options are occupancy/beta_factor.</span>
+<span class="n">constraint_column</span> <span class="o">=</span> <span class="n">beta_factor</span>
+
+<span class="c1">#What type of simulation cell is used valid options are cube, truncatedOctahedron, rhombicDodecahedron or na for manual.</span>
+<span class="n">box_type</span> <span class="o">=</span> <span class="n">na</span>
+
+<span class="c1">#The edge length used to compute the cube or truncatedOctahedron or rhombicDodecahedron box vectors</span>
+<span class="n">edge_length</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">nanometer</span>
+
+<span class="c1">#If box_type is na the manually specify box vectors of this simulation, unit Angstrom.</span>
+<span class="n">cell_basis_vec1</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+<span class="n">cell_basis_vec2</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.0</span>
+<span class="n">cell_basis_vec3</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">50</span>
+
+<span class="c1">#What input type is provided, only AMBER supported.</span>
+<span class="n">input_type</span> <span class="o">=</span> <span class="n">AMBER</span>
+
+<span class="c1">#NAMD specific options</span>
+<span class="c1">#What version of NAMD to use &lt;= 2.12 effects how analysis files are read &gt;=3 uses NAMD3 alpha.</span>
+<span class="n">version</span> <span class="o">=</span> <span class="mf">2.12</span>
+</pre></div>
+</div>
+<p>For more information on setting such as <code class="docutils literal notranslate"><span class="pre">elec_edges</span></code> or <code class="docutils literal notranslate"><span class="pre">ster_edges</span></code> please see the <a class="reference internal" href="theory.html#theory"><span class="std std-ref">Theory</span></a> section. Note the
+option <code class="docutils literal notranslate"><span class="pre">constraint_column</span></code> which determines if the constraint indexes will be read from the temperature factor
+or occupancy column of the constraints PDB. The alchemical indexes are always be read from the temperature factor column
+in the main PDB <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code>. The <code class="docutils literal notranslate"><span class="pre">edge_length</span></code> option can be found in the <code class="docutils literal notranslate"><span class="pre">leap.log</span></code> file created during system
+preparation preformed by the users or TIES20. If TIES20 is used for system preparation the <code class="docutils literal notranslate"><span class="pre">leap.log</span></code> file will be found
+in the <code class="docutils literal notranslate"><span class="pre">build</span></code> directory and the edge length will appear in the file as for example <code class="docutils literal notranslate"><span class="pre">edge:</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">64.00</span></code> in units of angstroms.</p>
+</div>
+<div class="section" id="command-line">
+<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<p>With all input present in the build directory and <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> installed we are almost ready to calculate binding
+free energies. <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> can be invoked on the command line by just running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> and this will use all default
+settings and the settings found in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>. The setting which can be taken on the command line and their default
+values are as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[--config_file=./TIES.cfg]
+A string pointing to where the TIES OpenMM configuration file is located.
+
+[--exp_name=complex]
+This is the name of the experiment and the prefix that TIES OpenMM will expect on the input pdb and prmtop file.
+Note that the constraints pdb is specified separately in the config file.
+
+[--run_type=run]
+A string either `run`, `setup` or `class`. `run` will tell TIES OpenMM to execute the binding free energy calculation,
+`setup` will prep the output directories and `class` will halt the program after the construction of the TIES class,
+ this can be used in testing or advanced analysis.
+
+# Below are OpenMM specific options, these are silently ignored for NAMD runs.
+
+[--devices=0]
+A comma separated list of integers which tells TIES OpenMM which GPUs to run on. If multiple GPUs
+are specified then TIES OpenMM will parallelize requested replicas over the available GPUs.
+
+[--node_id=_alpha]
+A string which will be used to generate the names of output files. Should be used if many independent replicas of the
+same simulation are run on different nodes to ensure output is writen to unique location.
+
+[--windows_mask=None]
+Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
+run. By default all windows will be run.
+
+[--periodic=1]
+A value of 1 sets the simulation box as periodic a value of 0 sets the simulation box as non-periodic.
+</pre></div>
+</div>
+</div>
+<div class="section" id="simulation-preparation">
+<h2>Simulation Preparation<a class="headerlink" href="#simulation-preparation" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> is run in two stages first using the option <code class="docutils literal notranslate"><span class="pre">--run_type=setup</span></code> this prepares output directories and MD engine
+input scripts, this stage is not compute intensive and can be run on a PC or HPC head node. The setup stage can but does
+not have to be run of you are using <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> and directories are built when using <code class="docutils literal notranslate"><span class="pre">--run_type=run</span></code> also. Output directories are prepared
+with the structure <code class="docutils literal notranslate"><span class="pre">LAMBDA_X</span></code> where <code class="docutils literal notranslate"><span class="pre">X</span></code> is an integer denoting what alchemical window that folder contains the output for.
+Within <code class="docutils literal notranslate"><span class="pre">LAMBDA_X</span></code> there are directories named <code class="docutils literal notranslate"><span class="pre">repY</span></code> where <code class="docutils literal notranslate"><span class="pre">Y</span></code> is an integer which denotes a replica in the ensemble. In the
+<code class="docutils literal notranslate"><span class="pre">repY</span></code> directories there are three more directories: <code class="docutils literal notranslate"><span class="pre">equilibration</span></code>, <code class="docutils literal notranslate"><span class="pre">simulation</span></code> and <code class="docutils literal notranslate"><span class="pre">results</span></code>. The <code class="docutils literal notranslate"><span class="pre">equilibration</span></code> and
+<code class="docutils literal notranslate"><span class="pre">simulation</span></code> directory will contain all the output for the pre-production and production stages of the simulation
+respectively. The <code class="docutils literal notranslate"><span class="pre">results</span></code> directory will contain the files with potentials and gradients output by <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> or <code class="docutils literal notranslate"><span class="pre">NAMD</span></code>.
+The files in the <code class="docutils literal notranslate"><span class="pre">results</span></code> directories will be analysed to calculate binding free energies. Considering the application of
+this setup stage to <a class="reference external" href="https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1">this</a> example
+for the zero sum transformation of ethane to ethane the setup command would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">run_type</span><span class="o">=</span><span class="n">setup</span>
+</pre></div>
+</div>
+<p>The above sets up an <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calculation. Alternatively to use <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> some options must be changed please see this
+<a class="reference external" href="https://github.com/adw62/TIES_MD/blob/master/TIES_MD/examples/ethane_namd/zero_sum/leg1/TIES.cfg">modified</a> config file
+as an example of what to change.</p>
+</div>
+<div class="section" id="running-simulations">
+<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
+<p>The second stage of running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code>, after setup, involves the running of the MD simulations, this is compute intensive
+and can only be run on a HPC for all but the smallest systems. The execution of <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> branches at this point dependant
+on what MD engine is being used. HPC submission scripts should be prepared with the target MD engine in mind.</p>
+<p>Consider the same <a class="reference external" href="https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1">example,</a> used in the
+setup stage, for the transformation of ethane to ethane. In TIES.cfg the option <code class="docutils literal notranslate"><span class="pre">global_lambdas</span></code> is set
+equal to <code class="docutils literal notranslate"><span class="pre">0.0,</span> <span class="pre">0.2,</span> <span class="pre">0.4,</span> <span class="pre">0.6,</span> <span class="pre">0.8,</span> <span class="pre">1.0</span></code> therefore there are 6 alchemical windows and the option <code class="docutils literal notranslate"><span class="pre">total_reps</span></code> is set equal
+to <code class="docutils literal notranslate"><span class="pre">1</span></code>, there is therefore 6x1 = 6 total simulations to perform. If a HPC submission script was to request one node with
+6 GPUS with each GPU running one alchemical window the run lines for an <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calculation would look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">1</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">2</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">3</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">4</span><span class="o">&amp;</span>
+<span class="n">TIES_MD</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">5</span><span class="o">&amp;</span>
+</pre></div>
+</div>
+<p>There are a lot of options for how these <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calcualtions can be structured and parallelized with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> see our
+<a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> page for more information on this. For a <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> calculation if the submission script requested 6 CPU
+nodes each with 128 cores the run lines in the submission script might look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for stage in {{0..2}}; do
+win_id=0
+for lambda in 0.0, 0.2, 0.4, 0.6, 0.8, 1.0;
+do
+        cd $build/replica-confs
+        srun -N 1 -n 128 namd2 --tclmain eq$stage-replicas.conf $lambda $win_id &amp;
+        (( win_id++ ))
+        sleep 1
+done
+wait
+done
+
+for stage in {{1..1}}; do
+win_id=0
+for lambda in 0.0, 0.2, 0.4, 0.6, 0.8, 1.0;
+do
+        cd $build/replica-confs
+        srun -N 1 -n 128 namd2 --tclmain sim$stage-replicas.conf $lambda $win_id&amp;
+        (( win_id++ ))
+        sleep 1
+done
+wait
+done
+</pre></div>
+</div>
+<p>Notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> example reference is made to a directory <code class="docutils literal notranslate"><span class="pre">replica-confs</span></code> this is where the NAMD input scripts are writen
+during the <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> setup stage. Also notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> examples there are 2 loops over <code class="docutils literal notranslate"><span class="pre">stage</span></code> these are three
+pre-production stages <code class="docutils literal notranslate"><span class="pre">eq0</span></code>, <code class="docutils literal notranslate"><span class="pre">eq1</span></code> and <code class="docutils literal notranslate"><span class="pre">eq2</span></code> and one production stage <code class="docutils literal notranslate"><span class="pre">sim1</span></code> these stages are performed automatically by <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>
+when running with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> but must be explicitly executed when using <code class="docutils literal notranslate"><span class="pre">NAMD</span></code>. The exact submission script for a particular
+HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
+solution to solve any issues we would suggest consulting user manuals of both HPC and MD engine, reading our example <a class="reference internal" href="HPC_submissions.html#hpc-submission-scripts"><span class="std std-ref">HPC Submission scripts</span></a> or submitting an <a class="reference external" href="https://github.com/adw62/TIES_MD/issues">issue</a> on <code class="docutils literal notranslate"><span class="pre">Github</span></code>.</p>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The analysis of the files found in the output can be performed using the <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> package which is included in the
+conda installation of <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> or is available for separate <a class="reference external" href="https://github.com/adw62/TIES_analysis">download</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> will create the input need to perform the analysis. Input configuration files for <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> will be filled
+in with information such as the lambda schedule or which MD engine was used. If the directory structure
+<code class="docutils literal notranslate"><span class="pre">study/system/ligand/thermodynamic_leg/build</span></code> was used then these config files are written to the <code class="docutils literal notranslate"><span class="pre">study</span></code> directory.
+Some information is missing from these config files which must be filled out. The missing information is for the names
+of the <code class="docutils literal notranslate"><span class="pre">system</span></code>, <code class="docutils literal notranslate"><span class="pre">ligand</span></code> and <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code> directories. Add the names of the <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code> to the
+config file <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> under the option <code class="docutils literal notranslate"><span class="pre">legs</span></code> and add the <code class="docutils literal notranslate"><span class="pre">system</span></code> and <code class="docutils literal notranslate"><span class="pre">ligand</span></code> names into <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> instead of <code class="docutils literal notranslate"><span class="pre">'SYSTEM</span> <span class="pre">NAME'</span></code>
+and <code class="docutils literal notranslate"><span class="pre">'LIGAND</span> <span class="pre">NAME'</span></code>. As an example see the option <a class="reference external" href="https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L4">legs</a>
+in this example script for the analysis of protein-ligand binding calculation with two thermodynamic legs named
+<code class="docutils literal notranslate"><span class="pre">'lig'</span></code> and <code class="docutils literal notranslate"><span class="pre">'com'</span></code>. This example analysis input also has the <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> <a class="reference external" href="https://github.com/adw62/TIES_analysis/blob/main/example/exp.dat">file</a>
+populated for the protein target named <code class="docutils literal notranslate"><span class="pre">ptp1b</span></code> and a ligand transformation in that protein named l6-l14, this transformation
+has an experimental ΔΔG of -1.04 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
+values in <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> which need to be populated can be left as 0.0. With <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> and <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> populated the analysis
+can then be executed on a HPC head node or PC by running <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> in the <code class="docutils literal notranslate"><span class="pre">study</span></code> directory using the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_ana</span>
+</pre></div>
+</div>
+<p>This will produce as output a file <code class="docutils literal notranslate"><span class="pre">results.dat</span></code> in the <code class="docutils literal notranslate"><span class="pre">study</span></code> directory which contains a python dictionary keyed
+first by the methodology used, then the system name and then ligand name. Each value in the dictionary is a list, the first
+entry in that list is the calculated free energy change and the second entry is the standard deviation associated with
+that free energy change. So for example the <code class="docutils literal notranslate"><span class="pre">results.dat</span></code> output from the ethane to ethane transformation example
+would look something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;OpenMM_FEP&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ethane&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;zero_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.023</span><span class="p">,</span> <span class="mf">0.023</span><span class="p">]}},</span>
+  <span class="s1">&#39;OpenMM_TI&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ethane&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;zero_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.076</span><span class="p">]}}}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="HPC_submissions.html" class="btn btn-neutral float-right" title="HPC Submission scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, UCL CCS.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

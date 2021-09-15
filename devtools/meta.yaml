@@ -1,0 +1,30 @@
+package:
+  name: ties_md
+  version: 0.0.0
+
+source:
+  path: ../
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - python {{ python }}
+    - setuptools
+  run:
+    - python
+    - numpy
+    - scipy
+    - netcdf4 
+    - libnetcdf 
+    - pyyaml
+    - numba
+    - docopt
+    - multiprocess
+    - openmm
+    - cython
+    - ties_ana
+
+about:
+  home: https://github.com/adw62/TIES_MD
