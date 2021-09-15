@@ -217,7 +217,7 @@ Analysis
 ---------
 
 The analysis of the files found in the output can be performed using the ``TIES_analysis`` package which is included in the
-conda installation of ``TIES_MD`` or is available for separate `download <https://github.com/UCL-CCS/TIES_analysis>`_.
+conda installation of ``TIES_MD`` or is available for separate `download <https://github.com/adw62/TIES_analysis>`_.
 
 ``TIES_MD`` will create the input need to perform the analysis. Input configuration files for ``TIES_analysis`` will be filled
 in with information such as the lambda schedule or which MD engine was used. If the directory structure
@@ -227,7 +227,7 @@ of the ``system``, ``ligand`` and ``thermodynamic_leg`` directories. Add the nam
 config file ``analysis.cfg`` under the option ``legs`` and add the ``system`` and ``ligand`` names into ``exp.dat`` instead of ``'SYSTEM NAME'``
 and ``'LIGAND NAME'``. As an example see the option `legs <https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L4>`_
 in this example script for the analysis of protein-ligand binding calculation with two thermodynamic legs named
-``'lig'`` and ``'com'``. This example analysis input also has the ``exp.dat`` `file <https://github.com/UCL-CCS/TIES_analysis/blob/main/example/exp.dat>`_
+``'lig'`` and ``'com'``. This example analysis input also has the ``exp.dat`` `file <https://github.com/adw62/TIES_analysis/blob/main/example/exp.dat>`_
 populated for the protein target named ``ptp1b`` and a ligand transformation in that protein named l6-l14, this transformation
 has an experimental ΔΔG of -1.04 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
 values in ``exp.dat`` which need to be populated can be left as 0.0. With ``analysis.cfg`` and ``exp.dat`` populated the analysis
