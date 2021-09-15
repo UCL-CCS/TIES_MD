@@ -26,7 +26,6 @@ Here is an example of a submission script for a large system (≈100k atoms) run
     module load slurm_setup
     module load namd/2.14-gcc8-impi
 
-    #--nodes and nodes_per_namd can be scaled up for large simulations
     nodes_per_namd=10
     cpus_per_namd=480
 
@@ -84,10 +83,16 @@ The first 20 lines of this script could be adapted for a smaller system (≈10k 
     nodes_per_namd=1
     cpus_per_namd=45
 
+NAMD 3
+------
+
+
 
 
 OpenMM
 ------
+
+
 
 
 

@@ -17,7 +17,7 @@ the ``AMBER`` based format ``prmtop`` but provide a utility to `build <https://c
 contains the alchemical indexes denoting which atoms will appear and disappear during the simulation. There is also
 an optional input file, ``constraints.pdb``, and this contains indexes denoting which atoms, if any, are constrained
 during the pre-production simulation. This input should all be placed in a directory named build located
-where the user wishes to run the simulation. Examples of these files can be found `here <https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples>`_.
+where the user wishes to run the simulation. Examples of these files can be found `here <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples>`_.
 We suggest using the directory structure ``study/system/ligand/thermodynamic_leg/build`` this will allow the analysis scripts to
 understand the structure and perform analysis automatically. ``study``, ``system``, ``ligand`` and ``thermodynamic_leg``
 can be renamed to anything but the name of the ``build`` directory is fixed. If input for novel ligand transformations is desired the
@@ -147,13 +147,13 @@ Within ``LAMBDA_X`` there are directories named ``repY`` where ``Y`` is an integ
 ``simulation`` directory will contain all the output for the pre-production and production stages of the simulation
 respectively. The ``results`` directory will contain the files with potentials and gradients output by ``TIES_MD`` or ``NAMD``.
 The files in the ``results`` directories will be analysed to calculate binding free energies. Considering the application of
-this setup stage to `this <https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ example
+this setup stage to `this <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ example
 for the zero sum transformation of ethane to ethane the setup command would be::
 
     TIES_MD --exp_name=sys_solv --run_type=setup
 
 The above sets up an ``OpenMM`` calculation. Alternatively to use ``NAMD`` some options must be changed please see this
-`modified <https://github.com/adw62/TIES_MD/blob/master/TIES_MD/examples/ethane_namd/zero_sum/leg1/TIES.cfg>`_ config file
+`modified <https://github.com/UCL-CCS/TIES_MD/blob/master/TIES_MD/examples/ethane_namd/zero_sum/leg1/TIES.cfg>`_ config file
 as an example of what to change.
 
 Running Simulations
@@ -163,7 +163,7 @@ The second stage of running ``TIES_MD``, after setup, involves the running of th
 and can only be run on a HPC for all but the smallest systems. The execution of ``TIES_MD`` branches at this point dependant
 on what MD engine is being used. HPC submission scripts should be prepared with the target MD engine in mind.
 
-Consider the same `example, <https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ used in the
+Consider the same `example, <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ used in the
 setup stage, for the transformation of ethane to ethane. In TIES.cfg the option ``global_lambdas`` is set
 equal to ``0.0, 0.2, 0.4, 0.6, 0.8, 1.0`` therefore there are 6 alchemical windows and the option ``total_reps`` is set equal
 to ``1``, there is therefore 6x1 = 6 total simulations to perform. If a HPC submission script was to request one node with
@@ -211,13 +211,13 @@ pre-production stages ``eq0``, ``eq1`` and ``eq2`` and one production stage ``si
 when running with ``OpenMM`` but must be explicitly executed when using ``NAMD``. The exact submission script for a particular
 HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
 solution to solve any issues we would suggest consulting user manuals of both HPC and MD engine, reading our example :ref:`HPC Submission
-scripts` or submitting an `issue <https://github.com/adw62/TIES_MD/issues>`_ on ``Github``.
+scripts` or submitting an `issue <https://github.com/UCL-CCS/TIES_MD/issues>`_ on ``Github``.
 
 Analysis
 ---------
 
 The analysis of the files found in the output can be performed using the ``TIES_analysis`` package which is included in the
-conda installation of ``TIES_MD`` or is available for separate `download <https://github.com/adw62/TIES_analysis>`_.
+conda installation of ``TIES_MD`` or is available for separate `download <https://github.com/UCL-CCS/TIES_analysis>`_.
 
 ``TIES_MD`` will create the input need to perform the analysis. Input configuration files for ``TIES_analysis`` will be filled
 in with information such as the lambda schedule or which MD engine was used. If the directory structure
@@ -225,9 +225,9 @@ in with information such as the lambda schedule or which MD engine was used. If 
 Some information is missing from these config files which must be filled out. The missing information is for the names
 of the ``system``, ``ligand`` and ``thermodynamic_leg`` directories. Add the names of the ``thermodynamic_leg`` to the
 config file ``analysis.cfg`` under the option ``legs`` and add the ``system`` and ``ligand`` names into ``exp.dat`` instead of ``'SYSTEM NAME'``
-and ``'LIGAND NAME'``. As an example see the option `legs <https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L4>`_
+and ``'LIGAND NAME'``. As an example see the option `legs <https://github.com/UCL-CCS/TIES_analysis/blob/main/example/analysis.cfg#L4>`_
 in this example script for the analysis of protein-ligand binding calculation with two thermodynamic legs named
-``'lig'`` and ``'com'``. This example analysis input also has the ``exp.dat`` `file <https://github.com/adw62/TIES_analysis/blob/main/example/exp.dat>`_
+``'lig'`` and ``'com'``. This example analysis input also has the ``exp.dat`` `file <https://github.com/UCL-CCS/TIES_analysis/blob/main/example/exp.dat>`_
 populated for the protein target named ``ptp1b`` and a ligand transformation in that protein named l6-l14, this transformation
 has an experimental ΔΔG of -1.04 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
 values in ``exp.dat`` which need to be populated can be left as 0.0. With ``analysis.cfg`` and ``exp.dat`` populated the analysis

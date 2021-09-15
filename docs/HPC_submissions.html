@@ -95,6 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HPC Submission scripts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#namd">NAMD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#namd-3">NAMD 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#openmm">OpenMM</a></li>
 </ul>
 </li>
@@ -195,7 +196,6 @@
 module load slurm_setup
 module load namd/2.14-gcc8-impi
 
-#--nodes and nodes_per_namd can be scaled up for large simulations
 nodes_per_namd=10
 cpus_per_namd=480
 
@@ -253,6 +253,9 @@ done
 <span class="n">cpus_per_namd</span><span class="o">=</span><span class="mi">45</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="namd-3">
+<h2>NAMD 3<a class="headerlink" href="#namd-3" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="openmm">
 <h2>OpenMM<a class="headerlink" href="#openmm" title="Permalink to this headline">¶</a></h2>
