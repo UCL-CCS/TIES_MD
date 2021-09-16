@@ -95,8 +95,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HPC Submission scripts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#namd">NAMD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#namd-3">NAMD 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#openmm">OpenMM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#namd-3">NAMD 3</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
@@ -254,11 +254,35 @@ done
 </pre></div>
 </div>
 </div>
-<div class="section" id="namd-3">
-<h2>NAMD 3<a class="headerlink" href="#namd-3" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="openmm">
 <h2>OpenMM<a class="headerlink" href="#openmm" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide an example of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> running with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> on <a class="reference external" href="https://www.olcf.ornl.gov/summit/">Summit</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+#BSUB -P XXX
+#BSUB -W 20
+#BSUB -nnodes 1
+#BSUB -alloc_flags &quot;gpudefault smt1&quot;
+#BSUB -J test
+#BSUB -o otest.%J
+#BSUB -e etest.%J
+cd $LS_SUBCWD
+export PATH=&quot;/gpfs/alpine/scratch/adw62/chm155/TIES_test/miniconda/bin:$PATH&quot;
+export ties_dir=&quot;/gpfs/alpine/scratch/adw62/chm155/TIES_test/TIES_MD/TIES_MD/examples/ethane/zero_sum/leg1&quot;
+module load cuda/10.1.168
+date
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=0,1 --node_id=&quot;0&quot; &gt; $ties_dir/0.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=1,2 --node_id=&quot;0&quot; &gt; $ties_dir/1.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=2,3 --node_id=&quot;0&quot; &gt; $ties_dir/2.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=3,4 --node_id=&quot;0&quot; &gt; $ties_dir/3.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=4,5 --node_id=&quot;0&quot; &gt; $ties_dir/4.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=5,6 --node_id=&quot;0&quot; &gt; $ties_dir/5.out&amp;
+wait
+</pre></div>
+</div>
+</div>
+<div class="section" id="namd-3">
+<h2>NAMD 3<a class="headerlink" href="#namd-3" title="Permalink to this headline">¶</a></h2>
+<p>Under construction</p>
 </div>
 </div>
 

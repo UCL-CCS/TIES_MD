@@ -61,7 +61,6 @@ Here is an example of a submission script for a large system (≈100k atoms) run
 
 The first 20 lines of this script could be adapted for a smaller system (≈10k atoms) as follows::
 
-
     #!/bin/bash
     #SBATCH --job-name=LIGPAIR
     #SBATCH -o ./%x.%j.out
@@ -83,14 +82,38 @@ The first 20 lines of this script could be adapted for a smaller system (≈10k 
     nodes_per_namd=1
     cpus_per_namd=45
 
-NAMD 3
-------
-
-
-
 
 OpenMM
 ------
+
+Here we provide an example of ``TIES MD`` running with ``OpenMM`` on `Summit <https://www.olcf.ornl.gov/summit/>`_::
+
+    #!/bin/bash
+    #BSUB -P XXX
+    #BSUB -W 20
+    #BSUB -nnodes 1
+    #BSUB -alloc_flags "gpudefault smt1"
+    #BSUB -J test
+    #BSUB -o otest.%J
+    #BSUB -e etest.%J
+    cd $LS_SUBCWD
+    export PATH="/gpfs/alpine/scratch/adw62/chm155/TIES_test/miniconda/bin:$PATH"
+    export ties_dir="/gpfs/alpine/scratch/adw62/chm155/TIES_test/TIES_MD/TIES_MD/examples/ethane/zero_sum/leg1"
+    module load cuda/10.1.168
+    date
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=0,1 --node_id="0" > $ties_dir/0.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=1,2 --node_id="0" > $ties_dir/1.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=2,3 --node_id="0" > $ties_dir/2.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=3,4 --node_id="0" > $ties_dir/3.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=4,5 --node_id="0" > $ties_dir/4.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=5,6 --node_id="0" > $ties_dir/5.out&
+    wait
+
+NAMD 3
+------
+
+Under construction
+
 
 
 

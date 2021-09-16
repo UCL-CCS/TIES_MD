@@ -9,7 +9,7 @@ Ensemble simulation are critical to control the aleatoric error inherent in chao
 in an ensemble has no communication with the other simulations and so this is an embarrassingly parallel problem, or a problem for which
 parallelization is easy to implement. Likewise there is no communication between individual alchemical windows of the simulation
 and so parallelizing these windows is also easy. The remainder of this page will explore how to achieve this parallelization
-using OpenMM and ``NAMD`` with ``TIES``.
+using ``OpenMM`` and ``NAMD`` with ``TIES``.
 
 TIES-OpenMM
 -----------

@@ -399,11 +399,11 @@ ele_d = {8}
         
         if self.namd_version < 3:
             header = """#NAMD2
-                                        """
+                     """
         else:
             header = """#NAMD3
-        CUDASOAintegrate off
-                                            """
+CUDASOAintegrate off
+                     """
 
         #check if we need constraints
         if self.constraint_file is not None:
@@ -471,11 +471,11 @@ minimize 2000
         # prep common elements in eq1 and eq2
         if self.namd_version < 3:
             header = """#NAMD2
-                                        """
+                     """
         else:
             header = """#NAMD3
-        CUDASOAintegrate on
-                                            """
+CUDASOAintegrate on
+                     """
         # check units on temp and pressure and make unit less for writing to file
         pressure_val = self.pressure.in_units_of(unit.bar) / unit.bar
         temp = self.temperature.in_units_of(unit.kelvin) / unit.kelvin
