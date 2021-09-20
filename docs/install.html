@@ -185,7 +185,7 @@ export PATH=&quot;$prefix/bin:$PATH&quot;
 </div>
 <p>Ensure the <code class="docutils literal notranslate"><span class="pre">Miniconda</span></code> used matches the platform on which you are running, for example use <code class="docutils literal notranslate"><span class="pre">Miniconda3-latest-Linux-ppc64le.sh</span></code>
 for <code class="docutils literal notranslate"><span class="pre">Linux-ppc64le</span></code> machines, and that <code class="docutils literal notranslate"><span class="pre">$prefix</span></code> is set to some directory with read write permissions. We provide <code class="docutils literal notranslate"><span class="pre">Conda</span></code> installs for
-<code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.7</span></code>, <code class="docutils literal notranslate"><span class="pre">3.8</span></code> and <code class="docutils literal notranslate"><span class="pre">3.9</span></code> on <code class="docutils literal notranslate"><span class="pre">Linux-64</span></code> or <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.7</span></code> on <code class="docutils literal notranslate"><span class="pre">Linux-ppc64le</span></code>. If required you can change your python version in <code class="docutils literal notranslate"><span class="pre">Conda</span></code>
+<code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.7</span></code> on <code class="docutils literal notranslate"><span class="pre">Linux-64</span></code> and <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.7</span></code> on <code class="docutils literal notranslate"><span class="pre">Linux-ppc64le</span></code>. If required you can change your python version in <code class="docutils literal notranslate"><span class="pre">Conda</span></code>
 using this command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.7</span><span class="o">.</span><span class="mi">3</span>
 </pre></div>
@@ -199,6 +199,11 @@ using this command:</p>
 </div>
 <div class="section" id="ties-openmm">
 <h2>TIES OpenMM<a class="headerlink" href="#ties-openmm" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Crashes have been observed when using <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> <code class="docutils literal notranslate"><span class="pre">7.5</span></code> and <code class="docutils literal notranslate"><span class="pre">7.6</span></code>. For now we recommend using
+<code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> <code class="docutils literal notranslate"><span class="pre">7.4</span></code> which can be installed as conda install -c omnia openmm==7.4.2</p>
+</div>
 <p>To use the OpenMM protocol in <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> a custom version of <code class="docutils literal notranslate"><span class="pre">OpenMMTools</span></code> is needed to perform the alchemical transformations
 of the system and allow for thermodynamic integration calculations. In order to install the custom version of <code class="docutils literal notranslate"><span class="pre">OpenMMTools</span></code> run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">openmmtools_install</span>

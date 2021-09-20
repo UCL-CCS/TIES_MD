@@ -194,9 +194,9 @@ class TIES(object):
                 if len(self.devices) > 1:
                     raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
                                      'have been specified on the command line. Please only specify 1 device.')
-        if len(self.devices) != self.total_reps:
+        if len(self.devices) != self.reps_per_exec:
             print('For best parallel performance you may wish to consider allocating the same number of GPUS as'
-                  ' requested replicas. GPUS allocated = {}, replicas requested {}'.format(len(self.devices), self.total_reps))
+                  ' requested replicas. GPUS allocated = {}, replicas requested {}'.format(len(self.devices), self.reps_per_exec))
 
         #build schedual for lambdas
         if lam is None:
@@ -658,7 +658,7 @@ langevinPistonDecay   25.0             # oscillation decay time. smaller value c
             open(os.path.join('./', 'sub.sh'), 'w').write(namd_initialised)
 
         else:
-            print('No NAMD3 example script currently implemented. Examples for GPU scrips can be found here '
+            print('No NAMD3 example script currently implemented. Examples for GPU scripts can be found here '
                   'https://UCL-CCS.github.io/TIES_MD/HPC_submissions.html')
 
 

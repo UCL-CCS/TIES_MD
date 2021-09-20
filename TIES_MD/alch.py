@@ -583,6 +583,7 @@ def minimization(NVT, constraint):
         mm.LocalEnergyMinimizer.minimize(NVT['sim'].context)
 
     else:
+        print('Minimizing')
         mm.LocalEnergyMinimizer.minimize(NVT['sim'].context)
 
 
@@ -726,6 +727,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
     beta = 1.0 / (unit.BOLTZMANN_CONSTANT_kB * alch_sys.temp)
 
     print('Running simulation on device {}'.format(ids.device_id))
+    print('Running replica {} of windows {}'.format(ids.node_id, mask[:-1]))
 
     nlambda = len(Lam.schedule[0])
     nstates = len(Lam.schedule[mask[0]:mask[1]])

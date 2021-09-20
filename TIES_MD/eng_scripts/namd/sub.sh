@@ -1,4 +1,5 @@
 #!/bin/bash
+#Example script fot ARCHER2
 #SBATCH --job-name=LIGPAIR
 #SBATCH --nodes={nodes}
 #SBATCH --tasks-per-node=128
