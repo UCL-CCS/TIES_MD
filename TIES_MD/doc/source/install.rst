@@ -61,6 +61,6 @@ where ``10.0`` should be replaced with the particular ``CUDA`` version you want 
 The install of ``TIES MD`` can be tested by downloading and running (:ref:`Tutorial`) any of the examples
 provided `here <https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples>`_. These examples can be download by running::
 
-    git clone https://github.com/adw62/TIES_MD.git
+    git clone https://github.com/UCL-CCS/TIES_MD.git
 
 
