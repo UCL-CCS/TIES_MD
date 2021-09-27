@@ -469,7 +469,7 @@ class AlchSys(object):
         construction. Note: as written these constraints may not work with periodic boundary conditions on GPU.
 
         '''
-        force = mm.CustomExternalForce("scale*k*((x-x0)^2+(y-y0)^2+(z-z0)^2)")
+        force = mm.CustomExternalForce("scale*k*periodicdistance(x, y, z, x0, y0, z0)^2")
         force.addGlobalParameter("scale", 0.0)
         force.addPerParticleParameter("k")
         force.addPerParticleParameter("x0")
@@ -734,7 +734,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
     :param ids: System_ID class containing ids for GPU, repeat and node
     :param alch_sys: AlchSys class containing the alchemical system
     :param Lam: Lambda class containing lambda schedule
-    :param mask: list containing what windows should be run
+    :param mask: list containing ints for start and end range of windows to be run
     :param name: string, name of the current experiment we are running
     :param niter: int, number of iterations per window #How many times we sample grad
     :param equili_steps: int, number of 2fs steps for equilibration
@@ -745,7 +745,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
     beta = 1.0 / (unit.BOLTZMANN_CONSTANT_kB * alch_sys.temp)
 
     print('Running simulation on device {}'.format(ids.device_id))
-    print('Running replica {} of windows {}'.format(ids.node_id, mask[:-1]))
+    print('Running replica {} of windows {}'.format(ids.node_id, list(range(mask[0], mask[1]))))
 
     nlambda = len(Lam.schedule[0])
     nstates = len(Lam.schedule[mask[0]:mask[1]])

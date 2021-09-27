@@ -1,0 +1,22 @@
+# solvation script to solvate the merged topologies .mol2
+source leaprc.protein.ff19SB
+source leaprc.water.tip3p
+source leaprc.gaff
+# for phosphorylated residues
+source leaprc.phosaa10
+
+loadamberparams hybrid.frcmod
+# fixme merged here refers to the morphed ligands, ie merged ligands lambda 0 and lambda 13
+lig = loadMol2 hybrid.mol2
+protein = LoadPdb protein.pdb
+# double curly brackets since we use python's str.format misapplies here
+sys = Combine {lig protein}
+# https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/midas/solvate.html
+# https://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/solvate/solvate.html
+solvateoct sys TIP3PBOX 14
+# generating charges manually:
+addIons sys Na+ 1
+# no Cl- added
+savepdb sys complex_nofep.pdb
+saveamberparm sys complex.top complex.crd
+quit
