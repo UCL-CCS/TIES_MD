@@ -1,0 +1,3 @@
+pip install ../..
+sphinx-apidoc -f -o ./source/ .. ../eng_scripts/namd/*, ../eng_scripts
+make html
