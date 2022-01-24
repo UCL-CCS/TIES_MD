@@ -145,6 +145,8 @@ class TIES(object):
             self.basis_vectors = [Vec3(*self.cell_basis_vec1)*unit.angstrom,
                                   Vec3(*self.cell_basis_vec2)*unit.angstrom,
                                   Vec3(*self.cell_basis_vec3)*unit.angstrom]
+
+            print(self.basis_vectors)
         else:
             print('Getting box vectors for {} box. Ignoring cell basis vectors in TIES.cfg.'.format(self.box_type))
             if 'edge_length' not in args_dict.keys():
@@ -201,6 +203,7 @@ class TIES(object):
                 print('NAMD only supports total_reps = reps_per_exec please set these values equal in TIES.cfg')
                 print('Will proceed with reps_per_exec = {}'.format(self.total_reps))
                 self.reps_per_exec = self.total_reps
+                self.split_run = False
             else:
                 if self.node_id is None:
                     raise ValueError('If total_reps != reps_per_exec then the command line option --node_id'
@@ -401,7 +404,7 @@ ele_d = {8}
 
     def write_namd_scripts(self):
         '''
-        Function call all function needed to write all namd input scripts
+        Function to call all functions needed to write all namd input scripts
 
         '''
         self.write_namd_min()
