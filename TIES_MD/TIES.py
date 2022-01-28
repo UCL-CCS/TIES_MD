@@ -146,7 +146,6 @@ class TIES(object):
                                   Vec3(*self.cell_basis_vec2)*unit.angstrom,
                                   Vec3(*self.cell_basis_vec3)*unit.angstrom]
 
-            print(self.basis_vectors)
         else:
             print('Getting box vectors for {} box. Ignoring cell basis vectors in TIES.cfg.'.format(self.box_type))
             if 'edge_length' not in args_dict.keys():
@@ -236,15 +235,16 @@ class TIES(object):
             TIES.run(self)
            
         elif run_type == 'setup':
-            TIES.build_results_dirs(self)
             if self.engine == 'namd':
+                folders = ['equilibration', 'simulation']
                 path = os.path.join(self.cwd, 'replica-confs')
                 Path(path).mkdir(parents=True, exist_ok=True)
                 self.write_namd_scripts()
-
+            else:
+                folders = ['equilibration', 'simulation', 'results']
+            TIES.build_results_dirs(self, folders)
         elif run_type == 'class':
             print('Experiments {} initialized from dir {}'.format(self.exp_name, self.cwd))
-
         else:
             raise ValueError('Unknown run method selected from run/class')
         
@@ -253,9 +253,11 @@ class TIES(object):
 
         nice_print('END')
 
-    def build_results_dirs(self):
+    def build_results_dirs(self, folders):
         '''
         Helper function to build output directories.
+        :param folders: List of strings for what folders to build
+        :return: None
         '''
         # If output folders do not exist make them.
         if self.split_run:
@@ -267,7 +269,7 @@ class TIES(object):
             for lam in range(self.windows):
                 print('Attempting to make eq, sim and results folders for LAMBDA_{}/rep{}'.format(lam, i))
                 lam_dir = 'LAMBDA_{}'.format(lam)
-                for folder in ['equilibration', 'simulation', 'results']:
+                for folder in folders:
                     path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(i), folder)
                     Path(path).mkdir(parents=True, exist_ok=True)
 
@@ -397,7 +399,7 @@ ele_d = {8}
             with open(file_path, 'w') as f:
                 f.write(common_cfg)
 
-        file_path =  os.path.join(self.cwd, '../../../exp.dat')
+        file_path = os.path.join(self.cwd, '../../../exp.dat')
         if not os.path.exists(file_path):
             with open(file_path, 'w') as f:
                 f.write(dummy_exp)
