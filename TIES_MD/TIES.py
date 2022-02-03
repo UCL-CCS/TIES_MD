@@ -335,9 +335,7 @@ class TIES(object):
 
         namd_only = '''#float for namd version used
 namd_version = {0}
-#int for how many data lines in sim1.alch
-iterations = {1}
-        '''.format(self.namd_version, int(self.sampling_per_window/(2.0*unit.picosecond)))
+        '''.format(self.namd_version)
 
         openmm_only = '''#(True or False) if true all replicas are combined into one long time series
 fep_combine_reps = False
