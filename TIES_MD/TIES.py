@@ -675,7 +675,7 @@ langevinPistonDecay   25.0             # oscillation decay time. smaller value c
 
         if self.namd_version < 3:
             namd_uninitialised = pkg_resources.open_text(namd, 'sub.sh').read()
-            namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, nodes=len(self.global_lambdas)+1)
+            namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, nodes=len(self.global_lambdas))
             open(os.path.join('./', 'sub.sh'), 'w').write(namd_initialised)
 
         else:
