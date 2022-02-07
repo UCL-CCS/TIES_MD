@@ -218,7 +218,7 @@ Analysis
 
 .. note::
     When using NAMD the version is specified in namd.cfg as ``namd_version = 2.14`` for example. This is critical to the result
-    as pre NAMD 2.14 different columns are used by NAMD to write the output potentials. Please take care the version is set correctly.
+    as pre NAMD 2.12 different columns are used by NAMD to write the output potentials. Please take care the version is set correctly.
 
 The analysis of the files found in the output can be performed using the ``TIES_analysis`` package which is included in the
 conda installation of ``TIES_MD`` or is available for separate `download <https://github.com/adw62/TIES_analysis>`_.
