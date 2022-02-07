@@ -10,8 +10,7 @@
 #SBATCH --qos=standard
 
 # Setup the job environment (this module needs to be loaded before any other modules)
-module load epcc-job-env
-module load namd/2.14-nosmp-gcc10
+module load namd/2.14-nosmp
 
 #--nodes and nodes_per_namd can be scaled up for large simulations
 nodes_per_namd=1
