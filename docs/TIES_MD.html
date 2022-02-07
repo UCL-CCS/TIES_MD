@@ -383,7 +383,7 @@ construction. Note: as written these constraints may not work with periodic boun
 <li><p><strong>val</strong> – float, value of lambda parameter</p></li>
 <li><p><strong>context</strong> – OpenMM Context</p></li>
 <li><p><strong>h</strong> – float, finite difference to use</p></li>
-<li><p><strong>analitic_sterics</strong> – boolean, are analytic steric gradients calaculated (exsperimental)</p></li>
+<li><p><strong>analitic_sterics</strong> – boolean, are analytic steric gradients calculated (experimental)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -632,7 +632,7 @@ to disk.</p>
 <li><p><strong>ids</strong> – System_ID class containing ids for GPU, repeat and node</p></li>
 <li><p><strong>alch_sys</strong> – AlchSys class containing the alchemical system</p></li>
 <li><p><strong>Lam</strong> – Lambda class containing lambda schedule</p></li>
-<li><p><strong>mask</strong> – list containing what windows should be run</p></li>
+<li><p><strong>mask</strong> – list containing ints for start and end range of windows to be run</p></li>
 <li><p><strong>name</strong> – string, name of the current experiment we are running</p></li>
 <li><p><strong>niter</strong> – int, number of iterations per window #How many times we sample grad</p></li>
 <li><p><strong>equili_steps</strong> – int, number of 2fs steps for equilibration</p></li>
