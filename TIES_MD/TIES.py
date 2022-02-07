@@ -333,17 +333,29 @@ class TIES(object):
 
         print('Writing analysis config files...')
 
-        namd_only = '''#float for namd version used
-namd_version = {0}
-        '''.format(self.namd_version)
-
-        openmm_only = '''#(True or False) if true all replicas are combined into one long time series
-fep_combine_reps = False
-        '''
         vdw_a = ','.join(str(x) for x in self.lam.lambda_sterics_appear)
         ele_a = ','.join(str(x) for x in self.lam.lambda_electrostatics_appear)
         vdw_d = ','.join(str(x) for x in self.lam.lambda_sterics_disappear)
         ele_d = ','.join(str(x) for x in self.lam.lambda_electrostatics_disappear)
+
+        namd_only = '''#float for namd version used
+namd_version = {0}
+#comma separated list of floats for lambda schedule
+vdw_a = {1}
+ele_a = {2}
+vdw_d = {3}
+ele_d = {4}
+        '''.format(self.namd_version, vdw_a, ele_a, vdw_d, ele_d)
+
+        openmm_only = '''#(True or False) if true all replicas are combined into one long time series
+fep_combine_reps = False
+#comma separated list of floats for lambda schedule
+vdw_a = {0}
+ele_a = {1}
+vdw_d = {2}
+ele_d = {3}
+        '''.format(vdw_a, ele_a, vdw_d, ele_d)
+
 
         if self.engine == 'namd' and float(self.namd_version) < 3:
             eng = 'NAMD2'
@@ -358,7 +370,7 @@ temperature = {0}
 output_dir = ./analysis
 #Names of thermodynamic legs in simulation, corresponds to directory names in results.
 legs = {1}
-#Names of engines to make analysis for (NAMD2,NAMD3,OpenMM)
+#Names of engines to make analysis for (NAMD2, NAMD3, OpenMM)
 engines = {2}
 #Directory where input data can be found, dir structure of results is fixed as standard TIES structure.
 data_root = {3}
@@ -369,13 +381,9 @@ exp_data = ./exp.dat
 windows_mask = None
 #str (TI,FEP) what methods perform analysis with for this engine
 methods = {4}
-#comma separated list of floats for lambda schedule
-vdw_a = {5}
-ele_a = {6}
-vdw_d = {7}
-ele_d = {8}
-        '''.format(self.temperature.in_units_of(unit.kelvin)/unit.kelvin, 'EDIT ME', eng, './', ','.join(self.methods),
-                   vdw_a, ele_a, vdw_d, ele_d)
+#boolean to select if distributions of dG are calculated (not implemented)
+distributions = False
+        '''.format(self.temperature.in_units_of(unit.kelvin)/unit.kelvin, 'EDIT ME', eng, './', ','.join(self.methods))
 
         dummy_exp = '{\'SYSTEM NAME\': {\'LIGAND NAME\': [0.0, 0.0]}}'
 
