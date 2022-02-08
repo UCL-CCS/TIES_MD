@@ -278,8 +278,8 @@ class TIES(object):
         Function to run the simulations in parallel
 
         '''
-
-        TIES.build_results_dirs(self)
+        folders = ['equilibration', 'simulation', 'results']
+        TIES.build_results_dirs(self, folders)
 
         system = AlchSys(self.cwd, self.exp_name, self.temperature, self.pressure, self.constraint_file,
                          self.constraint_column, self.methods, self.basis_vectors, self.input_type, self.absolute,
