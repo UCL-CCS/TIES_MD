@@ -83,8 +83,7 @@ class AlchSys(object):
 
         elif input_type == 'GROMACS':
             # needs to be general
-            gmx_dir = '/usr/local/gromacs/share/gromacs/top'
-            # '/lustre/scafellpike/local/apps/intel/gromacs/2020.1/share/gromacs/top/'
+            gmx_dir = os.path.join(cwd, 'build')
             coord_file = os.path.join(cwd, 'build', name + '.gro')
             top_file = os.path.join(cwd, 'build', name + '.top')
             alch_file = os.path.join(cwd, 'build', name + '.pdb')

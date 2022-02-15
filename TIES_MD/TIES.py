@@ -178,6 +178,8 @@ class TIES(object):
         # deal with namd specific config file input
         if self.engine == 'namd':
             self.namd_version = float(self.version)
+            if self.input_type != 'AMBER':
+                raise ValueError('Only AMBER input supported in NAMD version of TIES MD')
         else:
             self.namd_version = None
 
