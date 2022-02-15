@@ -350,6 +350,7 @@ ele_d = {4}
         openmm_only = '''#(True or False) if true all replicas are combined into one long time series
 fep_combine_reps = False
 #comma separated list of floats for lambda schedule
+#comma separated list of floats for lambda schedule
 vdw_a = {0}
 ele_a = {1}
 vdw_d = {2}
@@ -381,8 +382,8 @@ exp_data = ./exp.dat
 windows_mask = None
 #str (TI,FEP) what methods perform analysis with for this engine
 methods = {4}
-#boolean to select if distributions of dG are calculated (not implemented)
-distributions = False
+#boolean to select if distributions of dG are calculated (0, 1)
+distributions = 0
         '''.format(self.temperature.in_units_of(unit.kelvin)/unit.kelvin, 'EDIT ME', eng, './', ','.join(self.methods))
 
         dummy_exp = '{\'SYSTEM NAME\': {\'LIGAND NAME\': [0.0, 0.0]}}'
