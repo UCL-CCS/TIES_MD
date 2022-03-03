@@ -638,7 +638,7 @@ conskcol  {}
         sim_file = 'sim1.conf'
         sim_namd_uninitialised = pkg_resources.open_text(namd, sim_file).read()
 
-        #set jeader for NAMD2 or 3
+        #set header for NAMD2 or 3
         if self.namd_version < 3:
             header = """#NAMD2
                                         """
