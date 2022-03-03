@@ -482,7 +482,6 @@ minimize 2000
 
         #populate and write main script
         min_file = 'min.conf'
-
         #write script for single replica
         if self.namd_version < 3:
             min_namd_uninitialised = pkg_resources.open_text(namd, min_file).read()
