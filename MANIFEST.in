@@ -1,2 +1,3 @@
 include TIES_MD/eng_scripts/*
 include TIES_MD/eng_scripts/namd/*
+include TIES_MD/eng_scripts/namd3/*
