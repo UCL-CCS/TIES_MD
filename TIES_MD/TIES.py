@@ -660,9 +660,9 @@ BerendsenPressureFreq                   2
         else:
             pressure = """langevinPiston          on             # Nose-Hoover Langevin piston pressure control
 langevinPistonTarget  {}               # target pressure in bar 1atm = 1.01325bar
-langevinPistonPeriod  50.0             # oscillation period in fs. correspond to pgamma T=50fs=0.05ps
+langevinPistonPeriod  200.0            # oscillation period in fs. correspond to pgamma T=50fs=0.05ps
 langevinPistonTemp    300              # f=1/T=20.0(pgamma)
-langevinPistonDecay   25.0             # oscillation decay time. smaller value corresponds to larger random
+langevinPistonDecay   100.0            # oscillation decay time. smaller value corresponds to larger random
                                        # forces and increased coupling to the Langevin temp bath.
                                        # Equal or smaller than piston period
                             """.format(pressure_val)
