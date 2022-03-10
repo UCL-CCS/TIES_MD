@@ -580,12 +580,12 @@ useFlexibleCell       no  ;# no for water box, yes for membrane
 useConstantArea       no  ;# no for water box, yes for membrane
 langevinPiston          on             # Nose-Hoover Langevin piston pressure control
 langevinPistonTarget  {}               # target pressure in bar 1atm = 1.01325bar
-langevinPistonPeriod  50.0             # oscillation period in fs. correspond to pgamma T=50fs=0.05ps
-langevinPistonTemp    300              # f=1/T=20.0(pgamma)
-langevinPistonDecay   25.0             # oscillation decay time. smaller value corresponds to larger random
+langevinPistonPeriod  200.0             # oscillation period in fs. correspond to pgamma T=50fs=0.05ps
+langevinPistonTemp    {}                # f=1/T=20.0(pgamma)
+langevinPistonDecay   100.0             # oscillation decay time. smaller value corresponds to larger random
                                        # forces and increased coupling to the Langevin temp bath.
                                        # Equal or smaller than piston period
-                        """.format(pressure_val)
+                        """.format(pressure_val, temp)
             #add constraints if needed
             if self.constraint_file is not None:
                 if self.constraint_column == 'occupancy':
@@ -662,11 +662,11 @@ BerendsenPressureFreq                   2
             pressure = """langevinPiston          on             # Nose-Hoover Langevin piston pressure control
 langevinPistonTarget  {}               # target pressure in bar 1atm = 1.01325bar
 langevinPistonPeriod  200.0            # oscillation period in fs. correspond to pgamma T=50fs=0.05ps
-langevinPistonTemp    300              # f=1/T=20.0(pgamma)
+langevinPistonTemp    {}              # f=1/T=20.0(pgamma)
 langevinPistonDecay   100.0            # oscillation decay time. smaller value corresponds to larger random
                                        # forces and increased coupling to the Langevin temp bath.
                                        # Equal or smaller than piston period
-                            """.format(pressure_val)
+                            """.format(pressure_val, temp)
 
         # read unpopulated eq file from disk
         namd_reps = True
