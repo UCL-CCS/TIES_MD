@@ -624,7 +624,7 @@ conskcol  {}
 
             if namd_reps:
                 #read and write eq replica to handle replica simulations
-                eq_namd_uninitialised = pkg_resources.open_text(namd_reps, 'eq-replicas.conf').read()
+                eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'eq-replicas.conf').read()
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
                                                                    prev=prev_output, current='eq{}'.format(i))
                 open(os.path.join('./replica-confs', 'eq{}-replicas.conf'.format(i)), 'w').write(eq_namd_initialised)
