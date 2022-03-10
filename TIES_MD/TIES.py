@@ -195,6 +195,7 @@ class TIES(object):
         self.node_id = node_id
         self.exp_name = exp_name
         self.periodic = periodic
+        self.namd_reps = True
 
         self.split_run = False
         #The user wants a total number of reps but they want to run many instances of TIES_MD each handeling 1 run
@@ -482,8 +483,7 @@ minimize 2000
 
         #populate and write main script
         min_file = 'min.conf'
-        namd_reps = True
-        if namd_reps:
+        if self.namd_reps:
             min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, min_file).read()
         else:
             min_namd_uninitialised = pkg_resources.open_text(namd_single_rep, min_file).read()
@@ -492,7 +492,7 @@ minimize 2000
                                                              ster_end=self.ster_edges[1], header=header, run=run)
         out_name = 'eq0.conf'
         open(os.path.join('./replica-confs', out_name), 'w').write(min_namd_initialised)
-        if namd_reps:
+        if self.namd_reps:
             # populate and write replica script which controls replica submissions
             min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'min-replicas.conf').read()
             min_namd_initialised = min_namd_uninitialised.format(reps=self.total_reps)
@@ -605,9 +605,8 @@ conskcol  {}
 
 
             # read unpopulated eq file from disk
-            namd_reps = True
             eq_file = 'eq.conf'
-            if namd_reps:
+            if self.namd_reps:
                 eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, eq_file).read()
             else:
                 eq_namd_uninitialised = pkg_resources.open_text(namd_single_rep, eq_file).read()
@@ -622,7 +621,7 @@ conskcol  {}
             out_name = "eq{}.conf".format(i)
             open(os.path.join('./replica-confs', out_name), 'w').write(eq_namd_initialised)
 
-            if namd_reps:
+            if self.namd_reps:
                 #read and write eq replica to handle replica simulations
                 eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'eq-replicas.conf').read()
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
@@ -669,9 +668,8 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
                             """.format(pressure_val, temp)
 
         # read unpopulated eq file from disk
-        namd_reps = True
         sim_file = 'sim1.conf'
-        if namd_reps:
+        if self.namd_reps:
             sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, sim_file).read()
         else:
             sim_namd_uninitialised = pkg_resources.open_text(namd_single_rep, sim_file).read()
@@ -682,7 +680,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         open(os.path.join('./replica-confs', out_name), 'w').write(sim_namd_initialised)
 
         # read and write sim replica to handle replica simulations, only if we want to use +replicas option
-        if namd_reps:
+        if self.namd_reps:
             sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sim1-replicas.conf').read()
             sim_namd_initialised = sim_namd_uninitialised.format(reps=self.total_reps)
             open(os.path.join('./replica-confs', 'sim1-replicas.conf'), 'w').write(sim_namd_initialised)
