@@ -36,7 +36,7 @@ import time
 from pathlib import Path
 
 import importlib.resources as pkg_resources
-from .eng_scripts import namd, namd3
+from .eng_scripts import namd_many_rep, namd_single_rep
 
 class TIES(object):
     '''
@@ -482,19 +482,19 @@ minimize 2000
 
         #populate and write main script
         min_file = 'min.conf'
-        #write script for single replica
-        if self.namd_version < 3:
-            min_namd_uninitialised = pkg_resources.open_text(namd, min_file).read()
+        namd_reps = True
+        if namd_reps:
+            min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, min_file).read()
         else:
-            min_namd_uninitialised = pkg_resources.open_text(namd3, min_file).read()
+            min_namd_uninitialised = pkg_resources.open_text(namd_single_rep, min_file).read()
         min_namd_initialised = min_namd_uninitialised.format(structure_name=self.exp_name, constraints=cons, **pbc_box,
                                                              temp=temp, ele_start=self.elec_edges[0],
                                                              ster_end=self.ster_edges[1], header=header, run=run)
         out_name = 'eq0.conf'
         open(os.path.join('./replica-confs', out_name), 'w').write(min_namd_initialised)
-        if self.namd_version < 3:
+        if namd_reps:
             # populate and write replica script which controls replica submissions
-            min_namd_uninitialised = pkg_resources.open_text(namd, 'min-replicas.conf').read()
+            min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'min-replicas.conf').read()
             min_namd_initialised = min_namd_uninitialised.format(reps=self.total_reps)
             out_name = 'eq0-replicas.conf'
             open(os.path.join('./replica-confs', out_name), 'w').write(min_namd_initialised)
@@ -605,11 +605,12 @@ conskcol  {}
 
 
             # read unpopulated eq file from disk
+            namd_reps = True
             eq_file = 'eq.conf'
-            if self.namd_version < 3:
-                eq_namd_uninitialised = pkg_resources.open_text(namd, eq_file).read()
+            if namd_reps:
+                eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, eq_file).read()
             else:
-                eq_namd_uninitialised = pkg_resources.open_text(namd3, eq_file).read()
+                eq_namd_uninitialised = pkg_resources.open_text(namd_single_rep, eq_file).read()
             prev_output = 'eq{}'.format(i - 1)
 
             #populate eq file
@@ -621,7 +622,7 @@ conskcol  {}
             out_name = "eq{}.conf".format(i)
             open(os.path.join('./replica-confs', out_name), 'w').write(eq_namd_initialised)
 
-            if self.namd_version < 3:
+            if namd_reps:
                 #read and write eq replica to handle replica simulations
                 eq_namd_uninitialised = pkg_resources.open_text(namd, 'eq-replicas.conf').read()
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
@@ -668,8 +669,9 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
                             """.format(pressure_val)
 
         # read unpopulated eq file from disk
+        namd_reps = True
         sim_file = 'sim1.conf'
-        if self.namd_version < 3:
+        if namd_reps:
             sim_namd_uninitialised = pkg_resources.open_text(namd, sim_file).read()
         else:
             sim_namd_uninitialised = pkg_resources.open_text(namd3, sim_file).read()
@@ -679,8 +681,8 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         out_name = "sim1.conf"
         open(os.path.join('./replica-confs', out_name), 'w').write(sim_namd_initialised)
 
-        # read and write sim replica to handle replica simulations, only for NAMD2
-        if self.namd_version < 3:
+        # read and write sim replica to handle replica simulations, only if we want to use +replicas option
+        if namd_reps:
             sim_namd_uninitialised = pkg_resources.open_text(namd, 'sim1-replicas.conf').read()
             sim_namd_initialised = sim_namd_uninitialised.format(reps=self.total_reps)
             open(os.path.join('./replica-confs', 'sim1-replicas.conf'), 'w').write(sim_namd_initialised)
