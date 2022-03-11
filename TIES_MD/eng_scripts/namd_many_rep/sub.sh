@@ -17,7 +17,7 @@ nodes_per_namd=1
 cpus_per_namd=128
 
 #change this line to point to your project
-ties_dir=/work/PROJECT/STUDY/SYSTEM/LIGAND/THERMODYNAMIC_LEG/
+ties_dir={root}
 
 for stage in {{0..2}}; do
 win_id=0

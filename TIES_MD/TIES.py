@@ -195,31 +195,30 @@ class TIES(object):
         self.node_id = node_id
         self.exp_name = exp_name
         self.periodic = periodic
-        self.namd_reps = True
 
         self.split_run = False
         #The user wants a total number of reps but they want to run many instances of TIES_MD each handeling 1 run
         if self.total_reps != self.reps_per_exec:
             self.split_run = True
-            if self.engine == 'namd':
-                print('NAMD only supports total_reps = reps_per_exec please set these values equal in TIES.cfg')
-                print('Will proceed with reps_per_exec = {}'.format(self.total_reps))
-                self.reps_per_exec = self.total_reps
-                self.split_run = False
-            else:
+            if not self.engine == 'namd':
                 if self.node_id is None:
                     raise ValueError('If total_reps != reps_per_exec then the command line option --node_id'
                                      ' must be set. Please set --node_id=X where X is an integer describing which replica '
                                      'this execution of TIES_MD should be running.')
-                if self.reps_per_exec != 1:
-                    raise ValueError('If you wish to run a subset of repeats per execution of TIES MD please only '
-                                     'use one replica per execution and set reps_per_exec=1 in TIES.cfg')
+            if self.reps_per_exec != 1:
+                raise ValueError('If you wish to run a subset of repeats per execution of TIES MD please only '
+                                 'use one replica per execution and set reps_per_exec=1 in TIES.cfg')
+            else:
                 if len(self.devices) > 1:
                     raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
                                      'have been specified on the command line. Please only specify 1 device.')
         if len(self.devices) != self.reps_per_exec:
             print('For best parallel performance you may wish to consider allocating the same number of GPUS as'
                   ' requested replicas. GPUS allocated = {}, replicas requested {}'.format(len(self.devices), self.reps_per_exec))
+
+        #in namd if there is only one replica there is no need to use +replicas option
+        if self.engine == 'namd' and self.total_reps == self.reps_per_exec == 1:
+            self.split_run = True
 
         #build schedual for lambdas
         if lam is None:
@@ -263,10 +262,7 @@ class TIES(object):
         :return: None
         '''
         # If output folders do not exist make them.
-        if self.split_run:
-            rep_dirs = [self.node_id]
-        else:
-            rep_dirs = range(self.total_reps)
+        rep_dirs = range(self.total_reps)
 
         for i in rep_dirs:
             for lam in range(self.windows):
@@ -351,7 +347,7 @@ ele_d = {4}
         '''.format(self.namd_version, vdw_a, ele_a, vdw_d, ele_d)
 
         openmm_only = '''#(True or False) if true all replicas are combined into one long time series
-fep_combine_reps = False
+fep_combine_reps = 0
 #comma separated list of floats for lambda schedule
 #comma separated list of floats for lambda schedule
 vdw_a = {0}
@@ -483,7 +479,7 @@ minimize 2000
 
         #populate and write main script
         min_file = 'min.conf'
-        if self.namd_reps:
+        if not self.split_run:
             min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, min_file).read()
         else:
             min_namd_uninitialised = pkg_resources.open_text(namd_single_rep, min_file).read()
@@ -493,7 +489,7 @@ minimize 2000
                                                              root=self.cwd)
         out_name = 'eq0.conf'
         open(os.path.join('./replica-confs', out_name), 'w').write(min_namd_initialised)
-        if self.namd_reps:
+        if not self.split_run:
             # populate and write replica script which controls replica submissions
             min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'min-replicas.conf').read()
             min_namd_initialised = min_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
@@ -607,7 +603,7 @@ conskcol  {}
 
             # read unpopulated eq file from disk
             eq_file = 'eq.conf'
-            if self.namd_reps:
+            if not self.split_run:
                 eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, eq_file).read()
             else:
                 eq_namd_uninitialised = pkg_resources.open_text(namd_single_rep, eq_file).read()
@@ -622,7 +618,7 @@ conskcol  {}
             out_name = "eq{}.conf".format(i)
             open(os.path.join('./replica-confs', out_name), 'w').write(eq_namd_initialised)
 
-            if self.namd_reps:
+            if not self.split_run:
                 #read and write eq replica to handle replica simulations
                 eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'eq-replicas.conf').read()
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
@@ -671,7 +667,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
 
         # read unpopulated eq file from disk
         sim_file = 'sim1.conf'
-        if self.namd_reps:
+        if not self.split_run:
             sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, sim_file).read()
         else:
             sim_namd_uninitialised = pkg_resources.open_text(namd_single_rep, sim_file).read()
@@ -682,7 +678,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         open(os.path.join('./replica-confs', out_name), 'w').write(sim_namd_initialised)
 
         # read and write sim replica to handle replica simulations, only if we want to use +replicas option
-        if self.namd_reps:
+        if not self.split_run:
             sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sim1-replicas.conf').read()
             sim_namd_initialised = sim_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
             open(os.path.join('./replica-confs', 'sim1-replicas.conf'), 'w').write(sim_namd_initialised)
@@ -695,9 +691,16 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         lambs = ' '.join(lambs)
 
         if self.namd_version < 3:
-            namd_uninitialised = pkg_resources.open_text(namd, 'sub.sh').read()
-            namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, nodes=len(self.global_lambdas))
-            open(os.path.join('./', 'sub.sh'), 'w').write(namd_initialised)
+            if not self.split_run:
+                namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sub.sh').read()
+                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps,
+                                                             nodes=len(self.global_lambdas), root=self.cwd)
+                open(os.path.join('./', 'sub.sh'), 'w').write(namd_initialised)
+            else:
+                namd_uninitialised = pkg_resources.open_text(namd_single_rep, 'sub.sh').read()
+                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps,
+                                                             nodes=len(self.global_lambdas)*self.total_reps, root=self.cwd)
+                open(os.path.join('./', 'sub.sh'), 'w').write(namd_initialised)
 
         else:
             print('No NAMD3 example script currently implemented. Examples for GPU scripts can be found here '
