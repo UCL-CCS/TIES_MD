@@ -31,7 +31,7 @@ class Test_TIES(unittest.TestCase):
         test_msg = '{} was not initialized correctly.'
 
         test_init = TIES(cwd='./', run_type='class', exp_name='sol', devices=[0], node_id='test',
-             windows_mask=[0,1,2], periodic=True, args_dict=args_dict, lam=None)
+             windows_mask=[0,2], periodic=True, lam=None, **args_dict)
 
         self.assertEqual(test_init.sampling_per_window, unit.Quantity(2, unit.picoseconds),
                          test_msg.format('Sampling per window'))
@@ -64,7 +64,7 @@ class Test_TIES(unittest.TestCase):
 
         self.assertEqual(test_init.absolute, False, test_msg.format('Absolute or relative option'))
         self.assertEqual(test_init.input_type, 'AMBER', test_msg.format('Input type'))
-        self.assertEqual(test_init.windows_mask, [0,1,2], test_msg.format('Windows mask'))
+        self.assertEqual(test_init.windows_mask, [0,2], test_msg.format('Windows mask'))
         self.assertEqual(test_init.devices, [0], test_msg.format('Number of GPUs'))
         self.assertEqual(test_init.exp_name, 'sol', test_msg.format('Experiment name'))
         self.assertEqual(test_init.periodic, True, test_msg.format('Spacial periodicity flag'))

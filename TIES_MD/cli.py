@@ -86,8 +86,7 @@ def main(argv=None):
         devices = devices.split(',')
         devices = [int(x) for x in devices]
     else:
-        devices = [0]
-        print(msg.format('devices', devices))
+        devices = None
 
     if args['--node_id']:
         if not_openmm:
@@ -116,7 +115,7 @@ def main(argv=None):
         periodic = True
         print(msg.format('spatial periodicity', periodic))
 
-    TIES(input_folder, run_type, exp_name, devices, node_id, mask, periodic, args_dict)
+    TIES(input_folder, exp_name, run_type, devices, node_id, mask, periodic, **args_dict)
 
 def read_config(config_file):
     '''

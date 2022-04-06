@@ -47,18 +47,17 @@ class TIES(object):
     :param exp_name: str, for the names of experiment i.e. complex -> complex.pdb/complex.prmtop
     :param devices: list, list of ints for which cuda devices to use
     :param node_id: str, id denoting what replica of this simulation this execution of TIES_MD should run
-    :param windows_mask: list of ints for ids for what windows to run
+    :param windows_mask: list containing ints for start and end range of windows to be run
     :param periodic: boolean determines if the simulation will be periodic
-    :param args_dict: dict, containing setting from config file
     :param lam: Lambda class, allow passing of custom lambda schedule
+    :param **kwargs: dict, containing setting from config file
 
     '''
-    def __init__(self, cwd, run_type, exp_name, devices, node_id, windows_mask, periodic, args_dict, lam=None):
+    def __init__(self, cwd, exp_name, run_type='class', devices=None, node_id=None, windows_mask=None, periodic=True, lam=None, **kwargs):
 
         nice_print('TIES')
-
         #check what engine we are using to test input args
-        engine = args_dict['engine'].lower()
+        engine = kwargs['engine'].lower()
 
         #check all the config file args we need are present
         args_list = ['engine', 'temperature', 'pressure', 'sampling_per_window', 'equili_per_window', 'methods',
@@ -81,18 +80,20 @@ class TIES(object):
 
         # check we have all required arguments
         for argument in args_list:
-            if argument not in args_dict:
+            if argument not in kwargs.keys():
                 raise ValueError('Missing option {} in configuration file'.format(argument))
 
         # check we have no unexpected arguments
-        for argument in args_dict.keys():
+        for argument in kwargs.keys():
             if argument not in args_list+optional_args:
                 raise ValueError('Argument {} not supported for this engine or at all.'
                                  ' Please remove from the TIES.cfg.'.format(argument))
 
+        self.all_args = args_list+optional_args
+
         #Iterate over our args_dict to set attributes of class to values in dict
         print('Running with arguments:')
-        for k, v in args_dict.items():
+        for k, v in kwargs.items():
             print('{} = {}'.format(k, v))
             setattr(self, k, v)
 
@@ -135,7 +136,7 @@ class TIES(object):
         if self.box_type == 'na':
             vecs = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3']
             for vec in vecs:
-                if vec not in args_dict.keys():
+                if vec not in kwargs.keys():
                     raise ValueError('If box type is unspecified as na in TIES.cfg the box vectors must be manually specified.'
                                      ' Please add options {} {} {} to TIES.cfg'.format(*vecs))
             self.cell_basis_vec1 = [float(x) for x in self.cell_basis_vec1.split(',')]
@@ -148,7 +149,7 @@ class TIES(object):
 
         else:
             print('Getting box vectors for {} box. Ignoring cell basis vectors in TIES.cfg.'.format(self.box_type))
-            if 'edge_length' not in args_dict.keys():
+            if 'edge_length' not in kwargs.keys():
                 raise ValueError('Must provide edge_length option in TIES.cfg to compute box vectors. If custom box vectors'
                                  ' are desired set box_type = na in TIES.cfg.')
             self.edge_length = self.edge_length.split('*unit.')
@@ -189,9 +190,12 @@ class TIES(object):
             self.windows_mask = [0, self.windows]
         else:
             self.windows_mask = windows_mask
+        if devices is None:
+            self.devices = [0]
+        else:
+            self.devices = devices
 
         self.cwd = cwd
-        self.devices = devices
         self.node_id = node_id
         self.exp_name = exp_name
         self.periodic = periodic
@@ -216,9 +220,48 @@ class TIES(object):
             print('For best parallel performance you may wish to consider allocating the same number of GPUS as'
                   ' requested replicas. GPUS allocated = {}, replicas requested {}'.format(len(self.devices), self.reps_per_exec))
 
+        self.sub_header = """#Example script fot ARCHER2
+#SBATCH --job-name=LIGPAIR
+#SBATCH --nodes=65
+#SBATCH --tasks-per-node=128
+#SBATCH --cpus-per-task=1
+#SBATCH --time=03:00:00
+#SBATCH --account=XXX
+#SBATCH --partition=standard
+#SBATCH --qos=standard
+
+module load namd/2.14-nosmp
+
+#--nodes and nodes_per_namd can be scaled up for large simulations
+nodes_per_namd=5
+cpus_per_namd=640
+                """
+
+        self.sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                            ' --hint=nomultithread namd2 +replicas 5 --tclmain eq$stage-replicas.conf $lambda $win_id&'
+
         #in namd if there is only one replica there is no need to use +replicas option
         if self.engine == 'namd' and self.total_reps == self.reps_per_exec == 1:
             self.split_run = True
+            self.sub_header = """#Example script fot ARCHER2
+#SBATCH --job-name=LIGPAIR
+#SBATCH --nodes=13
+#SBATCH --tasks-per-node=128
+#SBATCH --cpus-per-task=1
+#SBATCH --time=03:00:00
+#SBATCH --account=XXX
+#SBATCH --partition=standard
+#SBATCH --qos=standard
+
+module load namd/2.14-nosmp
+
+#--nodes and nodes_per_namd can be scaled up for large simulations
+nodes_per_namd=1
+cpus_per_namd=128
+                    """
+
+            self.sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                                ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $win_id $i&'
 
         #build schedual for lambdas
         if lam is None:
@@ -235,25 +278,17 @@ class TIES(object):
                                  ' be submitted via the HPC scheduler. Please see example submission scripts here:'
                                  ' https://UCL-CCS.github.io/TIES_MD/HPC_submissions.html')
             TIES.run(self)
-           
+
         elif run_type == 'setup':
-            if self.engine == 'namd':
-                folders = ['equilibration', 'simulation']
-                path = os.path.join(self.cwd, 'replica-confs')
-                Path(path).mkdir(parents=True, exist_ok=True)
-                self.write_namd_scripts()
-            else:
-                folders = ['equilibration', 'simulation', 'results']
-            TIES.build_results_dirs(self, folders)
+            TIES.setup(self)
+
         elif run_type == 'class':
             print('Experiments {} initialized from dir {}'.format(self.exp_name, self.cwd))
         else:
-            raise ValueError('Unknown run method selected from run/class')
-        
-        if run_type != 'class':
-            self.write_analysis_cfg()
+            raise ValueError('Unknown run method selected from run/setup/class')
 
-        nice_print('END')
+        if run_type != 'class':
+            nice_print('END')
 
     def build_results_dirs(self, folders):
         '''
@@ -271,6 +306,25 @@ class TIES(object):
                 for folder in folders:
                     path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(i), folder)
                     Path(path).mkdir(parents=True, exist_ok=True)
+
+    def get_options(self):
+        for arg in self.all_args:
+            print('{}: {}'.format(arg, self.__getattribute__(arg)))
+
+    def setup(self):
+        '''
+        Function to setup simulations and then stop
+
+        '''
+        if self.engine == 'namd':
+            folders = ['equilibration', 'simulation']
+            path = os.path.join(self.cwd, 'replica-confs')
+            Path(path).mkdir(parents=True, exist_ok=True)
+            self.write_namd_scripts()
+        else:
+            folders = ['equilibration', 'simulation', 'results']
+        TIES.build_results_dirs(self, folders)
+        self.write_analysis_cfg()
 
     def run(self):
         '''
@@ -488,13 +542,13 @@ minimize 2000
                                                              ster_end=self.ster_edges[1], header=header, run=run,
                                                              root=self.cwd)
         out_name = 'eq0.conf'
-        open(os.path.join('./replica-confs', out_name), 'w').write(min_namd_initialised)
+        open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
         if not self.split_run:
             # populate and write replica script which controls replica submissions
             min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'min-replicas.conf').read()
             min_namd_initialised = min_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
             out_name = 'eq0-replicas.conf'
-            open(os.path.join('./replica-confs', out_name), 'w').write(min_namd_initialised)
+            open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
 
     def write_namd_eq(self):
         '''
@@ -616,7 +670,7 @@ conskcol  {}
                                                                ele_start=self.elec_edges[0], ster_end=self.ster_edges[1],
                                                                header=header, res_freq=res_freq, root=self.cwd)
             out_name = "eq{}.conf".format(i)
-            open(os.path.join('./replica-confs', out_name), 'w').write(eq_namd_initialised)
+            open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(eq_namd_initialised)
 
             if not self.split_run:
                 #read and write eq replica to handle replica simulations
@@ -624,7 +678,7 @@ conskcol  {}
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
                                                                    prev=prev_output, current='eq{}'.format(i),
                                                                    root=self.cwd)
-                open(os.path.join('./replica-confs', 'eq{}-replicas.conf'.format(i)), 'w').write(eq_namd_initialised)
+                open(os.path.join(self.cwd, './replica-confs', 'eq{}-replicas.conf'.format(i)), 'w').write(eq_namd_initialised)
 
     def write_namd_prod(self):
         '''
@@ -675,13 +729,13 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
                                                              ele_start=self.elec_edges[0], ster_end=self.ster_edges[1],
                                                              header=header, steps=steps, root=self.cwd)
         out_name = "sim1.conf"
-        open(os.path.join('./replica-confs', out_name), 'w').write(sim_namd_initialised)
+        open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(sim_namd_initialised)
 
         # read and write sim replica to handle replica simulations, only if we want to use +replicas option
         if not self.split_run:
             sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sim1-replicas.conf').read()
             sim_namd_initialised = sim_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
-            open(os.path.join('./replica-confs', 'sim1-replicas.conf'), 'w').write(sim_namd_initialised)
+            open(os.path.join(self.cwd, './replica-confs', 'sim1-replicas.conf'), 'w').write(sim_namd_initialised)
 
     def write_namd_submissions(self):
         '''
@@ -693,14 +747,14 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         if self.namd_version < 3:
             if not self.split_run:
                 namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sub.sh').read()
-                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps,
-                                                             nodes=len(self.global_lambdas), root=self.cwd)
-                open(os.path.join('./', 'sub.sh'), 'w').write(namd_initialised)
+                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
+                                                             header=self.sub_header, root=self.cwd)
+                open(os.path.join(self.cwd, 'sub.sh'), 'w').write(namd_initialised)
             else:
                 namd_uninitialised = pkg_resources.open_text(namd_single_rep, 'sub.sh').read()
-                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps,
-                                                             nodes=len(self.global_lambdas)*self.total_reps, root=self.cwd)
-                open(os.path.join('./', 'sub.sh'), 'w').write(namd_initialised)
+                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
+                                                             header=self.sub_header, root=self.cwd)
+                open(os.path.join(self.cwd, 'sub.sh'), 'w').write(namd_initialised)
 
         else:
             print('No NAMD3 example script currently implemented. Examples for GPU scripts can be found here '
