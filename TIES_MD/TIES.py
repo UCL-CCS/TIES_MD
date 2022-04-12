@@ -278,6 +278,7 @@ cpus_per_namd=128
                                  ' be submitted via the HPC scheduler. Please see example submission scripts here:'
                                  ' https://UCL-CCS.github.io/TIES_MD/HPC_submissions.html')
             TIES.run(self)
+            TIES.write_analysis_cfg(self)
 
         elif run_type == 'setup':
             TIES.setup(self)
@@ -437,6 +438,8 @@ windows_mask = None
 methods = {4}
 #boolean to select if distributions of dG are calculated (0, 1)
 distributions = 0
+rep_convg = None
+sampling_convg = None
         '''.format(self.temperature.in_units_of(unit.kelvin)/unit.kelvin, 'EDIT ME', eng, './', ','.join(self.methods))
 
         dummy_exp = '{\'SYSTEM NAME\': {\'LIGAND NAME\': [0.0, 0.0]}}'
@@ -612,8 +615,8 @@ run {}
 
                 res_freq = int(steps/2)
 
-                # NAMD3 cant use Berendsen
-                if self.namd_version < 3:
+                # Older TIES protocol uses Berendsen
+                if self.namd_version < 2.14:
                     pressure = """
 useGroupPressure      yes ;# needed for 2fs steps
 useFlexibleCell       no  ;# no for water box, yes for membrane
