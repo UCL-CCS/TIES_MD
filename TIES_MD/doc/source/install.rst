@@ -30,11 +30,6 @@ These install instructions are all that is needed to run ``TIES MD`` with ``NAMD
 TIES OpenMM
 -----------
 
-
-.. note::
-    Crashes have been observed when using ``TIES_MD`` with ``OpenMM`` > ``7.4.2`` and < ``7.7.0`` Please make sure you are using
-    an up to date version of ``OpenMM`` >= ``7.7.0``
-
 To use the OpenMM protocol in ``TIES_MD`` a custom version of ``OpenMMTools`` is needed to perform the alchemical transformations
 of the system and allow for thermodynamic integration calculations. In order to install the custom version of ``OpenMMTools`` run::
 
