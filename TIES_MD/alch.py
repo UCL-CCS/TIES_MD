@@ -156,6 +156,8 @@ class AlchSys(object):
         intersect_bonds = AlchSys.get_intersect_bonds(self, system, appear_idxs, disappear_idxs)
         intersect_torsions = AlchSys.get_intersect_torsions(self, system, appear_idxs, disappear_idxs)
 
+        self.rebuild_torsion(system, intersect_torsions)
+
         # create and alchemical system using OpenMMTools
         factory = openmmtools.alchemy.AbsoluteAlchemicalFactory(alchemical_pme_treatment='exact')
 
@@ -165,7 +167,7 @@ class AlchSys(object):
 
         if not self.absolute:
             appear = openmmtools.alchemy.AlchemicalRegion(alchemical_atoms=appear_idxs, alchemical_bonds=intersect_bonds,
-                                                          alchemical_angles=intersect_angles, alchemical_torsions=intersect_torsions,
+                                                          alchemical_angles=intersect_angles,
                                                           name='appear', annihilate_electrostatics=True, annihilate_sterics=True,
                                                           softcore_alpha=0.5, softcore_a=1, softcore_b=1, softcore_c=6)
 
@@ -209,8 +211,7 @@ class AlchSys(object):
             print('Found bonds {} straddling alchemical regions these will be turned off'.format(intersect_bonds))
             self.NVT_compound_state.lambda_bonds_appear = 0.0
         if len(intersect_torsions) > 0:
-            print('Found torsion {} straddling alchemical regions these will be turned off'.format(intersect_torsions))
-            self.NVT_compound_state.lambda_torsions_appear = 0.0
+            print('Found torsion {} straddling alchemical regions these will be removed'.format(intersect_torsions))
 
         self.NPT_alchemical_system = copy.deepcopy(self.NVT_alchemical_system)
         self.NPT_compound_state = copy.deepcopy(self.NVT_compound_state)
@@ -322,6 +323,30 @@ class AlchSys(object):
                     if set((a, b, c, d)).intersection(appear_idxs) and set((a, b, c, d)).intersection(disappear_idxs):
                         intersect_tor.append(idx)
         return intersect_tor
+
+    def rebuild_torsion(self, system, intersect_torsions):
+        '''
+        Function to turn of torsions
+
+        :param system: OpenMM system
+        :param intersect_torsions: List of ints, ints references torsions that have alchemical indexes in them
+        :return:
+        '''
+        found_torsion = False
+        for force_index, force in enumerate(system.getForces()):
+            if isinstance(force, mm.PeriodicTorsionForce):
+                new_tor = mm.PeriodicTorsionForce()
+                if found_torsion:
+                    raise ValueError('Two torsions found unsure how to proceed')
+                found_torsion = True
+                for idx in range(force.getNumTorsions()):
+                    if idx in intersect_torsions:
+                        pass
+                    else:
+                        a, b, c, d, period, phase, k = force.getTorsionParameters(idx)
+                        new_tor.addTorsion(a, b, c, d, period, phase, k)
+                system.removeForce(force_index)
+                system.addForce(new_tor)
 
     def set_context_to_state(self, param_vals, context, NPT=True):
         '''
