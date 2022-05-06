@@ -15,7 +15,7 @@ starting with an install of ``Miniconda``::
 
 Ensure the ``Miniconda`` used matches the platform on which you are running, for example use ``Miniconda3-latest-Linux-ppc64le.sh``
 for ``Linux-ppc64le`` machines, and that ``$prefix`` is set to some directory with read write permissions. We provide ``Conda`` installs for
-``Python 3.7`` on ``Linux-64`` and ``Python 3.7`` on ``Linux-ppc64le``. If required you can change your python version in ``Conda``
+``Python 3.7/3.8/3.9`` on ``Linux-64`` and ``Python 3.7`` on ``Linux-ppc64le``. If required you can change your python version in ``Conda``
 using this command::
 
     conda install python=3.7.3
