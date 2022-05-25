@@ -67,7 +67,6 @@ class TIES(object):
         optional_args = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3', 'edge_length']
 
         openmm_args = []
-
         namd_args = ['version']
 
         if engine == 'namd':
