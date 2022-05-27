@@ -284,6 +284,7 @@ cpus_per_namd=128
 
         elif run_type == 'class':
             print('Experiments {} initialized from dir {}'.format(self.exp_name, self.cwd))
+            TIES.write_analysis_cfg(self)
         else:
             raise ValueError('Unknown run method selected from run/setup/class')
 
