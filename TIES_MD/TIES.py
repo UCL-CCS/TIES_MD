@@ -391,26 +391,6 @@ cpus_per_namd=128
         vdw_d = ','.join(str(x) for x in self.lam.lambda_sterics_disappear)
         ele_d = ','.join(str(x) for x in self.lam.lambda_electrostatics_disappear)
 
-        namd_only = '''#float for namd version used
-namd_version = {0}
-#comma separated list of floats for lambda schedule
-vdw_a = {1}
-ele_a = {2}
-vdw_d = {3}
-ele_d = {4}
-        '''.format(self.namd_version, vdw_a, ele_a, vdw_d, ele_d)
-
-        openmm_only = '''#(True or False) if true all replicas are combined into one long time series
-fep_combine_reps = 0
-#comma separated list of floats for lambda schedule
-#comma separated list of floats for lambda schedule
-vdw_a = {0}
-ele_a = {1}
-vdw_d = {2}
-ele_d = {3}
-        '''.format(vdw_a, ele_a, vdw_d, ele_d)
-
-
         if self.engine == 'namd' and float(self.namd_version) < 3:
             eng = 'NAMD2'
         if self.engine == 'namd' and float(self.namd_version) >= 3:
@@ -439,22 +419,16 @@ methods = {4}
 distributions = 0
 rep_convg = None
 sampling_convg = None
-        '''.format(self.temperature.in_units_of(unit.kelvin)/unit.kelvin, 'EDIT ME', eng, './', ','.join(self.methods))
+namd_version = {5}
+#comma separated list of floats for lambda schedule
+vdw_a = {6}
+ele_a = {7}
+vdw_d = {8}
+ele_d = {9}
+        '''.format(self.temperature.in_units_of(unit.kelvin)/unit.kelvin, 'EDIT ME', eng, './', ','.join(self.methods),
+                   self.namd_version, vdw_a, ele_a, vdw_d, ele_d)
 
         dummy_exp = '{\'SYSTEM NAME\': {\'LIGAND NAME\': [0.0, 0.0]}}'
-
-        #write files
-        if self.engine == 'namd':
-            file_path = os.path.join(self.cwd, '../../../namd.cfg')
-            if not os.path.exists(file_path):
-                with open(file_path, 'w') as f:
-                    f.write(namd_only)
-
-        if self.engine == 'openmm':
-            file_path = os.path.join(self.cwd, '../../../openmm.cfg')
-            if not os.path.exists(file_path):
-                with open(file_path, 'w') as f:
-                    f.write(openmm_only)
 
         file_path = os.path.join(self.cwd, '../../../analysis.cfg')
         if not os.path.exists(file_path):
