@@ -32,6 +32,9 @@ import glob
 import time
 from sys import stdout
 
+from .openmmtools.alchemy import ModifiedAbsoluteAlchemicalFactory
+
+
 class AlchSys(object):
     '''
     Class containing one leg of binding free energy calculation
@@ -159,7 +162,7 @@ class AlchSys(object):
         self.rebuild_torsion(system, intersect_torsions)
 
         # create and alchemical system using OpenMMTools
-        factory = openmmtools.alchemy.AbsoluteAlchemicalFactory(alchemical_pme_treatment='exact')
+        factory = ModifiedAbsoluteAlchemicalFactory(alchemical_pme_treatment='exact')
 
         disappear = openmmtools.alchemy.AlchemicalRegion(alchemical_atoms=disappear_idxs, name='disappear',
                                                          annihilate_electrostatics=True, annihilate_sterics=True,

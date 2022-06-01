@@ -26,6 +26,8 @@ requirements:
     - openmm
     - cython
     - ties_ana
+    - openmmtools
+    - mpiplus
 
 about:
   home: https://github.com/UCL-CCS/TIES_MD
