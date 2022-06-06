@@ -11,7 +11,8 @@ build:
 
 requirements:
   build:
-    - python {{ python }}
+    - python {{ python }} # [not ppc64le]
+    - python 3.7.3 # [ppc64le]
     - setuptools
   run:
     - python
@@ -26,6 +27,8 @@ requirements:
     - openmm
     - cython
     - ties_ana
+    - mpiplus
+    - openmmtools # [not ppc64le]
 
 about:
   home: https://github.com/UCL-CCS/TIES_MD

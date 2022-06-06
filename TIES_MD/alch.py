@@ -17,11 +17,14 @@ __copyright__ = """
 """
 
 __license__ = "LGPL"
-
-import simtk.openmm as mm
-from simtk.openmm import app
-from simtk import unit
-from simtk.openmm import Vec3
+try:
+    import openmm as mm
+    from openmm import unit, app, Vec3
+except ImportError:  # OpenMM < 7.6
+    import simtk.openmm as mm
+    from simtk.openmm import app
+    from simtk import unit
+    from simtk.openmm import Vec3
 
 import numpy as np
 import openmmtools
@@ -31,6 +34,9 @@ import copy
 import glob
 import time
 from sys import stdout
+
+from .openmmtools.alchemy import ModifiedAbsoluteAlchemicalFactory, ModifiedAlchemicalState
+
 
 class AlchSys(object):
     '''
@@ -159,7 +165,7 @@ class AlchSys(object):
         self.rebuild_torsion(system, intersect_torsions)
 
         # create and alchemical system using OpenMMTools
-        factory = openmmtools.alchemy.AbsoluteAlchemicalFactory(alchemical_pme_treatment='exact')
+        factory = ModifiedAbsoluteAlchemicalFactory(alchemical_pme_treatment='exact')
 
         disappear = openmmtools.alchemy.AlchemicalRegion(alchemical_atoms=disappear_idxs, name='disappear',
                                                          annihilate_electrostatics=True, annihilate_sterics=True,
@@ -189,11 +195,11 @@ class AlchSys(object):
                         force.addEnergyParameterDerivative(param_name)
                         continue
 
-        alchemical_state_d = openmmtools.alchemy.AlchemicalState.from_system(self.NVT_alchemical_system,
+        alchemical_state_d = ModifiedAlchemicalState.from_system(self.NVT_alchemical_system,
                                                                              parameters_name_suffix='disappear')
 
         if not self.absolute:
-            alchemical_state_a = openmmtools.alchemy.AlchemicalState.from_system(self.NVT_alchemical_system,
+            alchemical_state_a = ModifiedAlchemicalState.from_system(self.NVT_alchemical_system,
                                                                              parameters_name_suffix='appear')
             composable_states = [alchemical_state_d, alchemical_state_a]
         else:
