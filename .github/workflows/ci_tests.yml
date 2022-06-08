@@ -39,5 +39,5 @@ jobs:
       - name: Test code
         shell: bash -l {0}
         run: |
-          cd ties_analysis/tests/
+          cd TIES_MD/tests/
           nosetests ./
