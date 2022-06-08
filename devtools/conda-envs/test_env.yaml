@@ -1,0 +1,15 @@
+name: test_ci
+channels:
+  - conda-forge
+  - adw62
+  - omnia
+  - defaults
+dependencies:
+  - docopt
+  - multiprocess
+  - numpy
+  - openmm
+  - pymbar
+  - scipy
+  - ties_ana
+  - openmmtools 

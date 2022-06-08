@@ -1,16 +1,24 @@
 #!/usr/bin/env python
-
+import copy
 import unittest
 import os
 from TIES_MD.alch import *
 from TIES_MD.lambdas import *
-from simtk import unit
 from TIES_MD.cli import read_config
-from simtk.openmm import Vec3
 import numpy as np
 import shutil
-
 from pathlib import Path
+
+try:
+    import openmm as mm
+    from openmm import unit, app, Vec3
+except ImportError:  # OpenMM < 7.6
+    import simtk.openmm as mm
+    from simtk.openmm import app
+    from simtk import unit
+    from simtk.openmm import Vec3
+
+GLOBAL_PALT = 'CPU'
 
 class Test_Alch(unittest.TestCase):
 
@@ -68,22 +76,7 @@ class Test_Alch(unittest.TestCase):
                   {'lambda_sterics_appear': 1, 'lambda_sterics_disappear': 0,
                    'lambda_electrostatics_appear': 1, 'lambda_electrostatics_disappear': 0}]
 
-        #Define know answers for each state, Calculated by hand from potentials
-        known_vals = [{'lambda_sterics_appear': 0.263063638747951, 'lambda_sterics_disappear': 128.235461379091,
-                       'lambda_electrostatics_appear': -30.9655122414654,
-                       'lambda_electrostatics_disappear': -33.747881887578},
-                      {'lambda_sterics_appear': 3.28224430120372, 'lambda_sterics_disappear': 128.2354613791,
-                       'lambda_electrostatics_appear': -23.0239847106883,
-                       'lambda_electrostatics_disappear': -24.4543486626991},
-                      {'lambda_sterics_appear': 128.2354613791, 'lambda_sterics_disappear': 3.28224430120372,
-                       'lambda_electrostatics_appear': -24.4240407261387,
-                       'lambda_electrostatics_disappear': -23.0550629605553},
-                      {'lambda_sterics_appear': 128.235461379091, 'lambda_sterics_disappear': 0.263063638747951,
-                       'lambda_electrostatics_appear': -33.7765869123174,
-                       'lambda_electrostatics_disappear': -31.0424648368013}]
-
         for cwd, exp_name, config in zip(test_dirs, test_names, config_files):
-
 
             #read arguments
             args_dict = read_config(os.path.join(cwd, config))
@@ -104,12 +97,12 @@ class Test_Alch(unittest.TestCase):
                          Vec3(*cell_basis_vec3) * unit.angstrom]
 
             system = AlchSys(cwd, exp_name, temp, pressure, None, args_dict['constraint_column'], args_dict['methods'],
-                             basis_vec, input_type='AMBER', absolute=False, periodic=True)
+                             basis_vec, input_type='AMBER', absolute=False, periodic=True, platform=GLOBAL_PALT)
             NPT = system.build_simulation(system.NPT_alchemical_system, '0')
             NPT['sim'].context.setPositions(system.positions_file.positions)
 
-            #Iterate over states and check the gradients are what we would expect and or agree with analytic calculations.
-            for i, (param_vals_i, t_vals) in enumerate(zip(states, known_vals)):
+            #Iterate over states and check the gradients agree with analytic calculations.
+            for i, param_vals_i in enumerate(states):
                 system.set_context_to_state(param_vals_i, NPT['sim'].context, NPT=True)
 
                 num_g = {param: system.get_gradients(param, val, NPT['sim'].context, 0.0001).in_units_of(
@@ -126,10 +119,6 @@ class Test_Alch(unittest.TestCase):
                 self.assertEqual(round(num_g['lambda_sterics_disappear'], 0), round(ana_g['lambda_sterics_disappear'], 0),
                                  'Numerical and analyitic sterics do not agree for sys {}'.format(cwd))
 
-                #now compare to known values
-                for k in param_vals_i.keys():
-                    self.assertEqual(round(num_g[k], 6), round(t_vals[k], 6),
-                                     '{} not being calculated correctly in state {}'.format(k, param_vals_i))
 
     def test_alch_system(self):
         # define systems to test
@@ -140,6 +129,9 @@ class Test_Alch(unittest.TestCase):
 
         config_files = ['TIES.cfg'
                         ]
+        #outer list for systems inner lists for [appearing, disappearing]
+        alchemical_atoms = [[[32, 33, 34, 35, 36], [2, 3, 4, 5]]
+                            ]
 
         # define states to test
         states = [{'lambda_sterics_appear': 1, 'lambda_sterics_disappear': 1,
@@ -151,14 +143,7 @@ class Test_Alch(unittest.TestCase):
               {'lambda_sterics_appear': 0, 'lambda_sterics_disappear': 0,
                'lambda_electrostatics_appear': 0, 'lambda_electrostatics_disappear': 0}]
 
-        # Define know answers for each state, Calculated by hand from potentials
-        known_vals = [-21694.272802303,
-                      -21634.3811864154,
-                      -21734.2116982551,
-                      -21674.4343829331]
-
-        for cwd, exp_name, config in zip(test_dirs, test_names, config_files):
-
+        for cwd, exp_name, config, atoms in zip(test_dirs, test_names, config_files, alchemical_atoms):
             #read arguments
             args_dict = read_config(os.path.join(cwd, config))
 
@@ -177,17 +162,59 @@ class Test_Alch(unittest.TestCase):
                          Vec3(*cell_basis_vec2) * unit.angstrom,
                          Vec3(*cell_basis_vec3) * unit.angstrom]
 
-            system = AlchSys(cwd, exp_name, temp, pressure, None, args_dict['constraint_column'], args_dict['methods'],
-                             basis_vec, input_type='AMBER', absolute=False, periodic=True)
-            NPT = system.build_simulation(system.NPT_alchemical_system, '0')
-            NPT['sim'].context.setPositions(system.positions_file.positions)
+            ties_system = AlchSys(cwd, exp_name, temp, pressure, None, args_dict['constraint_column'], args_dict['methods'],
+                             basis_vec, input_type='AMBER', absolute=False, periodic=True, platform=GLOBAL_PALT, debug=True)
+            NPT = ties_system.build_simulation(ties_system.NPT_alchemical_system, '0')
+            NPT['sim'].context.setPositions(ties_system .positions_file.positions)
+
+            #create normal openmm system
+            coord_file = os.path.join(cwd, 'build', exp_name + '.pdb')
+            top_file = os.path.join(cwd, 'build', exp_name + '.prmtop')
+            positions_file = mm.app.pdbfile.PDBFile(coord_file)
+            topology_file = mm.app.AmberPrmtopFile(top_file)
+            nonbondedMethod = app.PME
+            openmm_system = topology_file.createSystem(nonbondedMethod=nonbondedMethod,
+                                                 nonbondedCutoff=1.2 * unit.nanometers,
+                                                 constraints=app.HBonds, rigidWater=True,
+                                                 ewaldErrorTolerance=0.00001)
+            openmm_system.setDefaultPeriodicBoxVectors(*basis_vec)
+            openmm_system.addForce(mm.MonteCarloBarostat(pressure, temp, 25))
+            null_cross_region_interactions(openmm_system, atoms[0], atoms[1])
+            reduce_to_nonbonded(openmm_system)
+
+            # grab nonbonded force from system
+            for force_index, force in enumerate(openmm_system.getForces()):
+                if isinstance(force, mm.NonbondedForce):
+                    nonbonded_force = force
+
+            # add switching function to nonbonded
+            nonbonded_force.setSwitchingDistance(1.0 * unit.nanometers)
+            nonbonded_force.setUseSwitchingFunction(True)
+            nonbonded_force.setUseDispersionCorrection(False)
 
             #Iterate over states and check the energies are what we would expect
-            for i, (param_vals_i, t_vals) in enumerate(zip(states, known_vals)):
-                system.set_context_to_state(param_vals_i, NPT['sim'].context, NPT=True)
-                energy  = NPT['sim'].context.getState(getEnergy=True).getPotentialEnergy().in_units_of(
+            for i, param_vals_i in enumerate(states):
+                #use TIES
+                ties_system.set_context_to_state(param_vals_i, NPT['sim'].context, NPT=True)
+                energy_1 = NPT['sim'].context.getState(getEnergy=True).getPotentialEnergy().in_units_of(
                     unit.kilocalorie_per_mole)/unit.kilocalorie_per_mole
-                self.assertEqual(round(energy, 2), round(t_vals, 2),
+
+                #use OpenMM
+                test_sys = copy.deepcopy(openmm_system)
+                turn_off_interactions(param_vals_i, test_sys, atoms[0], atoms[1])
+                friction = 0.3 / unit.picosecond
+                time_step = 2.0 * unit.femtosecond
+                integrator = mm.LangevinIntegrator(temp, friction, time_step)
+                integrator.setConstraintTolerance(0.00001)
+                platform = mm.Platform.getPlatformByName(GLOBAL_PALT)
+                properties = {}
+                sim = app.Simulation(topology_file.topology, test_sys, integrator, platform, properties)
+                sim.context.setPositions(positions_file.positions)
+                energy_2 = sim.context.getState(getEnergy=True).getPotentialEnergy().in_units_of(
+                    unit.kilocalorie_per_mole) / unit.kilocalorie_per_mole
+
+                #check equal
+                self.assertEqual(round(energy_1, 3), round(energy_2, 3),
                                  'energy not being calculated correctly in state {}'.format(param_vals_i))
 
 
@@ -220,7 +247,7 @@ class Test_Alch(unittest.TestCase):
                          Vec3(*cell_basis_vec3) * unit.angstrom]
 
             system = AlchSys(cwd, exp_name, temp, pressure, None, args_dict['constraint_column'], args_dict['methods'],
-                             basis_vec, input_type='AMBER', absolute=False, periodic=True)
+                             basis_vec, input_type='AMBER', absolute=False, periodic=True, platform=GLOBAL_PALT)
 
             node_id = 0
             ids= System_ID(device_id='0', node_id=node_id)
@@ -254,6 +281,73 @@ class Test_Alch(unittest.TestCase):
             for l in ['0', '1']:
                 path = os.path.join(cwd, 'LAMBDA_{}'.format(l))
                 shutil.rmtree(path)
+
+
+def reduce_to_nonbonded(system):
+    to_remove = []
+    for force_index, force in enumerate(system.getForces()):
+        if isinstance(force, mm.NonbondedForce):
+            pass
+        elif isinstance(force, mm.MonteCarloBarostat):
+            pass
+        else:
+            to_remove.append(force_index)
+    to_remove.sort()
+    to_remove.reverse()
+    for force_index in to_remove:
+        system.removeForce(force_index)
+
+def null_cross_region_interactions(system, appearing, disappearing):
+    for force_index, force in enumerate(system.getForces()):
+        if isinstance(force, mm.NonbondedForce):
+            for atom1 in appearing:
+                for atom2 in disappearing:
+                    force.addException(atom1, atom2, 0.0, 1.0, 0.0, True)
+
+def turn_off_interactions(state, system, appearing, disappearing):
+    for force_index, force in enumerate(system.getForces()):
+        if isinstance(force, mm.NonbondedForce):
+            if state['lambda_sterics_appear'] == 0:
+                for idx in range(force.getNumParticles()):
+                    if idx in appearing:
+                        q, sig, eps = force.getParticleParameters(idx)
+                        force.setParticleParameters(idx, q, 1, 0)
+                for idx in range(force.getNumExceptions()):
+                    a, b, q, sig, eps = force.getExceptionParameters(idx)
+                    if set((a, b)).intersection(appearing):
+                        force.setExceptionParameters(idx, a, b, q, 1, 0)
+
+            if state['lambda_sterics_disappear'] == 0:
+                for idx in range(force.getNumParticles()):
+                    if idx in disappearing:
+                        q, sig, eps = force.getParticleParameters(idx)
+                        force.setParticleParameters(idx, q, 1, 0)
+                for idx in range(force.getNumExceptions()):
+                    a, b, q, sig, eps = force.getExceptionParameters(idx)
+                    if set((a, b)).intersection(disappearing):
+                        force.setExceptionParameters(idx, a, b, q, 1, 0)
+
+            if state['lambda_electrostatics_appear'] == 0:
+                for idx in range(force.getNumParticles()):
+                    if idx in appearing:
+                        q, sig, eps = force.getParticleParameters(idx)
+                        force.setParticleParameters(idx, 0, sig, eps)
+                for idx in range(force.getNumExceptions()):
+                    a, b, q, sig, eps = force.getExceptionParameters(idx)
+                    if set((a, b)).intersection(appearing):
+                        force.setExceptionParameters(idx, a, b, 0, sig, eps)
+
+            if state['lambda_electrostatics_disappear'] == 0:
+                for idx in range(force.getNumParticles()):
+                    if idx in disappearing:
+                        q, sig, eps = force.getParticleParameters(idx)
+                        force.setParticleParameters(idx, 0, sig, eps)
+                for idx in range(force.getNumExceptions()):
+                    a, b, q, sig, eps = force.getExceptionParameters(idx)
+                    if set((a, b)).intersection(disappearing):
+                        force.setExceptionParameters(idx, a, b, 0, sig, eps)
+
+
 
 if __name__ == '__main__':
 

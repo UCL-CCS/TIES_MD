@@ -52,14 +52,16 @@ class AlchSys(object):
     :param basis_vectors: list of list containing explicit cell vectors
     :param absolute: boolean determines if we are doing an absolute calculation
     :param periodic: boolean determines if we are doing PME or CutoffNonPeriodic
+    :param platform: sting determines what platform OpenMM will target allowed values are ['CPU', 'CUDA', 'OpenCL']
 
     Note: GROMACS input and Absolute calculations are currently not tested.
 
     '''
     def __init__(self, cwd, name, temperature, pressure, constraint_file, constraint_column, methods,
-                 basis_vectors, input_type='AMBER', absolute=False, periodic=True):
+                 basis_vectors, input_type='AMBER', absolute=False, periodic=True, platform='CUDA', debug=False):
 
         self.absolute = absolute
+        self.platform = platform
         self.temp = temperature
         self.pressure = pressure
 
@@ -149,13 +151,8 @@ class AlchSys(object):
         for axis in self.PBV:
             print(axis)
 
-        debug = False
         if debug:
-            #can force box size here if needed
-            #box_vectors = 4.5 * np.identity(3) * unit.nanometer
-            #system.setDefaultPeriodicBoxVectors(*box_vectors)
-            # Turn off requested forces for debug
-            force_idxs = AlchSys.debug_force(self, system, ['tor', 'bond', 'angle'])
+            AlchSys.debug_force(self, system)
 
         # find angles, bonds and torsions which straddle alchemical regions, so we can turn them off later
         intersect_angles = AlchSys.get_intersect_angles(self, system, appear_idxs, disappear_idxs)
@@ -437,61 +434,33 @@ class AlchSys(object):
         integrator = mm.LangevinIntegrator(self.temp, self.friction, self.time_step)
         integrator.setConstraintTolerance(0.00001)
 
-        platform = mm.Platform.getPlatformByName('CUDA')
-        properties = {'CudaPrecision': 'mixed', 'CudaDeviceIndex': device_id}
+        platform = mm.Platform.getPlatformByName(self.platform)
+        if self.platform == 'CUDA':
+            properties = {'CudaPrecision': 'mixed', 'CudaDeviceIndex': device_id}
+        elif self.platform == 'OpenCL':
+            properties = {'OpenCLPrecision': 'mixed', 'OpenCLDeviceIndex': device_id}
+        elif self.platform == 'CPU':
+            properties = {}
+        else:
+            raise ValueError('Unknown platform {} in ties. Please select from CPU/CUDA/OpenCL'.format(self.platform))
 
         sim = app.Simulation(self.topology_file.topology, system, integrator, platform, properties)
 
         return {'sim': sim, 'integrate': integrator}
 
-    def debug_force(self, system, force_to_compute=None):
-        '''
-        Function can be used in debugging to turn forces on and off.
-
-        :param system: OpenMM system object
-        :param force_to_compute: list of forces to not turn off in the system
-        :return: list of indexs for system forces
-        '''
-        q_sum = 0.0
-        if force_to_compute is None:
-            force_to_compute = ['nonb_excep', 'nonbonded', 'tor', 'bond', 'angle']
-        #Turn off forces
-        idxs = []
+    def debug_force(self, system):
+        to_remove = []
         for force_index, force in enumerate(system.getForces()):
-            idxs.append(force_index)
-            if isinstance(force, mm.HarmonicAngleForce):
-                if 'angle' not in force_to_compute:
-                    for idx in range(force.getNumAngles()):
-                        a, b, c, theta, k = force.getAngleParameters(idx)
-                        print('Removed angle {} on atoms {} {} {}'.format(idx, a, b, c))
-                        force.setAngleParameters(idx, a, b, c, theta, 0.0)
-            if isinstance(force, mm.PeriodicTorsionForce):
-                #system.removeForce(force_index)
-                if 'tor' not in force_to_compute:
-                    for idx in range(force.getNumTorsions()):
-                        a, b, c, d, period, phase, k = force.getTorsionParameters(idx)
-                        print('Removed Torsion {} on atoms {} {} {} {}'.format(idx, a, b, c, d))
-                        force.setTorsionParameters(idx, a, b, c, d, period, phase, 0.0)
-            if isinstance(force, mm.HarmonicBondForce):
-                if 'bond' not in force_to_compute:
-                    for idx in range(force.getNumBonds()):
-                        a, b, r0, k = force.getBondParameters(idx)
-                        print('Removed Bond {} on atoms {} {}'.format(idx, a, b))
-                        force.setBondParameters(idx, a, b, r0, 0.0)
             if isinstance(force, mm.NonbondedForce):
-                if 'nonbonded' not in force_to_compute:
-                    for idx in range(force.getNumParticles()):
-                        q, sig, eps = force.getParticleParameters(idx)
-                        print('Removed atom {}'.format(idx))
-                        force.setParticleParameters(idx, 0, 1, 0)
-                        q_sum += q/unit.elementary_charge
-                if 'nonb_excep' not in force_to_compute:
-                    for idx in range(force.getNumExceptions()):
-                        a, b, q, sig, eps = force.getExceptionParameters(idx)
-                        print('Removed atom {}'.format(idx))
-                        force.setExceptionParameters(idx, a, b, q, sig, eps)
-            #print(q_sum)
-        return idxs
+                pass
+            elif isinstance(force, mm.MonteCarloBarostat):
+                pass
+            else:
+                to_remove.append(force_index)
+        to_remove.sort()
+        to_remove.reverse()
+        for force_index in to_remove:
+            system.removeForce(force_index)
 
     def add_consraints(self):
         '''

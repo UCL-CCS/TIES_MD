@@ -50,10 +50,12 @@ class TIES(object):
     :param windows_mask: list containing ints for start and end range of windows to be run
     :param periodic: boolean determines if the simulation will be periodic
     :param lam: Lambda class, allow passing of custom lambda schedule
+    :param platform: sting determines what platform OpenMM will target allowed values are ['CPU', 'CUDA', 'OpenCL']
     :param **kwargs: dict, containing setting from config file
 
     '''
-    def __init__(self, cwd, exp_name, run_type='class', devices=None, node_id=None, windows_mask=None, periodic=True, lam=None, **kwargs):
+    def __init__(self, cwd, exp_name, run_type='class', devices=None, node_id=None, windows_mask=None, periodic=True,
+                 lam=None, platform='CUDA', **kwargs):
 
         nice_print('TIES')
         #check what engine we are using to test input args
@@ -193,6 +195,7 @@ class TIES(object):
             self.devices = [0]
         else:
             self.devices = devices
+        self.platform = platform
 
         self.cwd = cwd
         self.node_id = node_id
@@ -337,7 +340,7 @@ cpus_per_namd=128
 
         system = AlchSys(self.cwd, self.exp_name, self.temperature, self.pressure, self.constraint_file,
                          self.constraint_column, self.methods, self.basis_vectors, self.input_type, self.absolute,
-                         self.periodic)
+                         self.periodic, self.platform)
 
         if self.split_run:
             system_ids = [System_ID(self.devices[0], self.node_id)]

@@ -4,7 +4,7 @@ package:
   license: 'LGPL'
 
 source:
-  path: ../
+  path: ../..
 
 build:
   number: 0
@@ -18,8 +18,8 @@ requirements:
     - python
     - numpy
     - scipy
-    - netcdf4 
-    - libnetcdf 
+    - netcdf4
+    - libnetcdf
     - pyyaml
     - numba
     - docopt

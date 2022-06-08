@@ -1,76 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Tutorial &mdash; TIES_MD 0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="HPC Submission scripts" href="HPC_submissions.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #D7ECD9" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> TIES_MD
-          
-
-          
-            
             <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -78,18 +38,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
@@ -110,81 +59,40 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">TIES_MD</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #D7ECD9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">TIES_MD</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Tutorial</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="getting-started">
-<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+             
+  <section id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
+<section id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a package which is intended to be used on the command line and submitted to a HPC system. In this document
 we will outline what commands should be run to calculate binding free energies. To start with any free energy calculations
 we must first outline what are the expected input files to the <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> program.</p>
-</div>
-<div class="section" id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> expects a number of input files, these are two essential files files, e.g. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> and <code class="docutils literal notranslate"><span class="pre">complex.prmtop</span></code>.
 These files contain information about the position, topology and parameters for the system. Currently we only support
 the <code class="docutils literal notranslate"><span class="pre">AMBER</span></code> based format <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> but provide a utility to <a class="reference external" href="https://ccs-ties.org/ties/">build</a> them online. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> also
@@ -268,9 +176,9 @@ or occupancy column of the constraints PDB. The alchemical indexes are always be
 in the main PDB <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code>. The <code class="docutils literal notranslate"><span class="pre">edge_length</span></code> option can be found in the <code class="docutils literal notranslate"><span class="pre">leap.log</span></code> file created during system
 preparation preformed by the users or TIES20. If TIES20 is used for system preparation the <code class="docutils literal notranslate"><span class="pre">leap.log</span></code> file will be found
 in the <code class="docutils literal notranslate"><span class="pre">build</span></code> directory and the edge length will appear in the file as for example <code class="docutils literal notranslate"><span class="pre">edge:</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">64.00</span></code> in units of angstroms.</p>
-</div>
-<div class="section" id="command-line">
-<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="command-line">
+<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this heading"></a></h2>
 <p>With all input present in the build directory and <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> installed we are almost ready to calculate binding
 free energies. <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> can be invoked on the command line by just running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> and this will use all default
 settings and the settings found in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>. The setting which can be taken on the command line and their default
@@ -305,9 +213,9 @@ run. By default all windows will be run.
 A value of 1 sets the simulation box as periodic a value of 0 sets the simulation box as non-periodic.
 </pre></div>
 </div>
-</div>
-<div class="section" id="simulation-preparation">
-<h2>Simulation Preparation<a class="headerlink" href="#simulation-preparation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="simulation-preparation">
+<h2>Simulation Preparation<a class="headerlink" href="#simulation-preparation" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> is run in two stages first using the option <code class="docutils literal notranslate"><span class="pre">--run_type=setup</span></code> this prepares output directories and MD engine
 input scripts, this stage is not compute intensive and can be run on a PC or HPC head node. The setup stage can but does
 not have to be run of you are using <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> and directories are built when using <code class="docutils literal notranslate"><span class="pre">--run_type=run</span></code> also. Output directories are prepared
@@ -325,9 +233,9 @@ for the zero sum transformation of ethane to ethane the setup command would be:<
 <p>The above sets up an <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calculation. Alternatively to use <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> some options must be changed please see this
 <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/blob/master/TIES_MD/examples/ethane_namd/zero_sum/leg1/TIES.cfg">modified</a> config file
 as an example of what to change.</p>
-</div>
-<div class="section" id="running-simulations">
-<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="running-simulations">
+<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this heading"></a></h2>
 <p>The second stage of running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code>, after setup, involves the running of the MD simulations, this is compute intensive
 and can only be run on a HPC for all but the smallest systems. The execution of <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> branches at this point dependant
 on what MD engine is being used. HPC submission scripts should be prepared with the target MD engine in mind.</p>
@@ -378,9 +286,9 @@ pre-production stages <code class="docutils literal notranslate"><span class="pr
 when running with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> but must be explicitly executed when using <code class="docutils literal notranslate"><span class="pre">NAMD</span></code>. The exact submission script for a particular
 HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
 solution to solve any issues we would suggest consulting user manuals of both HPC and MD engine, reading our example <a class="reference internal" href="HPC_submissions.html#hpc-submission-scripts"><span class="std std-ref">HPC Submission scripts</span></a> or submitting an <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/issues">issue</a> on <code class="docutils literal notranslate"><span class="pre">Github</span></code>.</p>
-</div>
-<div class="section" id="analysis">
-<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When using NAMD the version is specified in namd.cfg as <code class="docutils literal notranslate"><span class="pre">namd_version</span> <span class="pre">=</span> <span class="pre">2.14</span></code> for example. This is critical to the result
@@ -413,55 +321,38 @@ would look something like:</p>
   <span class="s1">&#39;OpenMM_TI&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ethane&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;zero_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.076</span><span class="p">]}}}</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="HPC_submissions.html" class="btn btn-neutral float-right" title="HPC Submission scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HPC_submissions.html" class="btn btn-neutral float-right" title="HPC Submission scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, UCL CCS.
-
-    </p>
+    <p>&#169; Copyright 2021, UCL CCS.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

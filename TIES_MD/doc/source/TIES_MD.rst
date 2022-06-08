@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    TIES_MD.eng_scripts
+   TIES_MD.openmmtools
 
 Submodules
 ----------

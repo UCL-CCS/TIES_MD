@@ -130,7 +130,7 @@ class ModifiedAlchemicalState(states.GlobalParameterState):
             if parameter_value is None:
                 return parameter_value
             if not (0.0 <= parameter_value <= 1.0):
-                print('{} must be between 0 and 1.'.format(self.parameter_name))
+                pass
             return float(parameter_value)
 
     lambda_sterics = _LambdaParameter('lambda_sterics')
