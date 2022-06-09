@@ -53,6 +53,7 @@ class AlchSys(object):
     :param absolute: boolean determines if we are doing an absolute calculation
     :param periodic: boolean determines if we are doing PME or CutoffNonPeriodic
     :param platform: sting determines what platform OpenMM will target allowed values are ['CPU', 'CUDA', 'OpenCL']
+    :param debug: bool, removes all forces but nonbonded for testing
 
     Note: GROMACS input and Absolute calculations are currently not tested.
 
@@ -372,12 +373,12 @@ class AlchSys(object):
 
 
     def get_gradients(self, param, val, context, h, analitic_sterics=False):
-
         '''
         Function to compute the gradients of the potential w.r.t the alchemical parameters.
 
         :param param: string, for lambda parameter eg 'lambda_electrostatics_appear'
         :param val: float, value of lambda parameter
+        :param context: OpenMM Context
         :param context: OpenMM Context
         :param h: float, finite difference to use
         :param analitic_sterics: boolean, are analytic steric gradients calculated (experimental)
@@ -449,6 +450,12 @@ class AlchSys(object):
         return {'sim': sim, 'integrate': integrator}
 
     def debug_force(self, system):
+        '''
+        Function which removes all but nonbonded forces while maintaining NPT ensemble
+
+        :param system: OpenMM system to modify
+        :return:
+        '''
         to_remove = []
         for force_index, force in enumerate(system.getForces()):
             if isinstance(force, mm.NonbondedForce):

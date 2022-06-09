@@ -25,19 +25,6 @@ Finally add ``conda-forge`` to your available conda channels and install ``TIES 
     conda config --add channels conda-forge
     conda install -c adw62 ties_md
 
-These install instructions are all that is needed to run ``TIES MD`` with ``NAMD``. If you do not need ``OpenMM`` there is no need to read further.
-
-TIES OpenMM
------------
-
-To use the OpenMM protocol in ``TIES_MD`` a custom version of ``OpenMMTools`` is needed to perform the alchemical transformations
-of the system and allow for thermodynamic integration calculations. In order to install the custom version of ``OpenMMTools`` run::
-
-    mkdir openmmtools_install
-    cd openmmtools_install
-    git clone -b adw62-PowerPC https://github.com/adw62/openmmtools.git
-    pip install ./openmmtools --use-feature=in-tree-build
-
 The install of ``OpenMM`` which was installed with ``TIES_MD`` can be verified by running::
 
     python -m openmm.testInstallation
@@ -57,5 +44,18 @@ The install of ``TIES MD`` can be tested by downloading and running (:ref:`Tutor
 provided `here <https://github.com/adw62/TIES_MD/tree/master/TIES_MD/examples>`_. These examples can be download by running::
 
     git clone https://github.com/UCL-CCS/TIES_MD.git
+
+TIES OpenMM linux-ppc64le
+--------------------------
+
+To use the OpenMM protocol in ``TIES_MD`` on ``linux-ppc64le`` a custom version of ``OpenMMTools`` is needed to perform the alchemical transformations
+of the system and allow for thermodynamic integration calculations. In order to install the custom version of ``OpenMMTools`` run::
+
+    mkdir openmmtools_install
+    cd openmmtools_install
+    git clone -b adw62-PowerPC https://github.com/adw62/openmmtools.git
+    pip install ./openmmtools --use-feature=in-tree-build
+
+
 
 

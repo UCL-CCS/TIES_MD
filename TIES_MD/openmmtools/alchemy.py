@@ -19,98 +19,8 @@ class AlchemicalStateError(states.GlobalParameterError):
     pass
 
 class ModifiedAlchemicalState(states.GlobalParameterState):
-    """Represent an alchemical state.
-    The alchemical parameters modify the Hamiltonian and affect the
-    computation of the energy. Alchemical parameters that have value
-    None are considered undefined, which means that applying this
-    state to System and Context that have that parameter as a global
-    variable will raise an AlchemicalStateError.
-    Parameters
-    ----------
-    parameters_name_suffix : str, optional
-        If specified, the state will control a modified version of the global
-        parameters with the name ``parameter_name + '_' + parameters_name_suffix``.
-        When this is the case, the normal parameters are not accessible.
-    lambda_sterics : float, optional
-        Scaling factor for ligand sterics (Lennard-Jones and Halgren)
-        interactions (default is 1.0).
-    lambda_electrostatics : float, optional
-        Scaling factor for ligand charges, intrinsic Born radii, and surface
-        area term (default is 1.0).
-    lambda_bonds : float, optional
-        Scaling factor for alchemically-softened bonds (default is 1.0).
-    lambda_angles : float, optional
-        Scaling factor for alchemically-softened angles (default is 1.0).
-    lambda_torsions : float, optional
-        Scaling factor for alchemically-softened torsions (default is 1.0).
-    Attributes
-    ----------
-    lambda_sterics
-    lambda_electrostatics
-    lambda_bonds
-    lambda_angles
-    lambda_torsions
-    Examples
-    --------
-    Create an alchemically modified system.
-    >>> from openmmtools import testsystems
-    >>> factory = AbsoluteAlchemicalFactory(consistent_exceptions=False)
-    >>> alanine_vacuum = testsystems.AlanineDipeptideVacuum().system
-    >>> alchemical_region = AlchemicalRegion(alchemical_atoms=range(22))
-    >>> alanine_alchemical_system = factory.create_alchemical_system(reference_system=alanine_vacuum,
-    ...                                                              alchemical_regions=alchemical_region)
-    Create a completely undefined alchemical state.
-    >>> alchemical_state = AlchemicalState()
-    >>> print(alchemical_state.lambda_sterics)
-    None
-    >>> alchemical_state.apply_to_system(alanine_alchemical_system)
-    Traceback (most recent call last):
-    ...
-    openmmtools.alchemy.AlchemicalStateError: The system parameter lambda_electrostatics is not defined in this state.
-    Create an AlchemicalState that matches the parameters defined in
-    the System.
-    >>> alchemical_state = AlchemicalState.from_system(alanine_alchemical_system)
-    >>> alchemical_state.lambda_sterics
-    1.0
-    >>> alchemical_state.lambda_electrostatics
-    1.0
-    >>> print(alchemical_state.lambda_angles)
-    None
-    AlchemicalState implement the IComposableState interface, so it can be
-    used with CompoundThermodynamicState. All the alchemical parameters are
-    accessible through the compound state.
-    >>> import openmm
-    >>> from openmm import unit
-    >>> thermodynamic_state = states.ThermodynamicState(system=alanine_alchemical_system,
-    ...                                                 temperature=300*unit.kelvin)
-    >>> compound_state = states.CompoundThermodynamicState(thermodynamic_state=thermodynamic_state,
-    ...                                                    composable_states=[alchemical_state])
-    >>> compound_state.lambda_sterics
-    1.0
-    You can control the parameters in the OpenMM Context in this state by
-    setting the state attributes.
-    >>> compound_state.lambda_sterics = 0.5
-    >>> integrator = openmm.VerletIntegrator(1.0*unit.femtosecond)
-    >>> context = compound_state.create_context(integrator)
-    >>> context.getParameter('lambda_sterics')
-    0.5
-    >>> compound_state.lambda_sterics = 1.0
-    >>> compound_state.apply_to_context(context)
-    >>> context.getParameter('lambda_sterics')
-    1.0
-    You can express the alchemical parameters as a mathematical expression
-    involving alchemical variables. Here is an example for a two-stage function.
-    >>> compound_state.set_alchemical_variable('lambda', 1.0)
-    >>> compound_state.lambda_sterics = AlchemicalFunction('step_hm(lambda - 0.5) + 2*lambda * step_hm(0.5 - lambda)')
-    >>> compound_state.lambda_electrostatics = AlchemicalFunction('2*(lambda - 0.5) * step(lambda - 0.5)')
-    >>> for l in [0.0, 0.25, 0.5, 0.75, 1.0]:
-    ...     compound_state.set_alchemical_variable('lambda', l)
-    ...     print(compound_state.lambda_sterics)
-    0.0
-    0.5
-    1.0
-    1.0
-    1.0
+    """
+    Super from GlobalParameterState in openmmtools
     """
 
     _GLOBAL_PARAMETER_ERROR = AlchemicalStateError
@@ -295,8 +205,8 @@ class ModifiedAlchemicalState(states.GlobalParameterState):
         super().apply_to_context(context)
 
 class ModifiedAbsoluteAlchemicalFactory(openmmtools.alchemy.AbsoluteAlchemicalFactory):
-    """super?
-        Please see ...
+    """
+    Super from AbsoluteAlchemicalFactory in Openmmtools
     """
 
     def _get_sterics_energy_expressions(self, lambda_variable_suffixes, softcore):
