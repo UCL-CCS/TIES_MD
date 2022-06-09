@@ -15,14 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-
-    - name: Add non standard channels
-      shell: bash -l {0}
-      run: |
-        conda config --add channels adw62
-
     - name: publish-to-conda
-      uses: maxibor/conda-package-publish-action@v1.1
+      uses: adw62/conda-package-publish-action@v1.3
       with:
         subDir: devtools/conda-recipe
         AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
