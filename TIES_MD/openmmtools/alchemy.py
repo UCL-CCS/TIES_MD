@@ -24,6 +24,7 @@ SOFTWARE."""
 
 import copy
 import itertools
+import logging
 
 import openmmtools
 from openmmtools.constants import ONE_4PI_EPS0
@@ -33,6 +34,9 @@ try:
     from openmm import unit
 except ImportError:  # OpenMM < 7.6
     from simtk import openmm, unit
+
+
+logger = logging.getLogger(__name__)
 
 class AlchemicalStateError(states.GlobalParameterError):
     """Error raised by an AlchemicalState."""
