@@ -17,6 +17,7 @@ __copyright__ = """
 """
 
 __license__ = "LGPL"
+
 try:
     import openmm as mm
     from openmm import unit, app, Vec3
@@ -330,13 +331,15 @@ class AlchSys(object):
 
     def rebuild_torsion(self, system, intersect_torsions):
         '''
-        Function to turn of torsions
+        Function to rebuild torsion force without any non physical torsion which straddle the alchemical region. We
+        want to remove these fully as some times they result in nan evals.
 
         :param system: OpenMM system
-        :param intersect_torsions: List of ints, ints references torsions that have alchemical indexes in them
+        :param intersect_torsions: List of ints, ints references torsions that straddle the alchemical regions.
         :return:
         '''
         found_torsion = False
+        forces_to_remove = []
         for force_index, force in enumerate(system.getForces()):
             if isinstance(force, mm.PeriodicTorsionForce):
                 new_tor = mm.PeriodicTorsionForce()
@@ -349,8 +352,19 @@ class AlchSys(object):
                     else:
                         a, b, c, d, period, phase, k = force.getTorsionParameters(idx)
                         new_tor.addTorsion(a, b, c, d, period, phase, k)
-                system.removeForce(force_index)
-                system.addForce(new_tor)
+                forces_to_remove.append(force_index)
+
+            '''
+            if isinstance(force, mm.CMAPTorsionForce):
+                forces_to_remove.append(force_index)
+            '''
+
+        forces_to_remove.sort()
+        forces_to_remove.reverse()
+        for force_index in forces_to_remove:
+            system.removeForce(force_index)
+        if found_torsion:
+            system.addForce(new_tor)
 
     def set_context_to_state(self, param_vals, context, NPT=True):
         '''
@@ -445,6 +459,8 @@ class AlchSys(object):
         else:
             raise ValueError('Unknown platform {} in ties. Please select from CPU/CUDA/OpenCL'.format(self.platform))
 
+        with open('./test.pdb', 'w') as f:
+            app.pdbfile.PDBFile.writeFile(self.topology_file.topology, self.og_positions, f)
         sim = app.Simulation(self.topology_file.topology, system, integrator, platform, properties)
 
         return {'sim': sim, 'integrate': integrator}
@@ -593,7 +609,6 @@ def minimization(NVT, constraint):
     :param constraint: list or None, indicates whether this system has constraints
 
     '''
-
     #Assumed that position and state is set correctly
 
     if constraint is not None:
@@ -622,8 +637,7 @@ def equilibriation(NVT, NPT, steps, save_file, constraint):
     :param constraint: list or None, indicates whether this system has constraints
 
     '''
-
-    # Assumed that positions, velocities (NVT) and state and are set correctly
+    # Assumed that positions of (NVT) and state and are set correctly
 
     # MAKE FRACTION USER DEFINED
     NVT_steps = int(steps * 0.01)
@@ -638,17 +652,15 @@ def equilibriation(NVT, NPT, steps, save_file, constraint):
         NVT['sim'].context.setParameter("scale", 0.0)
         print('Constraint scale in NVT = {}'.format(NVT['sim'].context.getParameter("scale")))
 
-    #Annealing maybe casue of instability
-    '''
-    #NVT annealing
-    temperature = 50 * unit.kelvin
-    for i in range(11):
-        print('Temperature set to {}'.format(temperature))
-        NVT['integrate'].setTemperature(temperature)
-        NVT['integrate'].step(int(NVT_steps / 10))
-        temperature += 25 * unit.kelvin
-    '''
-    NVT['sim'].step(NVT_steps)
+    #NVT warming
+    final_temperature = NVT['integrate'].getTemperature() / unit.kelvin
+    initial_temperature = 50
+    NVT['sim'].context.setVelocitiesToTemperature(initial_temperature)
+    temps = np.linspace(initial_temperature, final_temperature, 10)
+    print('Warming NVT from {}k to {}k'.format(initial_temperature, final_temperature))
+    for temp in temps:
+        NVT['integrate'].setTemperature(temp)
+        NVT['integrate'].step(int(NVT_steps / len(temps)))
 
     tock = time.perf_counter()
     print('Took {} seconds'.format(tock - tic))
@@ -682,7 +694,7 @@ def equilibriation(NVT, NPT, steps, save_file, constraint):
     tock = time.perf_counter()
     print('Took {} seconds'.format(tock - tic))
 
-    print('Saving equilibriated state to disk here: {}'.format(save_file))
+    print('Saving equilibrated state to disk here: {}'.format(save_file))
     NPT['sim'].saveState(save_file)
 
 
@@ -790,9 +802,6 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
         #Init position of atoms
         NVT['sim'].context.setPositions(alch_sys.og_positions)
         NPT['sim'].context.setPositions(alch_sys.og_positions)
-
-        #Init NVT velocities, NPT vels are set later
-        NVT['sim'].context.setVelocitiesToTemperature(alch_sys.temp)
 
         #init state of context
         alch_sys.set_context_to_state(Lam.schedule[mask[0]:mask[1]][i], NVT['sim'].context, NPT=False)

@@ -213,6 +213,7 @@ class Test_Alch(unittest.TestCase):
                 energy_2 = sim.context.getState(getEnergy=True).getPotentialEnergy().in_units_of(
                     unit.kilocalorie_per_mole) / unit.kilocalorie_per_mole
 
+
                 #check equal
                 self.assertEqual(round(energy_1, 3), round(energy_2, 3),
                                  'energy not being calculated correctly in state {}'.format(param_vals_i))
@@ -250,10 +251,10 @@ class Test_Alch(unittest.TestCase):
                              basis_vec, input_type='AMBER', absolute=False, periodic=True, platform=GLOBAL_PALT)
 
             node_id = 0
-            ids= System_ID(device_id='0', node_id=node_id)
+            ids = System_ID(device_id='0', node_id=node_id)
 
             Lam = Lambdas([0.5, 1], [0.0, 0.5], [x/5 for x in range(0, 6)])
-            mask= [0, 2]
+            mask = [0, 2]
             niter = 2
             equili_steps = 10
             steps_per_iter = 1
@@ -297,12 +298,14 @@ def reduce_to_nonbonded(system):
     for force_index in to_remove:
         system.removeForce(force_index)
 
+
 def null_cross_region_interactions(system, appearing, disappearing):
     for force_index, force in enumerate(system.getForces()):
         if isinstance(force, mm.NonbondedForce):
             for atom1 in appearing:
                 for atom2 in disappearing:
                     force.addException(atom1, atom2, 0.0, 1.0, 0.0, True)
+
 
 def turn_off_interactions(state, system, appearing, disappearing):
     for force_index, force in enumerate(system.getForces()):
@@ -346,8 +349,6 @@ def turn_off_interactions(state, system, appearing, disappearing):
                     a, b, q, sig, eps = force.getExceptionParameters(idx)
                     if set((a, b)).intersection(disappearing):
                         force.setExceptionParameters(idx, a, b, 0, sig, eps)
-
-
 
 if __name__ == '__main__':
 

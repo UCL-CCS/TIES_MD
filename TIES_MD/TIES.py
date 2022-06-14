@@ -25,9 +25,13 @@ try:
 except ImportError:
     openmm_av = False
 
+try:
+    from openmm import unit, Vec3
+except ImportError:  # OpenMM < 7.6
+    from simtk import unit
+    from simtk.openmm import Vec3
+
 from functools import partial
-from simtk import unit
-from simtk.openmm import Vec3
 from multiprocess import Pool
 import numpy as np
 

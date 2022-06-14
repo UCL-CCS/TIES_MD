@@ -584,7 +584,7 @@ class ModifiedAbsoluteAlchemicalFactory(openmmtools.alchemy.AbsoluteAlchemicalFa
                 else:  # fix lambda variable to 1.0
                     for suffix in lambda_var_suffixes:
                         name = (lambda_variable_name + suffix)
-                        energy_expression = energy_expression + name + '=1.0;'
+                        energy_expression = energy_expression + name + '= 1.0;'
                     force = force_cls(energy_expression)
                 return force
 
