@@ -206,6 +206,15 @@ class TIES(object):
         self.exp_name = exp_name
         self.periodic = periodic
 
+        #build schedule for lambdas
+        if lam is None:
+            # build lambda schedule
+            self.lam = Lambdas(self.elec_edges, self.ster_edges, self.global_lambdas)
+        else:
+            self.lam = lam
+            print('Using custom lambda schedule all schedule options will be ignored')
+
+        #deal with how hcp will run jobs, submission scripts etc...
         self.split_run = False
         #The user wants a total number of reps but they want to run many instances of TIES_MD each handeling 1 run
         if self.total_reps != self.reps_per_exec:
@@ -222,61 +231,14 @@ class TIES(object):
                 if len(self.devices) > 1:
                     raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
                                      'have been specified on the command line. Please only specify 1 device.')
-        if len(self.devices) != self.reps_per_exec:
-            print('For best parallel performance you may wish to consider allocating the same number of GPUS as'
-                  ' requested replicas. GPUS allocated = {}, replicas requested {}'.format(len(self.devices), self.reps_per_exec))
 
-        self.sub_header = """#Example script fot ARCHER2
-#SBATCH --job-name=LIGPAIR
-#SBATCH --nodes=65
-#SBATCH --tasks-per-node=128
-#SBATCH --cpus-per-task=1
-#SBATCH --time=03:00:00
-#SBATCH --account=XXX
-#SBATCH --partition=standard
-#SBATCH --qos=standard
-
-module load namd/2.14-nosmp
-
-#--nodes and nodes_per_namd can be scaled up for large simulations
-nodes_per_namd=5
-cpus_per_namd=640
-                """
-
-        self.sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                            ' --hint=nomultithread namd2 +replicas 5 --tclmain eq$stage-replicas.conf $lambda $win_id&'
-
+        self.namd_single_rep = False
         #in namd if there is only one replica there is no need to use +replicas option
         if self.engine == 'namd' and self.total_reps == self.reps_per_exec == 1:
-            self.split_run = True
-            self.sub_header = """#Example script fot ARCHER2
-#SBATCH --job-name=LIGPAIR
-#SBATCH --nodes=13
-#SBATCH --tasks-per-node=128
-#SBATCH --cpus-per-task=1
-#SBATCH --time=03:00:00
-#SBATCH --account=XXX
-#SBATCH --partition=standard
-#SBATCH --qos=standard
+            self.namd_single_rep = True
 
-module load namd/2.14-nosmp
-
-#--nodes and nodes_per_namd can be scaled up for large simulations
-nodes_per_namd=1
-cpus_per_namd=128
-                    """
-
-            self.sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $win_id $i&'
-
-        #build schedual for lambdas
-        if lam is None:
-            # build lambda schedule
-            self.lam = Lambdas(self.elec_edges, self.ster_edges, self.global_lambdas)
-        else:
-            self.lam = lam
-            print('Using custom lambda schedule all schedule options will be ignored')
-
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version,
+                                                                self.namd_single_rep, self.split_run)
         #Perform a job
         if run_type == 'run':
             if self.engine == 'namd':
@@ -331,6 +293,7 @@ cpus_per_namd=128
             self.write_namd_scripts()
         else:
             folders = ['equilibration', 'simulation', 'results']
+            self.write_openmm_submissions()
         TIES.build_results_dirs(self, folders)
         self.write_analysis_cfg()
 
@@ -517,7 +480,7 @@ minimize 2000
 
         #populate and write main script
         min_file = 'min.conf'
-        if not self.split_run:
+        if not self.namd_single_rep:
             min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, min_file).read()
         else:
             min_namd_uninitialised = pkg_resources.open_text(namd_single_rep, min_file).read()
@@ -527,7 +490,7 @@ minimize 2000
                                                              root=self.cwd)
         out_name = 'eq0.conf'
         open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
-        if not self.split_run:
+        if not self.namd_single_rep:
             # populate and write replica script which controls replica submissions
             min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'min-replicas.conf').read()
             min_namd_initialised = min_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
@@ -641,7 +604,7 @@ conskcol  {}
 
             # read unpopulated eq file from disk
             eq_file = 'eq.conf'
-            if not self.split_run:
+            if not self.namd_single_rep:
                 eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, eq_file).read()
             else:
                 eq_namd_uninitialised = pkg_resources.open_text(namd_single_rep, eq_file).read()
@@ -656,7 +619,7 @@ conskcol  {}
             out_name = "eq{}.conf".format(i)
             open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(eq_namd_initialised)
 
-            if not self.split_run:
+            if not self.namd_single_rep:
                 #read and write eq replica to handle replica simulations
                 eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'eq-replicas.conf').read()
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
@@ -705,7 +668,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
 
         # read unpopulated eq file from disk
         sim_file = 'sim1.conf'
-        if not self.split_run:
+        if not self.namd_single_rep:
             sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, sim_file).read()
         else:
             sim_namd_uninitialised = pkg_resources.open_text(namd_single_rep, sim_file).read()
@@ -716,20 +679,20 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(sim_namd_initialised)
 
         # read and write sim replica to handle replica simulations, only if we want to use +replicas option
-        if not self.split_run:
+        if not self.namd_single_rep:
             sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sim1-replicas.conf').read()
             sim_namd_initialised = sim_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
             open(os.path.join(self.cwd, './replica-confs', 'sim1-replicas.conf'), 'w').write(sim_namd_initialised)
 
     def write_namd_submissions(self):
         '''
-        Function to write an example submission script of NAMD job on HPC (SuperMUC-NG)
+        Function to write an example submission script of NAMD job on HPC (ARCHER2)
         '''
         lambs = [str(x) for x in self.global_lambdas]
         lambs = ' '.join(lambs)
 
         if self.namd_version < 3:
-            if not self.split_run:
+            if not self.namd_single_rep:
                 namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sub.sh').read()
                 namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
                                                              header=self.sub_header, root=self.cwd)
@@ -743,6 +706,14 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         else:
             print('No NAMD3 example script currently implemented. Examples for GPU scripts can be found here '
                   'https://UCL-CCS.github.io/TIES_MD/HPC_submissions.html')
+
+    def write_openmm_submission(self):
+        '''
+        Function to write an example submission script of OpenMM job on HPC (Summit)
+
+        :return:
+        '''
+        pass
 
 
 def get_box_vectors(box_type, d):
@@ -789,5 +760,94 @@ def nice_print(string):
     '''
     string = string.center(75, '#')
     print(string)
+
+
+def get_header_and_run(engine, namd_version, namd_single_rep, split_run):
+    '''
+    Function to prep submission file. Number of windows and replicas are inspected to make best guess at
+    number of nodes and CPUS/GPUS
+
+    :param engine: str, What engine are we using [namd, openmm]
+    :param namd_version: float, What version of namd are we using if any
+    :param namd_single_rep: bool, Is namd going to use the +replca setting (NAMD setting)
+    :param split_run: bool, Are the instances of TIES_MD running less than the total number of reps (OpenMM setting)
+    :return:
+    '''
+
+    if engine == 'namd':
+        if namd_version < 3:
+            if namd_single_rep:
+                sub_header = """#Example script fot ARCHER2 NAMD2
+#SBATCH --job-name=LIGPAIR
+#SBATCH --nodes=13
+#SBATCH --tasks-per-node=125
+#SBATCH --cpus-per-task=1
+#SBATCH --time=03:00:00
+#SBATCH --account=XXX
+#SBATCH --partition=standard
+#SBATCH --qos=standard
+
+module load namd/2.14-nosmp
+
+#--nodes and nodes_per_namd can be scaled up for large simulations
+nodes_per_namd=1
+cpus_per_namd=125
+"""
+
+                sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                                ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $win_id $i&'
+
+            else:
+                sub_header = """#Example script fot ARCHER2 NAMD2
+#SBATCH --job-name=LIGPAIR
+#SBATCH --nodes=65
+#SBATCH --tasks-per-node=128
+#SBATCH --cpus-per-task=1
+#SBATCH --time=03:00:00
+#SBATCH --account=XXX
+#SBATCH --partition=standard
+#SBATCH --qos=standard
+
+module load namd/2.14-nosmp
+
+#--nodes and nodes_per_namd can be scaled up for large simulations
+nodes_per_namd=5
+cpus_per_namd=640
+"""
+
+                sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                                ' --hint=nomultithread namd2 +replicas 5 --tclmain eq$stage-replicas.conf $lambda $win_id&'
+
+        else:
+            sub_header = None
+            sub_run_line = None
+
+    else:
+        if split_run:
+            sub_header = """#Example script fot Summit OpenMM
+#BSUB -P XXX
+#BSUB -W 60
+#BSUB -nnodes 1
+#BSUB -alloc_flags "gpudefault smt1"
+#BSUB -J LIGPAIR
+#BSUB -o oLIGPAIR.%J
+#BSUB -e eLIGPAIR.%J
+        """
+            sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
+                           ' --windows_mask=$lambda,$(expr $lambda + 1) --node_id="0" > $ties_dir/$lambda.out&'
+        else:
+            sub_header = """#Example script fot Summit OpenMM
+#BSUB -P XXX
+#BSUB -W 60
+#BSUB -nnodes 1
+#BSUB -alloc_flags "gpudefault smt1"
+#BSUB -J LIGPAIR
+#BSUB -o oLIGPAIR.%J
+#BSUB -e eLIGPAIR.%J
+        """
+            sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
+                           ' --windows_mask=$lambda,$(expr $lambda + 1) --node_id="0" > $ties_dir/$lambda.out&'
+
+    return sub_header, sub_run_line
 
 
