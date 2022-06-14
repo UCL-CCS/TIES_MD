@@ -459,8 +459,6 @@ class AlchSys(object):
         else:
             raise ValueError('Unknown platform {} in ties. Please select from CPU/CUDA/OpenCL'.format(self.platform))
 
-        with open('./test.pdb', 'w') as f:
-            app.pdbfile.PDBFile.writeFile(self.topology_file.topology, self.og_positions, f)
         sim = app.Simulation(self.topology_file.topology, system, integrator, platform, properties)
 
         return {'sim': sim, 'integrate': integrator}
