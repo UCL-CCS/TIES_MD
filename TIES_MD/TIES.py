@@ -241,7 +241,7 @@ class TIES(object):
                                      'this execution of TIES_MD should be running.')
 
         self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
-                                                                self.global_lambdas, self.total_reps)
+                                                                self.global_lambdas, self.total_reps, self.exp_name)
         #Perform a job
         if run_type == 'run':
             if self.engine == 'namd':
@@ -775,7 +775,7 @@ def nice_print(string):
     print(string)
 
 
-def get_header_and_run(engine, namd_version, split_run, global_lambdas, reps):
+def get_header_and_run(engine, namd_version, split_run, global_lambdas, reps, exp_name):
     '''
     Function to prep submission file. Number of windows and replicas are inspected to make best guess at
     number of nodes and CPUS/GPUS
@@ -785,7 +785,8 @@ def get_header_and_run(engine, namd_version, split_run, global_lambdas, reps):
     :param split_run: bool, Should each run line run all or one replica
     :param global_lambdas: list of floats for value of global lambda in eah window
     :param reps: int, number of replica simulations
-    :return:
+    :param exp_name str, name of the experiment e.g. complex
+    :return: str, str for header and run line of HPC sub script
     '''
 
     num_windows = len(global_lambdas)
@@ -854,7 +855,8 @@ cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cp
 #BSUB -o oLIGPAIR.%J
 #BSUB -e eLIGPAIR.%J""".format(int(np.ceil(num_jobs/gpus_per_node)))
             sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
-                           ' --windows_mask=$lambda,$(expr $lambda + 1) --node_id="$i" > $ties_dir/$lambda.out&'
+                           ' --exp_name='{}' --windows_mask=$lambda,$(expr $lambda + 1)' \
+                                           ' --node_id="$i" > $ties_dir/$lambda_$i.out&'.format(exp_name)
         else:
             # no OpenMM unified job on HPC
             sub_header = None
