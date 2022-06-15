@@ -36,11 +36,14 @@ from multiprocess import Pool
 import numpy as np
 
 import os
+import sys
 import time
 from pathlib import Path
 
 import importlib.resources as pkg_resources
-from .eng_scripts import namd_many_rep, namd_single_rep
+#split means we will explitlly deal with reps in the submission
+#for non split namd or TIES_MD will handle the parallisim of replicas
+from .eng_scripts import namd_sub, namd_sub_split, openmm_sub_split
 
 class TIES(object):
     '''
@@ -219,26 +222,26 @@ class TIES(object):
         #The user wants a total number of reps but they want to run many instances of TIES_MD each handeling 1 run
         if self.total_reps != self.reps_per_exec:
             self.split_run = True
-            if not self.engine == 'namd':
-                if self.node_id is None:
-                    raise ValueError('If total_reps != reps_per_exec then the command line option --node_id'
-                                     ' must be set. Please set --node_id=X where X is an integer describing which replica '
-                                     'this execution of TIES_MD should be running.')
+
             if self.reps_per_exec != 1:
                 raise ValueError('If you wish to run a subset of repeats per execution of TIES MD please only '
                                  'use one replica per execution and set reps_per_exec=1 in TIES.cfg')
-            else:
-                if len(self.devices) > 1:
-                    raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
-                                     'have been specified on the command line. Please only specify 1 device.')
 
-        self.namd_single_rep = False
-        #in namd if there is only one replica there is no need to use +replicas option
-        if self.engine == 'namd' and self.total_reps == self.reps_per_exec == 1:
-            self.namd_single_rep = True
+            #check the user has not given too many GPUS for the one replica
+            if len(self.devices) > 1:
+                raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
+                                 'have been specified on the command line. Please only specify 1 device.')
 
-        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version,
-                                                                self.namd_single_rep, self.split_run)
+            #check if we are about to run OpenMM and other instances of TIES_MD could be running we have
+            # node_id set such that the output is writen to a unique location
+            if not self.engine == 'namd':
+                if self.node_id is None and run_type == 'run':
+                    raise ValueError('If total_reps != reps_per_exec then the command line option --node_id'
+                                     ' must be set. Please set --node_id=X where X is an integer describing which replica '
+                                     'this execution of TIES_MD should be running.')
+
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
+                                                                self.global_lambdas, self.total_reps)
         #Perform a job
         if run_type == 'run':
             if self.engine == 'namd':
@@ -293,7 +296,7 @@ class TIES(object):
             self.write_namd_scripts()
         else:
             folders = ['equilibration', 'simulation', 'results']
-            self.write_openmm_submissions()
+            self.write_openmm_submission()
         TIES.build_results_dirs(self, folders)
         self.write_analysis_cfg()
 
@@ -480,19 +483,19 @@ minimize 2000
 
         #populate and write main script
         min_file = 'min.conf'
-        if not self.namd_single_rep:
-            min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, min_file).read()
+        if not self.split_run:
+            min_namd_uninitialised = pkg_resources.open_text(namd_sub, min_file).read()
         else:
-            min_namd_uninitialised = pkg_resources.open_text(namd_single_rep, min_file).read()
+            min_namd_uninitialised = pkg_resources.open_text(namd_sub_split, min_file).read()
         min_namd_initialised = min_namd_uninitialised.format(structure_name=self.exp_name, constraints=cons, **pbc_box,
                                                              temp=temp, ele_start=self.elec_edges[0],
                                                              ster_end=self.ster_edges[1], header=header, run=run,
                                                              root=self.cwd)
         out_name = 'eq0.conf'
         open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
-        if not self.namd_single_rep:
+        if not self.split_run:
             # populate and write replica script which controls replica submissions
-            min_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'min-replicas.conf').read()
+            min_namd_uninitialised = pkg_resources.open_text(namd_sub, 'min-replicas.conf').read()
             min_namd_initialised = min_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
             out_name = 'eq0-replicas.conf'
             open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
@@ -604,10 +607,10 @@ conskcol  {}
 
             # read unpopulated eq file from disk
             eq_file = 'eq.conf'
-            if not self.namd_single_rep:
-                eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, eq_file).read()
+            if not self.split_run:
+                eq_namd_uninitialised = pkg_resources.open_text(namd_sub, eq_file).read()
             else:
-                eq_namd_uninitialised = pkg_resources.open_text(namd_single_rep, eq_file).read()
+                eq_namd_uninitialised = pkg_resources.open_text(namd_sub_split, eq_file).read()
             prev_output = 'eq{}'.format(i - 1)
 
             #populate eq file
@@ -619,9 +622,9 @@ conskcol  {}
             out_name = "eq{}.conf".format(i)
             open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(eq_namd_initialised)
 
-            if not self.namd_single_rep:
+            if not self.split_run:
                 #read and write eq replica to handle replica simulations
-                eq_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'eq-replicas.conf').read()
+                eq_namd_uninitialised = pkg_resources.open_text(namd_sub, 'eq-replicas.conf').read()
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
                                                                    prev=prev_output, current='eq{}'.format(i),
                                                                    root=self.cwd)
@@ -668,10 +671,10 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
 
         # read unpopulated eq file from disk
         sim_file = 'sim1.conf'
-        if not self.namd_single_rep:
-            sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, sim_file).read()
+        if not self.split_run:
+            sim_namd_uninitialised = pkg_resources.open_text(namd_sub, sim_file).read()
         else:
-            sim_namd_uninitialised = pkg_resources.open_text(namd_single_rep, sim_file).read()
+            sim_namd_uninitialised = pkg_resources.open_text(namd_sub_split, sim_file).read()
         sim_namd_initialised = sim_namd_uninitialised.format(structure_name=self.exp_name, temp=temp, pressure=pressure,
                                                              ele_start=self.elec_edges[0], ster_end=self.ster_edges[1],
                                                              header=header, steps=steps, root=self.cwd)
@@ -679,8 +682,8 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(sim_namd_initialised)
 
         # read and write sim replica to handle replica simulations, only if we want to use +replicas option
-        if not self.namd_single_rep:
-            sim_namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sim1-replicas.conf').read()
+        if not self.split_run:
+            sim_namd_uninitialised = pkg_resources.open_text(namd_sub, 'sim1-replicas.conf').read()
             sim_namd_initialised = sim_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
             open(os.path.join(self.cwd, './replica-confs', 'sim1-replicas.conf'), 'w').write(sim_namd_initialised)
 
@@ -692,13 +695,13 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         lambs = ' '.join(lambs)
 
         if self.namd_version < 3:
-            if not self.namd_single_rep:
-                namd_uninitialised = pkg_resources.open_text(namd_many_rep, 'sub.sh').read()
+            if not self.split_run:
+                namd_uninitialised = pkg_resources.open_text(namd_sub, 'sub.sh').read()
                 namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
                                                              header=self.sub_header, root=self.cwd)
                 open(os.path.join(self.cwd, 'sub.sh'), 'w').write(namd_initialised)
             else:
-                namd_uninitialised = pkg_resources.open_text(namd_single_rep, 'sub.sh').read()
+                namd_uninitialised = pkg_resources.open_text(namd_sub_split, 'sub.sh').read()
                 namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
                                                              header=self.sub_header, root=self.cwd)
                 open(os.path.join(self.cwd, 'sub.sh'), 'w').write(namd_initialised)
@@ -713,7 +716,17 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
 
         :return:
         '''
-        pass
+
+        lambs = [str(x) for x in self.global_lambdas]
+        lambs = ' '.join(lambs)
+
+        if self.split_run:
+            openmm_uninitialised = pkg_resources.open_text(openmm_sub_split, 'sub.sh').read()
+            openmm_initialised = openmm_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
+                                                         header=self.sub_header, root=self.cwd, py_bin=sys.path[0])
+            open(os.path.join(self.cwd, 'sub.sh'), 'w').write(openmm_initialised)
+        else:
+            pass
 
 
 def get_box_vectors(box_type, d):
@@ -762,27 +775,32 @@ def nice_print(string):
     print(string)
 
 
-def get_header_and_run(engine, namd_version, namd_single_rep, split_run):
+def get_header_and_run(engine, namd_version, split_run, global_lambdas, reps):
     '''
     Function to prep submission file. Number of windows and replicas are inspected to make best guess at
     number of nodes and CPUS/GPUS
 
     :param engine: str, What engine are we using [namd, openmm]
     :param namd_version: float, What version of namd are we using if any
-    :param namd_single_rep: bool, Is namd going to use the +replca setting (NAMD setting)
-    :param split_run: bool, Are the instances of TIES_MD running less than the total number of reps (OpenMM setting)
+    :param split_run: bool, Should each run line run all or one replica
+    :param global_lambdas: list of floats for value of global lambda in eah window
+    :param reps: int, number of replica simulations
     :return:
     '''
 
+    num_windows = len(global_lambdas)
+
     if engine == 'namd':
         if namd_version < 3:
-            if namd_single_rep:
-                sub_header = """#Example script fot ARCHER2 NAMD2
+            #ARCHER2 specific
+            num_cpu = 128
+            if split_run:
+                sub_header = """#Example script for ARCHER2 NAMD2
 #SBATCH --job-name=LIGPAIR
-#SBATCH --nodes=13
-#SBATCH --tasks-per-node=125
+#SBATCH --nodes={0}
+#SBATCH --tasks-per-node={1}
 #SBATCH --cpus-per-task=1
-#SBATCH --time=03:00:00
+#SBATCH --time=05:00:00
 #SBATCH --account=XXX
 #SBATCH --partition=standard
 #SBATCH --qos=standard
@@ -791,19 +809,18 @@ module load namd/2.14-nosmp
 
 #--nodes and nodes_per_namd can be scaled up for large simulations
 nodes_per_namd=1
-cpus_per_namd=125
-"""
+cpus_per_namd={1}""".format(int(num_windows*reps), num_cpu)
 
                 sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
                                 ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $win_id $i&'
 
             else:
-                sub_header = """#Example script fot ARCHER2 NAMD2
+                sub_header = """#Example script for ARCHER2 NAMD2
 #SBATCH --job-name=LIGPAIR
-#SBATCH --nodes=65
-#SBATCH --tasks-per-node=128
+#SBATCH --nodes={}
+#SBATCH --tasks-per-node={}
 #SBATCH --cpus-per-task=1
-#SBATCH --time=03:00:00
+#SBATCH --time=05:00:00
 #SBATCH --account=XXX
 #SBATCH --partition=standard
 #SBATCH --qos=standard
@@ -811,42 +828,37 @@ cpus_per_namd=125
 module load namd/2.14-nosmp
 
 #--nodes and nodes_per_namd can be scaled up for large simulations
-nodes_per_namd=5
-cpus_per_namd=640
-"""
+nodes_per_namd={}
+cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cpu))
 
                 sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 +replicas 5 --tclmain eq$stage-replicas.conf $lambda $win_id&'
+                                ' --hint=nomultithread namd2 +replicas {} --tclmain eq$stage-replicas.conf $lambda $win_id&'.format(reps)
 
         else:
+            #no NAMD3
             sub_header = None
             sub_run_line = None
 
     else:
         if split_run:
-            sub_header = """#Example script fot Summit OpenMM
+            #summit specific
+            gpus_per_node = 6
+            num_jobs = reps*num_windows
+
+            sub_header = """#Example script for Summit OpenMM
 #BSUB -P XXX
-#BSUB -W 60
-#BSUB -nnodes 1
+#BSUB -W 240
+#BSUB -nnodes {}
 #BSUB -alloc_flags "gpudefault smt1"
 #BSUB -J LIGPAIR
 #BSUB -o oLIGPAIR.%J
-#BSUB -e eLIGPAIR.%J
-        """
+#BSUB -e eLIGPAIR.%J""".format(int(np.ceil(num_jobs/gpus_per_node)))
             sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
-                           ' --windows_mask=$lambda,$(expr $lambda + 1) --node_id="0" > $ties_dir/$lambda.out&'
+                           ' --windows_mask=$lambda,$(expr $lambda + 1) --node_id="$i" > $ties_dir/$lambda.out&'
         else:
-            sub_header = """#Example script fot Summit OpenMM
-#BSUB -P XXX
-#BSUB -W 60
-#BSUB -nnodes 1
-#BSUB -alloc_flags "gpudefault smt1"
-#BSUB -J LIGPAIR
-#BSUB -o oLIGPAIR.%J
-#BSUB -e eLIGPAIR.%J
-        """
-            sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
-                           ' --windows_mask=$lambda,$(expr $lambda + 1) --node_id="0" > $ties_dir/$lambda.out&'
+            # no OpenMM unified job on HPC
+            sub_header = None
+            sub_run_line = None
 
     return sub_header, sub_run_line
 

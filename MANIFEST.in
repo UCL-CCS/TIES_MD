@@ -1,3 +1,4 @@
 include TIES_MD/eng_scripts/*
-include TIES_MD/eng_scripts/namd_many_rep/*
-include TIES_MD/eng_scripts/namd_single_rep/*
+include TIES_MD/eng_scripts/namd_sub_split/*
+include TIES_MD/eng_scripts/namd_sub/*
+include TIES_MD/eng_scripts/openmm_sub_split/*

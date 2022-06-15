@@ -10,9 +10,9 @@ win_id=0
 for lambda in {lambs}; do
  for i in {{1..{reps}}}; do
         {run_line}
-        (( win_id++ ))
         sleep 1
 done
+(( win_id++ ))
 done
 wait
 done
@@ -22,9 +22,9 @@ win_id=0
 for lambda in {lambs}; do
 for i in {{1..{reps}}}; do
         {run_line}
-        (( win_id++ ))
         sleep 1
 done
+(( win_id++ ))
 done
 wait
 done

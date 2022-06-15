@@ -1,7 +1,7 @@
 #!/bin/bash
+{header}
 
-
-export PATH="/ccs/home/adw62/OpenMM/miniconda3/bin:$PATH"
+export PATH="{py_bin}:$PATH"
 export ties_dir="{root}"
 cd $ties_dir
 
