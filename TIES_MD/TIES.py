@@ -65,8 +65,6 @@ class TIES(object):
                  lam=None, platform='CUDA', **kwargs):
 
         nice_print('TIES')
-        #check what engine we are using to test input args
-        engine = kwargs['engine'].lower()
 
         #check all the config file args we need are present
         args_list = ['engine', 'temperature', 'pressure', 'sampling_per_window', 'equili_per_window', 'methods',
@@ -74,17 +72,6 @@ class TIES(object):
                        'constraint_column', 'input_type', 'box_type']
 
         optional_args = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3', 'edge_length']
-
-        openmm_args = []
-        namd_args = ['version']
-
-        if engine == 'namd':
-            args_list.extend(namd_args)
-        elif engine == 'openmm':
-            args_list.extend(openmm_args)
-            if not openmm_av:
-                raise ImportError('OpenMMTools not installed please see:'
-                                 ' https://UCL-CCS.github.io/TIES_MD/install.html#ties-openmm')
 
         # check we have all required arguments
         for argument in args_list:
@@ -99,18 +86,45 @@ class TIES(object):
 
         self.all_args = args_list+optional_args
 
+        #engine must be delt with first to set namd_version which other options may need.
+        api_sensitive = ['engine', 'total_reps', 'reps_per_exec', 'elec_edges', 'ster_edges', 'global_lambdas',
+                         'box_type']
+
         #Iterate over our args_dict to set attributes of class to values in dict
         print('Running with arguments:')
         for k, v in kwargs.items():
+            if k in api_sensitive:
+                full_k = '_'+k
+            else:
+                full_k = k
             print('{} = {}'.format(k, v))
-            setattr(self, k, v)
+            setattr(self, full_k, v)
 
-        #deal with engine common config file input
-        supported_engines = ['openmm', 'namd']
-        self.engine = self.engine.lower()
-        if self.engine not in supported_engines:
-            raise ValueError('Engine {} not supported please select from {}'.format(self.engine, supported_engines))
+        #set any nonexistant optional args to None
+        for option in optional_args:
+            if option not in kwargs.keys():
+                setattr(self, option, None)
 
+        #set any attr the api needs
+        if self._total_reps != self._reps_per_exec:
+            self._split_run = True
+        else:
+            self._split_run = False
+        self._exp_name = exp_name
+
+        self._elec_edges = self._elec_edges.split(',')
+        self._elec_edges = [float(x) for x in self._elec_edges]
+
+        self._ster_edges = self._ster_edges.split(',')
+        self._ster_edges = [float(x) for x in self._ster_edges]
+
+        self._total_reps = int(self._total_reps)
+        self._reps_per_exec = int(self._reps_per_exec)
+
+        self._global_lambdas = [float(x) for x in self._global_lambdas.split(',')]
+
+        #set genral args
+        self.windows = len(self.global_lambdas)
         self.temperature = self.temperature.split('*unit.')
         self.temperature = unit.Quantity(float(self.temperature[0]), getattr(unit, self.temperature[1]))
 
@@ -123,74 +137,11 @@ class TIES(object):
         self.equili_per_window = self.equili_per_window.split('*unit.')
         self.equili_per_window = unit.Quantity(float(self.equili_per_window[0]), getattr(unit, self.equili_per_window[1]))
 
-        self.elec_edges = self.elec_edges.split(',')
-        self.elec_edges = [float(x) for x in self.elec_edges]
-
-        self.ster_edges = self.ster_edges.split(',')
-        self.ster_edges = [float(x) for x in self.ster_edges]
-
         self.methods = self.methods.split(',')
-
-        self.total_reps = int(self.total_reps)
-        self.reps_per_exec = int(self.reps_per_exec)
-
-        self.global_lambdas = [float(x) for x in self.global_lambdas.split(',')]
-        self.windows = len(self.global_lambdas)
 
         if 'na' == self.constraint_file:
             self.constraint_file = None
             self.constraint_column = None
-
-        if self.box_type == 'na':
-            vecs = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3']
-            for vec in vecs:
-                if vec not in kwargs.keys():
-                    raise ValueError('If box type is unspecified as na in TIES.cfg the box vectors must be manually specified.'
-                                     ' Please add options {} {} {} to TIES.cfg'.format(*vecs))
-            self.cell_basis_vec1 = [float(x) for x in self.cell_basis_vec1.split(',')]
-            self.cell_basis_vec2 = [float(x) for x in self.cell_basis_vec2.split(',')]
-            self.cell_basis_vec3 = [float(x) for x in self.cell_basis_vec3.split(',')]
-
-            self.basis_vectors = [Vec3(*self.cell_basis_vec1)*unit.angstrom,
-                                  Vec3(*self.cell_basis_vec2)*unit.angstrom,
-                                  Vec3(*self.cell_basis_vec3)*unit.angstrom]
-
-        else:
-            print('Getting box vectors for {} box. Ignoring cell basis vectors in TIES.cfg.'.format(self.box_type))
-            if 'edge_length' not in kwargs.keys():
-                raise ValueError('Must provide edge_length option in TIES.cfg to compute box vectors. If custom box vectors'
-                                 ' are desired set box_type = na in TIES.cfg.')
-            self.edge_length = self.edge_length.split('*unit.')
-            self.edge_length = unit.Quantity(float(self.edge_length[0]), getattr(unit, self.edge_length[1]))
-            self.edge_length = self.edge_length.in_units_of(unit.angstrom) / unit.angstrom
-            self.basis_vectors = get_box_vectors(self.box_type, self.edge_length)
-
-            self.cell_basis_vec1 = [float(x) for x in self.basis_vectors[0]/unit.angstrom]
-            self.cell_basis_vec2 = [float(x) for x in self.basis_vectors[1]/unit.angstrom]
-            self.cell_basis_vec3 = [float(x) for x in self.basis_vectors[2]/unit.angstrom]
-
-        #deal with openmm specific config file input
-        if self.engine == 'openmm':
-            self.absolute = False
-            #hidden for now
-            #self.absolute = self.absolute.lower()
-            #if self.absolute == 'yes':
-            #    self.absolute = True
-            #elif self.absolute == 'no':
-            #    self.absolute = False
-            #else:
-            #    raise ValueError('Absolute option must be set to yes or no')
-
-        else:
-            self.absolute = None
-
-        # deal with namd specific config file input
-        if self.engine == 'namd':
-            self.namd_version = float(self.version)
-            if self.input_type != 'AMBER':
-                raise ValueError('Only AMBER input supported in NAMD version of TIES MD')
-        else:
-            self.namd_version = None
 
         #Deal with command line input.
         # Input for all engines is processed here if it does not pertain to the current engine its set here but not used
@@ -202,46 +153,28 @@ class TIES(object):
             self.devices = [0]
         else:
             self.devices = devices
-        self.platform = platform
 
+        self.platform = platform
         self.cwd = cwd
         self.node_id = node_id
-        self.exp_name = exp_name
         self.periodic = periodic
 
-        #build schedule for lambdas
+        #run through api logic
+        for prop in api_sensitive:
+            setattr(self, prop, self.__getattribute__('_'+prop))
+
+        #make sub file now all args populated
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
+                                                                self.global_lambdas, self.total_reps, self.exp_name)
+
+        # build schedule for lambdas do this last so passed lam can overwrite if desired
         if lam is None:
             # build lambda schedule
-            self.lam = Lambdas(self.elec_edges, self.ster_edges, self.global_lambdas)
+            self.lam = Lambdas(self.elec_edges, self._ster_edges, self.global_lambdas)
         else:
             self.lam = lam
             print('Using custom lambda schedule all schedule options will be ignored')
 
-        #deal with how hcp will run jobs, submission scripts etc...
-        self.split_run = False
-        #The user wants a total number of reps but they want to run many instances of TIES_MD each handeling 1 run
-        if self.total_reps != self.reps_per_exec:
-            self.split_run = True
-
-            if self.reps_per_exec != 1:
-                raise ValueError('If you wish to run a subset of repeats per execution of TIES MD please only '
-                                 'use one replica per execution and set reps_per_exec=1 in TIES.cfg')
-
-            #check the user has not given too many GPUS for the one replica
-            if len(self.devices) > 1:
-                raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
-                                 'have been specified on the command line. Please only specify 1 device.')
-
-            #check if we are about to run OpenMM and other instances of TIES_MD could be running we have
-            # node_id set such that the output is writen to a unique location
-            if not self.engine == 'namd':
-                if self.node_id is None and run_type == 'run':
-                    raise ValueError('If total_reps != reps_per_exec then the command line option --node_id'
-                                     ' must be set. Please set --node_id=X where X is an integer describing which replica '
-                                     'this execution of TIES_MD should be running.')
-
-        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
-                                                                self.global_lambdas, self.total_reps, self.exp_name)
         #Perform a job
         if run_type == 'run':
             if self.engine == 'namd':
@@ -263,6 +196,167 @@ class TIES(object):
         if run_type != 'class':
             nice_print('END')
 
+    @property
+    def box_type(self):
+        return self._box_type
+
+    @property
+    def exp_name(self):
+        return self._exp_name
+
+    @property
+    def engine(self):
+        return self._engine
+
+    @property
+    def global_lambdas(self):
+        return self._global_lambdas
+
+    @property
+    def elec_edges(self):
+        return self._elec_edges
+
+    @property
+    def ster_edges(self):
+        return self._ster_edges
+
+    @property
+    def split_run(self):
+        return self._split_run
+
+    @property
+    def total_reps(self):
+        return self._total_reps
+
+    @property
+    def reps_per_exec(self):
+        return self._reps_per_exec
+
+    @box_type.setter
+    def box_type(self, value):
+        self._box_type = value
+        if self._box_type == 'na':
+            vecs = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3']
+            for vec in vecs:
+                if self.__getattribute__(vec) is None:
+                    raise ValueError(
+                        'If box type is unspecified as na in TIES.cfg the box vectors must be manually specified.'
+                        ' Please add options {} {} {} to TIES.cfg'.format(*vecs))
+            self.cell_basis_vec1 = [float(x) for x in self.cell_basis_vec1.split(',')]
+            self.cell_basis_vec2 = [float(x) for x in self.cell_basis_vec2.split(',')]
+            self.cell_basis_vec3 = [float(x) for x in self.cell_basis_vec3.split(',')]
+
+            self.basis_vectors = [Vec3(*self.cell_basis_vec1) * unit.angstrom,
+                                  Vec3(*self.cell_basis_vec2) * unit.angstrom,
+                                  Vec3(*self.cell_basis_vec3) * unit.angstrom]
+
+        else:
+            print('Getting box vectors for {} box. Ignoring cell basis vectors'.format(self.box_type))
+            if self.edge_length is None:
+                raise ValueError('Must provide edge_length option in TIES.cfg to compute box vectors. If custom box vectors'
+                                 ' are desired set box_type = na in TIES.cfg.')
+            self.edge_length = self.edge_length.split('*unit.')
+            self.edge_length = unit.Quantity(float(self.edge_length[0]), getattr(unit, self.edge_length[1]))
+            self.edge_length = self.edge_length.in_units_of(unit.angstrom) / unit.angstrom
+            self.basis_vectors = get_box_vectors(self.box_type, self.edge_length)
+
+            self.cell_basis_vec1 = [float(x) for x in self.basis_vectors[0] / unit.angstrom]
+            self.cell_basis_vec2 = [float(x) for x in self.basis_vectors[1] / unit.angstrom]
+            self.cell_basis_vec3 = [float(x) for x in self.basis_vectors[2] / unit.angstrom]
+
+    @exp_name.setter
+    def exp_name(self, value):
+        self._exp_name = value
+        self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
+                                                                self._global_lambdas, self._total_reps, self._exp_name)
+
+    @engine.setter
+    def engine(self, value):
+        self._engine = value.lower()
+        if self._engine == 'openmm':
+            self.namd_version = None
+            self.absolute = False
+        else:
+            self.absolute = None
+
+        if 'namd' in self._engine:
+            self.namd_version = float(self._engine.split('namd')[1])
+            self._engine = 'namd'
+            if self.input_type != 'AMBER':
+                raise ValueError('Only AMBER input supported in NAMD version of TIES MD')
+
+        supported_engines = ['openmm', 'namd']
+        if self._engine not in supported_engines:
+            raise ValueError('Engine {} not supported please select from {}'.format(self._engine, supported_engines))
+
+        self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
+                                                                self._global_lambdas, self._total_reps, self._exp_name)
+
+    @ster_edges.setter
+    def ster_edges(self, value):
+        self._ster_edges = value
+        self.lam = Lambdas(self._elec_edges, self._ster_edges, self._global_lambdas, debug=False)
+
+    @elec_edges.setter
+    def elec_edges(self, value):
+        self._elec_edges = value
+        self.lam = Lambdas(self._elec_edges, self._ster_edges, self._global_lambdas, debug=False)
+
+    @global_lambdas.setter
+    def global_lambdas(self, value):
+        self._global_lambdas = value
+        self.lam = Lambdas(self._elec_edges, self._ster_edges, self._global_lambdas, debug=False)
+        self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
+                                                                self._global_lambdas, self._total_reps, self._exp_name)
+
+    @split_run.setter
+    def split_run(self, value):
+        self._split_run = value
+        # check the user has not given too many GPUS for the one replica
+        if value != 1:
+            raise ValueError('If you wish to run a subset of repeats per execution of TIES MD please only '
+                             'use one replica per execution and set reps_per_exec=1 in TIES.cfg')
+        if len(self.devices) > 1:
+            raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
+                             'have been specified on the command line. Please only specify 1 device.')
+        # check if we are about to run OpenMM and other instances of TIES_MD could be running we have
+        # node_id set such that the output is writen to a unique location
+        if not self._engine == 'namd':
+            if self.node_id is None and run_type == 'run':
+                raise ValueError('If total_reps != reps_per_exec then the command line option --node_id'
+                                 ' must be set. Please set --node_id=X where X is an integer describing which replica '
+                                 'this execution of TIES_MD should be running.')
+        self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
+                                                                self._global_lambdas, self._total_reps, self._exp_name)
+
+    @total_reps.setter
+    def total_reps(self, value):
+        self._total_reps = value
+        if self._total_reps != self._reps_per_exec:
+            self._split_run = True
+
+    @reps_per_exec.setter
+    def reps_per_exec(self, value):
+        self._reps_per_exec = value
+        if self._total_reps != self._reps_per_exec:
+            self._split_run = True
+
+    def setup(self):
+        '''
+        Function to setup simulations and then stop
+
+        '''
+        if self.engine == 'namd':
+            folders = ['equilibration', 'simulation']
+            path = os.path.join(self.cwd, 'replica-confs')
+            Path(path).mkdir(parents=True, exist_ok=True)
+            self.write_namd_scripts()
+        else:
+            folders = ['equilibration', 'simulation', 'results']
+            self.write_openmm_submission()
+        TIES.build_results_dirs(self, folders)
+        self.write_analysis_cfg()
+
     def build_results_dirs(self, folders):
         '''
         Helper function to build output directories.
@@ -283,22 +377,6 @@ class TIES(object):
     def get_options(self):
         for arg in self.all_args:
             print('{}: {}'.format(arg, self.__getattribute__(arg)))
-
-    def setup(self):
-        '''
-        Function to setup simulations and then stop
-
-        '''
-        if self.engine == 'namd':
-            folders = ['equilibration', 'simulation']
-            path = os.path.join(self.cwd, 'replica-confs')
-            Path(path).mkdir(parents=True, exist_ok=True)
-            self.write_namd_scripts()
-        else:
-            folders = ['equilibration', 'simulation', 'results']
-            self.write_openmm_submission()
-        TIES.build_results_dirs(self, folders)
-        self.write_analysis_cfg()
 
     def run(self):
         '''
@@ -717,7 +795,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         :return:
         '''
 
-        lambs = [str(x) for x in self.global_lambdas]
+        lambs = [str(x) for x in range(len(self.global_lambdas))]
         lambs = ' '.join(lambs)
 
         if self.split_run:
