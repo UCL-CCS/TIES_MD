@@ -855,8 +855,8 @@ cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cp
 #BSUB -o oLIGPAIR.%J
 #BSUB -e eLIGPAIR.%J""".format(int(np.ceil(num_jobs/gpus_per_node)))
             sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
-                           ' --exp_name='{}' --windows_mask=$lambda,$(expr $lambda + 1)' \
-                                           ' --node_id="$i" > $ties_dir/$lambda_$i.out&'.format(exp_name)
+                           ' --exp_name={} --windows_mask=$lambda,$(expr $lambda + 1)' \
+                           ' --node_id=$i > $ties_dir/$lambda_$i.out&'.format(exp_name)
         else:
             # no OpenMM unified job on HPC
             sub_header = None
