@@ -1,7 +1,7 @@
 name: test_ci
 channels:
   - conda-forge
-  - adw62
+  - ucl-ccs
   - omnia
   - defaults
 dependencies:
