@@ -137,6 +137,7 @@ class TIES(object):
         self.equili_per_window = self.equili_per_window.split('*unit.')
         self.equili_per_window = unit.Quantity(float(self.equili_per_window[0]), getattr(unit, self.equili_per_window[1]))
 
+        self.run_type = run_type
         self.methods = self.methods.split(',')
 
         if 'na' == self.constraint_file:
@@ -176,7 +177,7 @@ class TIES(object):
             print('Using custom lambda schedule all schedule options will be ignored')
 
         #Perform a job
-        if run_type == 'run':
+        if self.run_type == 'run':
             if self.engine == 'namd':
                 raise ValueError('Can only run TIES NAMD with option --run_type=setup. After initial setup jobs should'
                                  ' be submitted via the HPC scheduler. Please see example submission scripts here:'
@@ -184,16 +185,16 @@ class TIES(object):
             TIES.run(self)
             TIES.write_analysis_cfg(self)
 
-        elif run_type == 'setup':
+        elif self.run_type == 'setup':
             TIES.setup(self)
 
-        elif run_type == 'class':
+        elif self.run_type == 'class':
             print('Experiments {} initialized from dir {}'.format(self.exp_name, self.cwd))
             TIES.write_analysis_cfg(self)
         else:
             raise ValueError('Unknown run method selected from run/setup/class')
 
-        if run_type != 'class':
+        if self.run_type != 'class':
             nice_print('END')
 
     @property
@@ -279,6 +280,9 @@ class TIES(object):
         else:
             self.absolute = None
 
+        if self._engine == 'namd':
+            raise ValueError('Must pass version with engine i.e namd2.14 or namd3')
+
         if 'namd' in self._engine:
             self.namd_version = float(self._engine.split('namd')[1])
             self._engine = 'namd'
@@ -313,20 +317,21 @@ class TIES(object):
     @split_run.setter
     def split_run(self, value):
         self._split_run = value
-        # check the user has not given too many GPUS for the one replica
-        if value != 1:
-            raise ValueError('If you wish to run a subset of repeats per execution of TIES MD please only '
-                             'use one replica per execution and set reps_per_exec=1 in TIES.cfg')
-        if len(self.devices) > 1:
-            raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
-                             'have been specified on the command line. Please only specify 1 device.')
-        # check if we are about to run OpenMM and other instances of TIES_MD could be running we have
-        # node_id set such that the output is writen to a unique location
-        if not self._engine == 'namd':
-            if self.node_id is None and run_type == 'run':
-                raise ValueError('If total_reps != reps_per_exec then the command line option --node_id'
-                                 ' must be set. Please set --node_id=X where X is an integer describing which replica '
-                                 'this execution of TIES_MD should be running.')
+        if self._split_run:
+            # check the user has not given too many GPUS for the one replica
+            if value != 1:
+                raise ValueError('If you wish to run a subset of repeats per execution of TIES MD please only '
+                                 'use one replica per execution and set reps_per_exec=1 in TIES.cfg')
+            if len(self.devices) > 1:
+                raise ValueError('1 replica per execution has been specified in TIES.cfg but multiple CUDA devices'
+                                 'have been specified on the command line. Please only specify 1 device.')
+            # check if we are about to run OpenMM and other instances of TIES_MD could be running we have
+            # node_id set such that the output is writen to a unique location
+            if self._engine == 'openmm':
+                if self.node_id is None and self.run_type == 'run':
+                    raise ValueError('If total_reps != reps_per_exec then the command line option --node_id'
+                                     ' must be set. Please set --node_id=X where X is an integer describing which replica '
+                                     'this execution of TIES_MD should be running.')
         self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
                                                                 self._global_lambdas, self._total_reps, self._exp_name)
 
@@ -334,13 +339,13 @@ class TIES(object):
     def total_reps(self, value):
         self._total_reps = value
         if self._total_reps != self._reps_per_exec:
-            self._split_run = True
+            self.split_run = True
 
     @reps_per_exec.setter
     def reps_per_exec(self, value):
         self._reps_per_exec = value
         if self._total_reps != self._reps_per_exec:
-            self._split_run = True
+            self.split_run = True
 
     def update_cfg(self):
         '''
@@ -401,13 +406,15 @@ class TIES(object):
         # If output folders do not exist make them.
         rep_dirs = range(self.total_reps)
 
-        #check there are any present result folders we dont expect to see.
-
-        #If there are unexpected results folders which are populated throw an error.
+        '''
+        Note: here we could check there are any present result folders we dont expect to see.
+        If there are unexpected results folders which are populated throw an error.
+        this is needed if the user wants to run 5 windows (CG) then add more (FG).
+        '''
 
         for i in rep_dirs:
             for lam in self.lam.str_lams:
-                print('Attempting to make eq, sim and results folders for LAMBDA_{}/rep{}'.format(lam, i))
+                #print('Attempting to make eq, sim and results folders for LAMBDA_{}/rep{}'.format(lam, i))
                 lam_dir = 'LAMBDA_{}'.format(lam)
                 for folder in folders:
                     path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(i), folder)
@@ -474,8 +481,6 @@ class TIES(object):
         Function to write the input configuration files for analysis.
 
         '''
-
-        print('Writing analysis config files...')
 
         vdw_a = ','.join(str(x) for x in self.lam.lambda_sterics_appear)
         ele_a = ','.join(str(x) for x in self.lam.lambda_electrostatics_appear)
