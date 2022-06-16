@@ -800,7 +800,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
 
         if self.split_run:
             openmm_uninitialised = pkg_resources.open_text(openmm_sub_split, 'sub.sh').read()
-            openmm_initialised = openmm_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
+            openmm_initialised = openmm_uninitialised.format(lambs=lambs, reps=self.total_reps-1, run_line=self.sub_run_line,
                                                          header=self.sub_header, root=self.cwd, py_bin=sys.path[0])
             open(os.path.join(self.cwd, 'sub.sh'), 'w').write(openmm_initialised)
         else:
@@ -934,7 +934,7 @@ cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cp
 #BSUB -e eLIGPAIR.%J""".format(int(np.ceil(num_jobs/gpus_per_node)))
             sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
                            ' --exp_name={} --windows_mask=$lambda,$(expr $lambda + 1)' \
-                           ' --node_id=$(expr $i - 1) > $ties_dir/$lambda$i.out&'.format(exp_name)
+                           ' --node_id=$i > $ties_dir/$lambda$i.out&'.format(exp_name)
         else:
             # no OpenMM unified job on HPC
             sub_header = None

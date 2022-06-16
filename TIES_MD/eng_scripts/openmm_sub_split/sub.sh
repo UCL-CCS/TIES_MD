@@ -9,7 +9,7 @@ module load cuda/10.1.168
 date
 
 for lambda in {lambs}; do
-  for i in {{1..{reps}}}; do
+  for i in {{0..{reps}}}; do
         {run_line}
     done
     done
