@@ -43,7 +43,7 @@ from pathlib import Path
 import importlib.resources as pkg_resources
 #split means we will explitlly deal with reps in the submission
 #for non split namd or TIES_MD will handle the parallisim of replicas
-from .eng_scripts import namd_sub, namd_sub_split, openmm_sub_split
+from .eng_scripts import namd_sub, namd_sub_split, openmm_sub_split, cfg_scripts
 
 class TIES(object):
     '''
@@ -342,6 +342,40 @@ class TIES(object):
         if self._total_reps != self._reps_per_exec:
             self._split_run = True
 
+    def update_cfg(self):
+        '''
+        Write a TIES congig file this should be called after api changes are made
+        :return:
+        '''
+        if self.engine == 'namd':
+            engine = self.engine+self.namd_version
+        else:
+            engine = self.engine
+        solv_oct_box = {'cbv1': self.cell_basis_vec1[0], 'cbv2': self.cell_basis_vec1[1], 'cbv3': self.cell_basis_vec1[2],
+                        'cbv4': self.cell_basis_vec2[0], 'cbv5': self.cell_basis_vec2[1], 'cbv6': self.cell_basis_vec2[2],
+                        'cbv7': self.cell_basis_vec3[0], 'cbv8': self.cell_basis_vec3[1], 'cbv9': self.cell_basis_vec3[2]}
+        ties_script = pkg_resources.open_text(cfg_scripts, 'TIES.cfg').read()
+
+        ties_script = ties_script.format(engine=engine,
+                                         temperature=self.temperature.in_units_of(unit.kelvin)/unit.kelvin,
+                                         pressure=self.pressure.in_units_of(unit.atmospheres)/unit.atmospheres,
+                                         sampling_per_window=self.sampling_per_window.in_units_of(unit.nanoseconds)/unit.nanoseconds,
+                                         equili_per_window=self.equili_per_window.in_units_of(unit.nanoseconds)/unit.nanoseconds,
+                                         methods=','.join(self.methods),
+                                         total_reps=self.total_reps,
+                                         reps_per_exec=self.reps_per_exec,
+                                         elec_edges=','.join([str(x) for x in self.elec_edges]),
+                                         ster_edges=','.join([str(x) for x in self.ster_edges]),
+                                         global_lambdas=','.join([str(x) for x in self.global_lambdas]),
+                                         cons_file='na' if self.constraint_file is None else self.constraint_file,
+                                         constraint_column='na' if self.constraint_column is None else self.constraint_column,
+                                         input_type=self.input_type,
+                                         box_type='na' if self.box_type is None else self.box_type,
+                                         edge_length='na' if self.edge_length is None else self.edge_length,
+                                         **solv_oct_box)
+        with open(os.path.join(self.cwd, 'TIES.cfg'), 'w') as f:
+            f.write(ties_script)
+
     def setup(self):
         '''
         Function to setup simulations and then stop
@@ -366,6 +400,10 @@ class TIES(object):
         '''
         # If output folders do not exist make them.
         rep_dirs = range(self.total_reps)
+
+        #check there are any present result folders we dont expect to see.
+
+        #If there are unexpected results folders which are populated throw an error.
 
         for i in rep_dirs:
             for lam in self.lam.str_lams:
@@ -401,7 +439,6 @@ class TIES(object):
             for lam in self.lam.str_lams:
                 lam_dir = 'LAMBDA_{}'.format(lam)
                 path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(rep.node_id))
-                print(path)
                 if not os.path.exists(path):
                     raise ValueError('Output dir {} missing. Command line option --node_id may be set incorrectly'.format(path))
 
