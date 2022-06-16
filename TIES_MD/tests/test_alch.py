@@ -261,7 +261,7 @@ class Test_Alch(unittest.TestCase):
 
             #build some output dirs
             for d in ['results', 'simulation', 'equilibration']:
-                for l in ['0', '1']:
+                for l in ['0.00', '0.20']:
                     path = os.path.join(cwd, 'LAMBDA_{}/rep{}/{}'.format(l, node_id, d))
                     Path(path).mkdir(parents=True, exist_ok=True)
 
@@ -271,15 +271,14 @@ class Test_Alch(unittest.TestCase):
             expected_shapes = [(4, niter), (len(Lam.schedule), niter)]
 
             #look for output
-            for l in ['0', '1']:
+            for l in ['0.00', '0.20']:
                 for ans, method in zip(expected_shapes, ['TI', 'FEP']):
                     path = os.path.join(cwd, 'LAMBDA_{}/rep{}/results/{}.npy'.format(l, node_id, method))
                     array = np.load(path)
                     self.assertEqual(array.shape, ans, 'Failed to generate results of expected shape')
 
             #delete output
-            # build some output dirs
-            for l in ['0', '1']:
+            for l in ['0.00', '0.20']:
                 path = os.path.join(cwd, 'LAMBDA_{}'.format(l))
                 shutil.rmtree(path)
 

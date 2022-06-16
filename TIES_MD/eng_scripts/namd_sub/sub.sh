@@ -6,22 +6,18 @@ ties_dir={root}
 cd $ties_dir/replica-confs
 
 for stage in {{0..2}}; do
-win_id=0
 for lambda in {lambs};
 do
         {run_line}
-        (( win_id++ ))
         sleep 1
 done
 wait
 done
 
 for stage in {{1..1}}; do
-win_id=0
 for lambda in {lambs};
 do
         {run_line}
-        (( win_id++ ))
         sleep 1
 done
 wait

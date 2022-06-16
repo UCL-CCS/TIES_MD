@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
+import shutil
 from simtk import unit
 from simtk.openmm import Vec3
 
@@ -68,6 +69,11 @@ class Test_TIES(unittest.TestCase):
         self.assertEqual(test_init.devices, [0], test_msg.format('Number of GPUs'))
         self.assertEqual(test_init.exp_name, 'sol', test_msg.format('Experiment name'))
         self.assertEqual(test_init.periodic, True, test_msg.format('Spacial periodicity flag'))
+
+        # delete output
+        for l in ['0.00', '0.50', '1.00']:
+            path = os.path.join('./', 'LAMBDA_{}'.format(l))
+            shutil.rmtree(path)
 
 if __name__ == '__main__':
     unittest.main()

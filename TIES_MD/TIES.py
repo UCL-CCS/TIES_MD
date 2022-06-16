@@ -91,7 +91,7 @@ class TIES(object):
                          'box_type']
 
         #Iterate over our args_dict to set attributes of class to values in dict
-        print('Running with arguments:')
+        print('Read arguments from file...')
         for k, v in kwargs.items():
             if k in api_sensitive:
                 full_k = '_'+k
@@ -121,7 +121,7 @@ class TIES(object):
         self._total_reps = int(self._total_reps)
         self._reps_per_exec = int(self._reps_per_exec)
 
-        self._global_lambdas = [float(x) for x in self._global_lambdas.split(',')]
+        self._global_lambdas = [round(float(x), 2) for x in self._global_lambdas.split(',')]
 
         #set genral args
         self.windows = len(self.global_lambdas)
@@ -304,10 +304,11 @@ class TIES(object):
 
     @global_lambdas.setter
     def global_lambdas(self, value):
-        self._global_lambdas = value
+        self._global_lambdas = [round(x, 2) for x in value]
         self.lam = Lambdas(self._elec_edges, self._ster_edges, self._global_lambdas, debug=False)
         self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
                                                                 self._global_lambdas, self._total_reps, self._exp_name)
+        self.setup()
 
     @split_run.setter
     def split_run(self, value):
@@ -367,7 +368,7 @@ class TIES(object):
         rep_dirs = range(self.total_reps)
 
         for i in rep_dirs:
-            for lam in range(self.windows):
+            for lam in self.lam.str_lams:
                 print('Attempting to make eq, sim and results folders for LAMBDA_{}/rep{}'.format(lam, i))
                 lam_dir = 'LAMBDA_{}'.format(lam)
                 for folder in folders:
@@ -397,9 +398,10 @@ class TIES(object):
             
         #check output dirs exist
         for rep in system_ids:
-            for lam in range(self.windows):
+            for lam in self.lam.str_lams:
                 lam_dir = 'LAMBDA_{}'.format(lam)
                 path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(rep.node_id))
+                print(path)
                 if not os.path.exists(path):
                     raise ValueError('Output dir {} missing. Command line option --node_id may be set incorrectly'.format(path))
 
@@ -483,9 +485,9 @@ ele_d = {9}
         dummy_exp = '{\'SYSTEM NAME\': {\'LIGAND NAME\': [0.0, 0.0]}}'
 
         file_path = os.path.join(self.cwd, '../../../analysis.cfg')
-        if not os.path.exists(file_path):
-            with open(file_path, 'w') as f:
-                f.write(common_cfg)
+        #aggresivly write analysis.cfg to ensure lambdas are up to date
+        with open(file_path, 'w') as f:
+            f.write(common_cfg)
 
         file_path = os.path.join(self.cwd, '../../../exp.dat')
         if not os.path.exists(file_path):
@@ -769,9 +771,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         '''
         Function to write an example submission script of NAMD job on HPC (ARCHER2)
         '''
-        lambs = [str(x) for x in self.global_lambdas]
-        lambs = ' '.join(lambs)
-
+        lambs = ' '.join(self.lam.str_lams)
         if self.namd_version < 3:
             if not self.split_run:
                 namd_uninitialised = pkg_resources.open_text(namd_sub, 'sub.sh').read()
@@ -891,7 +891,7 @@ nodes_per_namd=1
 cpus_per_namd={1}""".format(int(num_windows*reps), num_cpu)
 
                 sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $win_id $i&'
+                                ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $i &'
 
             else:
                 sub_header = """#Example script for ARCHER2 NAMD2
@@ -911,7 +911,7 @@ nodes_per_namd={}
 cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cpu))
 
                 sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 +replicas {} --tclmain eq$stage-replicas.conf $lambda $win_id&'.format(reps)
+                                ' --hint=nomultithread namd2 +replicas {} --tclmain eq$stage-replicas.conf $lambda &'.format(reps)
 
         else:
             #no NAMD3

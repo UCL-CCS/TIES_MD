@@ -824,7 +824,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
             #If velocities are randmozied is this still equilibriated?
             NPT['sim'].context.setVelocitiesToTemperature(alch_sys.temp)
         else:
-            equili_file = os.path.join(cwd, 'LAMBDA_{}'.format(i+mask[0]), 'rep{}'.format(ids.node_id),
+            equili_file = os.path.join(cwd, 'LAMBDA_{}'.format(Lam.str_lams[i+mask[0]]), 'rep{}'.format(ids.node_id),
                                        'equilibration', 'state')
             equili_state_f = equili_file+'_NPT.xml'
 
@@ -841,7 +841,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
             NPT['sim'].loadState(equili_state_f)
 
         #add reporter to simulation
-        log = os.path.join(cwd, 'LAMBDA_{}'.format(i+mask[0]), 'rep{}'.format(ids.node_id), 'simulation',
+        log = os.path.join(cwd, 'LAMBDA_{}'.format(Lam.str_lams[i+mask[0]]), 'rep{}'.format(ids.node_id), 'simulation',
                            'log')
         add_simulation_reporters(NPT['sim'], total_sim_NPT, save=log)
 
@@ -873,8 +873,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
         remove_simulation_reporters(NPT['sim'])
 
     #Save results to disk
-    for i, j in enumerate(range(mask[0], mask[1])):
-
+    for i, j in enumerate(Lam.str_lams[mask[0]: mask[1]]):
         if 'TI' in alch_sys.methods:
             file = os.path.join(cwd, 'LAMBDA_{}'.format(j), 'rep{}'.format(ids.node_id), 'results',
                                 'TI.npy')

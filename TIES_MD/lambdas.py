@@ -32,7 +32,9 @@ class Lambdas(object):
     :param debug: boolean, whether to print the schedule to terminal
     '''
     def __init__(self, elec_edges, ster_edges, global_lambs, custom=None, debug=True):
-
+        
+        self.global_lambdas = global_lambs
+        self.str_lams = ["%.2f" % float(x) for x in self.global_lambdas]
         if custom is None:
 
             self.lambda_sterics_appear = get_line(ster_edges[0], ster_edges[1], global_lambs, appear=True)
