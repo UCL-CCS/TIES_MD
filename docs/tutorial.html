@@ -1,76 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Tutorial &mdash; TIES_MD 0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="HPC Submission scripts" href="HPC_submissions.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #D7ECD9" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> TIES_MD
-          
-
-          
-            
             <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -78,18 +39,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
@@ -99,6 +49,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#simulation-preparation">Simulation Preparation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-simulations">Running Simulations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#binding-free-energy-calculations">Binding Free Energy Calculations</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
@@ -110,81 +61,46 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">TIES_MD</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #D7ECD9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">TIES_MD</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Tutorial</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="getting-started">
-<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+             
+  <section id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
+<section id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a package which is intended to be used on the command line and submitted to a HPC system. In this document
 we will outline what commands should be run to calculate binding free energies. To start with any free energy calculations
 we must first outline what are the expected input files to the <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> program.</p>
+<p>In this tutorial we will refer to example systems which can be found in the source code
+provided <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/tree/main/TIES_MD/examples">here</a>. These examples can be download by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">UCL</span><span class="o">-</span><span class="n">CCS</span><span class="o">/</span><span class="n">TIES_MD</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
 </div>
-<div class="section" id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p>and navigating to <code class="docutils literal notranslate"><span class="pre">TIES_MD/TIES_MD/examples/</span></code></p>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> expects a number of input files, these are two essential files files, e.g. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> and <code class="docutils literal notranslate"><span class="pre">complex.prmtop</span></code>.
 These files contain information about the position, topology and parameters for the system. Currently we only support
 the <code class="docutils literal notranslate"><span class="pre">AMBER</span></code> based format <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> but provide a utility to <a class="reference external" href="https://ccs-ties.org/ties/">build</a> them online. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> also
@@ -198,79 +114,92 @@ can be renamed to anything but the name of the <code class="docutils literal not
 <a class="reference external" href="https://github.com/UCL-CCS/TIES20">TIES20</a> program can be used to generate all required inputs.</p>
 <p>The only non standard input to <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a configuration file (<code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>) which specifies options which the user my wish to
 occasionally change. This file must be placed alongside the build directory. Here we provide an example of such a file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#################################################################</span>
-<span class="c1">#                                                               #</span>
-<span class="c1">#                             TIES                              #</span>
-<span class="c1">#                                                               #</span>
-<span class="c1">#################################################################</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   #################################################################
+   #                                                               #
+   #                             TIES                              #
+   #                                                               #
+   #################################################################
 
-<span class="c1">#Which molecular dynamics engine will be used, valid options are namd/openmm</span>
-<span class="n">engine</span> <span class="o">=</span> <span class="n">openmm</span>
+   #Which molecular dynamics engine will be used, valid options are namd/openmm
+   engine = openmm
 
-<span class="c1">#Target temperature for the thermostat</span>
-<span class="n">temperature</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">kelvin</span>
+   #Target temperature for the thermostat
+   temperature = 300*unit.kelvin
 
-<span class="c1">#Target pressure for barostat</span>
-<span class="n">pressure</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">atmospheres</span>
+   #Target pressure for barostat
+   pressure = 1*unit.atmospheres
 
-<span class="c1">#How much production sampling to run per alchemical window.</span>
-<span class="n">sampling_per_window</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">picosecond</span>
+   #How much production sampling to run per alchemical window (4ns recommended)
+   sampling_per_window = 4*unit.nanoseconds
 
-<span class="c1">#How much equilibration to run per alchemical window.</span>
-<span class="n">equili_per_window</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">picoseconds</span>
+   #How much equilibration to run per alchemical window (2ns recommended)
+   equili_per_window = 2*unit.nanoseconds
 
-<span class="c1">#Which estimators to use. Valid options are: TI, FEP</span>
-<span class="n">methods</span> <span class="o">=</span> <span class="n">FEP</span><span class="p">,</span> <span class="n">TI</span>
+   #Which estimators to use. Valid options are: TI, FEP
+   methods = FEP, TI
 
-<span class="c1">#How many total replicas of each window are run (we recommend at least 5).</span>
-<span class="n">total_reps</span> <span class="o">=</span> <span class="mi">5</span>
+   #How many total replicas of each window are run (we recommend at least 5).
+   total_reps = 5
 
-<span class="c1">#How many replicas should each instance of TIES_MD run.</span>
-<span class="n">reps_per_exec</span> <span class="o">=</span> <span class="mi">5</span>
+   #How many replicas should this evocation of TIES_MD run, used for parallelisation
+   reps_per_exec = 5
 
-<span class="c1">#Where in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.</span>
-<span class="n">elec_edges</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span>
+   #Where in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.
+   elec_edges = 0.5, 1.0
 
-<span class="c1">#Where in lambda schedule (0-&gt;1) should the Lennard_Jones potentials begin, stop appearing.</span>
-<span class="n">ster_edges</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span>
+   #Where in lambda schedule (0-&gt;1) should the Lennard_Jones potentials begin, stop appearing.
+   ster_edges = 0.0, 0.5
 
-<span class="c1">#The value the global controlling parameter takes in each window.</span>
-<span class="n">global_lambdas</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.0</span>
+   #The value the global controlling parameter takes in each window (13 windows of this spacing recommended)
+   global_lambdas = 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.0
 
-<span class="c1">#The name of the pdb file with constraints in the build directory, i.e. cons.pdb If no constraints pass na</span>
-<span class="n">constraint_file</span> <span class="o">=</span> <span class="n">na</span>
+   #The name of the pdb file with constraints in the build directory, i.e. cons.pdb If no constraints pass na
+   constraint_file = na
 
-<span class="c1">#Which column in pdb are constraints provided valid options are occupancy/beta_factor.</span>
-<span class="n">constraint_column</span> <span class="o">=</span> <span class="n">beta_factor</span>
+   #Which column in pdb are constraints provided valid options are occupancy/beta_factor. (beta_factor is standard)
+   constraint_column = beta_factor
 
-<span class="c1">#What type of simulation cell is used valid options are cube, truncatedOctahedron, rhombicDodecahedron or na for manual.</span>
-<span class="n">box_type</span> <span class="o">=</span> <span class="n">na</span>
+   #What type of simulation cell is used valid options are cube, truncatedOctahedron, rhombicDodecahedron or na for manual.
+   box_type = na
 
-<span class="c1">#The edge length used to compute the cube or truncatedOctahedron or rhombicDodecahedron box vectors</span>
-<span class="n">edge_length</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">nanometer</span>
+   #The edge length used to compute the cube or truncatedOctahedron or rhombicDodecahedron box vectors
+   edge_length = 10*unit.nanometer
 
-<span class="c1">#If box_type is na the manually specify box vectors of this simulation, unit Angstrom.</span>
-<span class="n">cell_basis_vec1</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
-<span class="n">cell_basis_vec2</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.0</span>
-<span class="n">cell_basis_vec3</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">50</span>
+   #If box_type is na the manually specify box vectors of this simulation, unit Angstrom.
+   cell_basis_vec1 = 50, 0.0, 0.0
+   cell_basis_vec2 = 0.0, 50, 0.0
+   cell_basis_vec3 = 0.0, 0.0, 50
 
-<span class="c1">#What input type is provided, only AMBER supported.</span>
-<span class="n">input_type</span> <span class="o">=</span> <span class="n">AMBER</span>
+   #What input type is provided, only AMBER supported.
+   input_type = AMBER
 
-<span class="c1">#NAMD specific options</span>
-<span class="c1">#What version of NAMD to use &lt;= 2.12 effects how analysis files are read &gt;=3 uses NAMD3 alpha.</span>
-<span class="n">version</span> <span class="o">=</span> <span class="mf">2.12</span>
+   #NAMD specific options
+   #What version of NAMD to use &lt;= 2.12 effects how analysis files are read &gt;=3 uses NAMD3 alpha.
+   version = 2.12
+
+``total_reps`` and ``reps_per_exec`` are options which can be used to achieve simple parallelism of the simulations.
 </pre></div>
 </div>
-<p>For more information on setting such as <code class="docutils literal notranslate"><span class="pre">elec_edges</span></code> or <code class="docutils literal notranslate"><span class="pre">ster_edges</span></code> please see the <a class="reference internal" href="theory.html#theory"><span class="std std-ref">Theory</span></a> section. Note the
-option <code class="docutils literal notranslate"><span class="pre">constraint_column</span></code> which determines if the constraint indexes will be read from the temperature factor
+<p>For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
+<code class="docutils literal notranslate"><span class="pre">total_reps</span> <span class="pre">=</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span> <span class="pre">=</span> <span class="pre">1</span></code>. See the <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> section for more details of how to
+achieve this.</p>
+<p>The following image shows <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> applied to one alchemical transformation.</p>
+<a class="reference internal image-reference" href="_images/one_leg.png"><img alt="Alternative text" class="align-center" src="_images/one_leg.png" style="width: 600px;" /></a>
+<p>The setting <code class="docutils literal notranslate"><span class="pre">global_lambdas</span></code> defines the values the alchemical parameter <code class="docutils literal notranslate"><span class="pre">λ</span></code> will take in each alchemical
+windows. <code class="docutils literal notranslate"><span class="pre">global_lambdas</span></code> should run from 0 to 1. As <code class="docutils literal notranslate"><span class="pre">global_lambdas</span></code> varies from 0 to 1 some atoms in the
+system are turned on and off moving the system between two physical states (see <a class="reference internal" href="theory.html#alchemical-calculations"><span class="std std-ref">Alchemical Calculations</span></a>).
+The values given to <code class="docutils literal notranslate"><span class="pre">elec_edges</span></code> and <code class="docutils literal notranslate"><span class="pre">ster_edges</span></code> define exactly how <code class="docutils literal notranslate"><span class="pre">λ</span></code> modifies the potential
+energy functions of the system and for more information these settings please see the <a class="reference internal" href="theory.html#alchemical-pathways"><span class="std std-ref">Alchemical Pathways</span></a> section.</p>
+<p>Note the option <code class="docutils literal notranslate"><span class="pre">constraint_column</span></code> which determines if the constraint indexes will be read from the temperature factor
 or occupancy column of the constraints PDB. The alchemical indexes are always be read from the temperature factor column
 in the main PDB <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code>. The <code class="docutils literal notranslate"><span class="pre">edge_length</span></code> option can be found in the <code class="docutils literal notranslate"><span class="pre">leap.log</span></code> file created during system
-preparation preformed by the users or TIES20. If TIES20 is used for system preparation the <code class="docutils literal notranslate"><span class="pre">leap.log</span></code> file will be found
-in the <code class="docutils literal notranslate"><span class="pre">build</span></code> directory and the edge length will appear in the file as for example <code class="docutils literal notranslate"><span class="pre">edge:</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">64.00</span></code> in units of angstroms.</p>
-</div>
-<div class="section" id="command-line">
-<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+preparation preformed by the users or TIES20. TIES20 will populate a TIES.cfg automatically with the correct box size.</p>
+<p>Typically a constraint file may be used during preproduction of simulations involving proteins but possibly not a small
+drug like molecule in only solvent. It will be show later in the Binding Free Energy Calculations section when and
+why we use a constraints file.</p>
+</section>
+<section id="command-line">
+<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this heading"></a></h2>
 <p>With all input present in the build directory and <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> installed we are almost ready to calculate binding
 free energies. <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> can be invoked on the command line by just running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> and this will use all default
 settings and the settings found in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>. The setting which can be taken on the command line and their default
@@ -305,9 +234,9 @@ run. By default all windows will be run.
 A value of 1 sets the simulation box as periodic a value of 0 sets the simulation box as non-periodic.
 </pre></div>
 </div>
-</div>
-<div class="section" id="simulation-preparation">
-<h2>Simulation Preparation<a class="headerlink" href="#simulation-preparation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="simulation-preparation">
+<h2>Simulation Preparation<a class="headerlink" href="#simulation-preparation" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> is run in two stages first using the option <code class="docutils literal notranslate"><span class="pre">--run_type=setup</span></code> this prepares output directories and MD engine
 input scripts, this stage is not compute intensive and can be run on a PC or HPC head node. The setup stage can but does
 not have to be run of you are using <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> and directories are built when using <code class="docutils literal notranslate"><span class="pre">--run_type=run</span></code> also. Output directories are prepared
@@ -325,9 +254,9 @@ for the zero sum transformation of ethane to ethane the setup command would be:<
 <p>The above sets up an <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calculation. Alternatively to use <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> some options must be changed please see this
 <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/blob/master/TIES_MD/examples/ethane_namd/zero_sum/leg1/TIES.cfg">modified</a> config file
 as an example of what to change.</p>
-</div>
-<div class="section" id="running-simulations">
-<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="running-simulations">
+<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this heading"></a></h2>
 <p>The second stage of running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code>, after setup, involves the running of the MD simulations, this is compute intensive
 and can only be run on a HPC for all but the smallest systems. The execution of <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> branches at this point dependant
 on what MD engine is being used. HPC submission scripts should be prepared with the target MD engine in mind.</p>
@@ -378,9 +307,9 @@ pre-production stages <code class="docutils literal notranslate"><span class="pr
 when running with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> but must be explicitly executed when using <code class="docutils literal notranslate"><span class="pre">NAMD</span></code>. The exact submission script for a particular
 HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
 solution to solve any issues we would suggest consulting user manuals of both HPC and MD engine, reading our example <a class="reference internal" href="HPC_submissions.html#hpc-submission-scripts"><span class="std std-ref">HPC Submission scripts</span></a> or submitting an <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/issues">issue</a> on <code class="docutils literal notranslate"><span class="pre">Github</span></code>.</p>
-</div>
-<div class="section" id="analysis">
-<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When using NAMD the version is specified in namd.cfg as <code class="docutils literal notranslate"><span class="pre">namd_version</span> <span class="pre">=</span> <span class="pre">2.14</span></code> for example. This is critical to the result
@@ -413,55 +342,50 @@ would look something like:</p>
   <span class="s1">&#39;OpenMM_TI&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ethane&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;zero_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.076</span><span class="p">]}}}</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+<section id="binding-free-energy-calculations">
+<h2>Binding Free Energy Calculations<a class="headerlink" href="#binding-free-energy-calculations" title="Permalink to this heading"></a></h2>
+<p>What has been discussed up until now is performing one alchemical simulation with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> for a binding free
+energy calculation we need to alchemical simulations. We call these two simulations the complex and ligand simulations
+shortened to com and lig respectively. The lig simulation transforms one ligand A into another B in water the com
+simulation does the same but now inside the protein. The com and lig simulations give us <span class="math notranslate nohighlight">\({Δ G_{mutation1}}\)</span> and
+<span class="math notranslate nohighlight">\({Δ G_{mutation2}}\)</span> respectively the differnce of these values is equal to the binding
+free energy <span class="math notranslate nohighlight">\({ΔΔ G}\)</span></p>
+<a class="reference internal image-reference" href="_images/thermo_cycle.png"><img alt="Alternative text" class="align-center" src="_images/thermo_cycle.png" style="width: 600px;" /></a>
+<p>constraints file discussions</p>
+<p>General behaviour of many legs and two legs</p>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="HPC_submissions.html" class="btn btn-neutral float-right" title="HPC Submission scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HPC_submissions.html" class="btn btn-neutral float-right" title="HPC Submission scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, UCL CCS.
-
-    </p>
+    <p>&#169; Copyright 2021, UCL CCS.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

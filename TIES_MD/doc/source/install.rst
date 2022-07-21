@@ -33,12 +33,52 @@ for older ``OpenMM`` versions ``< 7.6`` this command was::
 
     python -m simtk.testInstallation
 
-In some instances the wrong version of ``OpenMM`` and ``CUDAtoolkit`` could be installed this can be corrected by running::
+In some instances the wrong version of ``OpenMM`` and ``CUDAtoolkit`` could be installed. If this has happend the above
+test of ``OpenMM`` will produce an output which looks like::
+
+    OpenMM Version: 7.7
+    Git Revision: 130124a3f9277b054ec40927360a6ad20c8f5fa6
+
+    There are 4 Platforms available:
+
+    1 Reference - Successfully computed forces
+    2 CPU - Successfully computed forces
+    3 CUDA - Error computing forces with CUDA platform
+    4 OpenCL - Successfully computed forces
+
+    CUDA platform error: Error loading CUDA module: CUDA_ERROR_UNSUPPORTED_PTX_VERSION (222)
+
+    Median difference in forces between platforms:
+
+    Reference vs. CPU: 6.30571e-06
+    Reference vs. OpenCL: 6.76359e-06
+    CPU vs. OpenCL: 8.05194e-07
+
+    All differences are within tolerance.
+
+the critical information here is ``3 CUDA - Error computing forces with CUDA platform`` and
+``CUDA platform error: Error loading CUDA module: CUDA_ERROR_UNSUPPORTED_PTX_VERSION (222)`` this can be corrected by
+changing the install version of ``CUDAtoolkit`` like so::
 
     conda install -c conda-forge openmm cudatoolkit=10.0
 
-where ``10.0`` should be replaced with the particular ``CUDA`` version you want to target. See the
-``OpenMM`` `user guild <http://docs.openmm.org/latest/userguide/index.html>`_ for more details on this.
+where ``10.0`` should be replaced with the particular ``CUDA`` version you want to target. One can determine an
+appropriate value for this by running ``nvidia-smi`` in a terminal which yields::
+
+    +-----------------------------------------------------------------------------+
+    | NVIDIA-SMI 460.80       Driver Version: 460.80       CUDA Version: 11.2     |
+    |-------------------------------+----------------------+----------------------+
+    | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+    | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+    |                               |                      |               MIG M. |
+    |===============================+======================+======================|
+    |   0  Quadro M1000M       Off  | 00000000:01:00.0 Off |                  N/A |
+    | N/A   50C    P5    N/A /  N/A |    435MiB /  2002MiB |      4%      Default |
+    |                               |                      |                  N/A |
+    +-------------------------------+----------------------+----------------------+
+
+The top right value here ``11.2`` can be used as the version of ``CUDA`` you wish to target. If ``nvidia-smi`` does not
+return the above output your GPU and drivers my not be configured correctly.
 
 The install of ``TIES MD`` can be tested by downloading and running (:ref:`Tutorial`) any of the examples
 provided `here <https://github.com/UCL-CCS/TIES_MD/tree/main/TIES_MD/examples>`_. These examples can be download by running::

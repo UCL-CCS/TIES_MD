@@ -340,12 +340,16 @@ class TIES(object):
         self._total_reps = value
         if self._total_reps != self._reps_per_exec:
             self.split_run = True
+        else:
+            self.split_run = False
 
     @reps_per_exec.setter
     def reps_per_exec(self, value):
         self._reps_per_exec = value
         if self._total_reps != self._reps_per_exec:
             self.split_run = True
+        else:
+            self.split_run = False
 
     def update_cfg(self):
         '''
@@ -353,7 +357,7 @@ class TIES(object):
         :return:
         '''
         if self.engine == 'namd':
-            engine = self.engine+self.namd_version
+            engine = self.engine+str(self.namd_version)
         else:
             engine = self.engine
         solv_oct_box = {'cbv1': self.cell_basis_vec1[0], 'cbv2': self.cell_basis_vec1[1], 'cbv3': self.cell_basis_vec1[2],
@@ -393,6 +397,7 @@ class TIES(object):
             self.write_namd_scripts()
         else:
             folders = ['equilibration', 'simulation', 'results']
+            print('writing sub')
             self.write_openmm_submission()
         TIES.build_results_dirs(self, folders)
         self.write_analysis_cfg()
@@ -817,13 +822,13 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         if self.namd_version < 3:
             if not self.split_run:
                 namd_uninitialised = pkg_resources.open_text(namd_sub, 'sub.sh').read()
-                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
-                                                             header=self.sub_header, root=self.cwd)
+                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line0=self.sub_run_line[0],
+                                                             run_line1=self.sub_run_line[1], header=self.sub_header, root=self.cwd)
                 open(os.path.join(self.cwd, 'sub.sh'), 'w').write(namd_initialised)
             else:
                 namd_uninitialised = pkg_resources.open_text(namd_sub_split, 'sub.sh').read()
-                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
-                                                             header=self.sub_header, root=self.cwd)
+                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line0=self.sub_run_line[0],
+                                                             run_line1=self.sub_run_line[1], header=self.sub_header, root=self.cwd)
                 open(os.path.join(self.cwd, 'sub.sh'), 'w').write(namd_initialised)
 
         else:
@@ -932,8 +937,10 @@ module load namd/2.14-nosmp
 nodes_per_namd=1
 cpus_per_namd={1}""".format(int(num_windows*reps), num_cpu)
 
-                sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $i &'
+                sub_run_line = ['srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                                ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $i &',
+                                'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                                ' --hint=nomultithread namd2 --tclmain sim$stage.conf $lambda $i &']
 
             else:
                 sub_header = """#Example script for ARCHER2 NAMD2
@@ -952,8 +959,10 @@ module load namd/2.14-nosmp
 nodes_per_namd={}
 cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cpu))
 
-                sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 +replicas {} --tclmain eq$stage-replicas.conf $lambda &'.format(reps)
+                sub_run_line = ['srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                                ' --hint=nomultithread namd2 +replicas {} --tclmain eq$stage-replicas.conf $lambda &'.format(reps),
+                                'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                                ' --hint=nomultithread namd2 +replicas {} --tclmain sim$stage-replicas.conf $lambda &'.format(reps)]
 
         else:
             #no NAMD3

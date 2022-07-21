@@ -39,12 +39,12 @@ are scaled along the alchemical path way. ``ster_edges`` for example is input as
 appearing atoms begin to appear, the second float, ``y``, determines when the LJ of the appearing atoms are fully appeared.
 The disappearing atoms will begin disappearing when ``λ=1-x`` and be fully disappeared when ``λ=1-y``. This is best shown graphically
 and figure 1 plots the lambda schedule for ``ster_edges = 0.0, 0.5`` and ``elec_edges = 0.5, 1.0`` with ``global_lambdas =
-0.0, 0.08, 0.17, 0.25, 0.33, 0.42, 0.5, 0.58, 0.67, 0.75, 0.83, 0.92, 1.0``.
+0.0, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.0``.
 
 
 .. image:: _static/images/lambda_s.png
   :align: center
-  :width: 400
+  :width: 600
   :alt: Alternative text
 
 For the ``NAMD`` implementation of alchemical pathways and the associated options there we recommend consulting the
