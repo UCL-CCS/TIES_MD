@@ -297,9 +297,5 @@ simulations these must be setup by hand or using ``TIES_20``. Setting up the lig
 principles as discussed above. Some additional ideas however are that a constraints file is normally used for the com
 simulation, this is included to avoid rapid changes of the protein crystal structure conformation early in the simulation
 caused by close atom contacts. Also the com simulation with the protein will be more expensive computationally and thus
-the time and resources allocated
+the time and resources allocated.
 
-
-constraints file discussions
-
-General behaviour of many legs and two legs
