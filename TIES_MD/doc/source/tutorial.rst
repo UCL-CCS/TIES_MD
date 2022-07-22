@@ -299,3 +299,6 @@ simulation, this is included to avoid rapid changes of the protein crystal struc
 caused by close atom contacts. Also the com simulation with the protein will be more expensive computationally and thus
 the time and resources allocated.
 
+Work in progress ...
+constraints file discussions
+General behaviour of many legs and two legs

@@ -618,13 +618,13 @@ minimize 2000
                                                              temp=temp, ele_start=self.elec_edges[0],
                                                              ster_end=self.ster_edges[1], header=header, run=run,
                                                              root=self.cwd)
-        out_name = 'eq0.conf'
+        out_name = 'sim0.conf'
         open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
         if not self.split_run:
             # populate and write replica script which controls replica submissions
             min_namd_uninitialised = pkg_resources.open_text(namd_sub, 'min-replicas.conf').read()
             min_namd_initialised = min_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
-            out_name = 'eq0-replicas.conf'
+            out_name = 'sim0-replicas.conf'
             open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
 
     def write_namd_eq(self):
@@ -746,7 +746,7 @@ conskcol  {}
                                                                pressure=pressure, run=run, temp=temp,
                                                                ele_start=self.elec_edges[0], ster_end=self.ster_edges[1],
                                                                header=header, res_freq=res_freq, root=self.cwd)
-            out_name = "eq{}.conf".format(i)
+            out_name = "sim{}.conf".format(i)
             open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(eq_namd_initialised)
 
             if not self.split_run:
@@ -755,7 +755,7 @@ conskcol  {}
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
                                                                    prev=prev_output, current='eq{}'.format(i),
                                                                    root=self.cwd)
-                open(os.path.join(self.cwd, './replica-confs', 'eq{}-replicas.conf'.format(i)), 'w').write(eq_namd_initialised)
+                open(os.path.join(self.cwd, './replica-confs', 'sim{}-replicas.conf'.format(i)), 'w').write(eq_namd_initialised)
 
     def write_namd_prod(self):
         '''
@@ -805,7 +805,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         sim_namd_initialised = sim_namd_uninitialised.format(structure_name=self.exp_name, temp=temp, pressure=pressure,
                                                              ele_start=self.elec_edges[0], ster_end=self.ster_edges[1],
                                                              header=header, steps=steps, root=self.cwd)
-        out_name = "sim1.conf"
+        out_name = "sim3.conf"
         open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(sim_namd_initialised)
 
         # read and write sim replica to handle replica simulations, only if we want to use +replicas option
@@ -822,13 +822,13 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         if self.namd_version < 3:
             if not self.split_run:
                 namd_uninitialised = pkg_resources.open_text(namd_sub, 'sub.sh').read()
-                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line0=self.sub_run_line[0],
-                                                             run_line1=self.sub_run_line[1], header=self.sub_header, root=self.cwd)
+                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line=self.sub_run_line,
+                                                             header=self.sub_header, root=self.cwd)
                 open(os.path.join(self.cwd, 'sub.sh'), 'w').write(namd_initialised)
             else:
                 namd_uninitialised = pkg_resources.open_text(namd_sub_split, 'sub.sh').read()
-                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps, run_line0=self.sub_run_line[0],
-                                                             run_line1=self.sub_run_line[1], header=self.sub_header, root=self.cwd)
+                namd_initialised = namd_uninitialised.format(lambs=lambs, reps=self.total_reps-1, run_line=self.sub_run_line,
+                                                             header=self.sub_header, root=self.cwd)
                 open(os.path.join(self.cwd, 'sub.sh'), 'w').write(namd_initialised)
 
         else:
@@ -937,10 +937,8 @@ module load namd/2.14-nosmp
 nodes_per_namd=1
 cpus_per_namd={1}""".format(int(num_windows*reps), num_cpu)
 
-                sub_run_line = ['srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 --tclmain eq$stage.conf $lambda $i &',
-                                'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 --tclmain sim$stage.conf $lambda $i &']
+                sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                               ' --hint=nomultithread namd2 --tclmain sim$stage.conf $lambda $i &'
 
             else:
                 sub_header = """#Example script for ARCHER2 NAMD2
@@ -959,10 +957,8 @@ module load namd/2.14-nosmp
 nodes_per_namd={}
 cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cpu))
 
-                sub_run_line = ['srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 +replicas {} --tclmain eq$stage-replicas.conf $lambda &'.format(reps),
-                                'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                                ' --hint=nomultithread namd2 +replicas {} --tclmain sim$stage-replicas.conf $lambda &'.format(reps)]
+                sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
+                               ' --hint=nomultithread namd2 +replicas {} --tclmain sim$stage-replicas.conf $lambda &'.format(reps)
 
         else:
             #no NAMD3

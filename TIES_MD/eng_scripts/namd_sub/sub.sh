@@ -5,21 +5,11 @@
 ties_dir={root}
 cd $ties_dir/replica-confs
 
-# these loops are for equilibration
-for stage in {{0..2}}; do
+# Looping over minimization, equilibration and production stages
+for stage in {{0..3}}; do
 for lambda in {lambs};
 do
-        {run_line0}
-        sleep 1
-done
-wait
-done
-
-#this is for production
-for stage in {{1..1}}; do
-for lambda in {lambs};
-do
-        {run_line1}
+        {run_line}
         sleep 1
 done
 wait
