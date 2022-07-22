@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutorial &mdash; TIES_MD 0.1 documentation</title>
+  <title>Tutorial &mdash; TIES_MD 1.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -101,14 +101,14 @@ provided <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/
 </section>
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> expects a number of input files, these are two essential files files, e.g. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> and <code class="docutils literal notranslate"><span class="pre">complex.prmtop</span></code>.
+<p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> expects a number of input files, these are two essential files, e.g. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> and <code class="docutils literal notranslate"><span class="pre">complex.prmtop</span></code>.
 These files contain information about the position, topology and parameters for the system. Currently we only support
 the <code class="docutils literal notranslate"><span class="pre">AMBER</span></code> based format <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> but provide a utility to <a class="reference external" href="https://ccs-ties.org/ties/">build</a> them online. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> also
 contains the alchemical indexes denoting which atoms will appear and disappear during the simulation. There is also
 an optional input file, <code class="docutils literal notranslate"><span class="pre">constraints.pdb</span></code>, and this contains indexes denoting which atoms, if any, are constrained
 during the pre-production simulation. This input should all be placed in a directory named build located
 where the user wishes to run the simulation. Examples of these files can be found <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples">here</a>.
-We suggest using the directory structure <code class="docutils literal notranslate"><span class="pre">study/system/ligand/thermodynamic_leg/build</span></code> this will allow the analysis scripts to
+Please use a directory structure like <code class="docutils literal notranslate"><span class="pre">study/system/ligand/thermodynamic_leg/build</span></code> this will allow the analysis scripts to
 understand the structure and perform analysis automatically. <code class="docutils literal notranslate"><span class="pre">study</span></code>, <code class="docutils literal notranslate"><span class="pre">system</span></code>, <code class="docutils literal notranslate"><span class="pre">ligand</span></code> and <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code>
 can be renamed to anything but the name of the <code class="docutils literal notranslate"><span class="pre">build</span></code> directory is fixed. If input for novel ligand transformations is desired the
 <a class="reference external" href="https://github.com/UCL-CCS/TIES20">TIES20</a> program can be used to generate all required inputs.</p>
@@ -276,24 +276,12 @@ to <code class="docutils literal notranslate"><span class="pre">1</span></code>,
 <p>There are a lot of options for how these <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calcualtions can be structured and parallelized with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> see our
 <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> page for more information on this. For a <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> calculation if the submission script requested 6 CPU
 nodes each with 128 cores the run lines in the submission script might look like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for stage in {{0..2}}; do
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for stage in {{0..3}}; do
 win_id=0
 for lambda in 0.0, 0.2, 0.4, 0.6, 0.8, 1.0;
 do
         cd $build/replica-confs
-        srun -N 1 -n 128 namd2 --tclmain eq$stage-replicas.conf $lambda $win_id &amp;
-        (( win_id++ ))
-        sleep 1
-done
-wait
-done
-
-for stage in {{1..1}}; do
-win_id=0
-for lambda in 0.0, 0.2, 0.4, 0.6, 0.8, 1.0;
-do
-        cd $build/replica-confs
-        srun -N 1 -n 128 namd2 --tclmain sim$stage-replicas.conf $lambda $win_id&amp;
+        srun -N 1 -n 128 namd2 --tclmain sim$stage-replicas.conf $lambda $win_id &amp;
         (( win_id++ ))
         sleep 1
 done
@@ -302,7 +290,7 @@ done
 </pre></div>
 </div>
 <p>Notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> example reference is made to a directory <code class="docutils literal notranslate"><span class="pre">replica-confs</span></code> this is where the NAMD input scripts are writen
-during the <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> setup stage. Also notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> examples there are 2 loops over <code class="docutils literal notranslate"><span class="pre">stage</span></code> these are three
+during the <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> setup stage. Also notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> examples there is a loop over the <code class="docutils literal notranslate"><span class="pre">stages</span></code> these are three
 pre-production stages <code class="docutils literal notranslate"><span class="pre">eq0</span></code>, <code class="docutils literal notranslate"><span class="pre">eq1</span></code> and <code class="docutils literal notranslate"><span class="pre">eq2</span></code> and one production stage <code class="docutils literal notranslate"><span class="pre">sim1</span></code> these stages are performed automatically by <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>
 when running with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> but must be explicitly executed when using <code class="docutils literal notranslate"><span class="pre">NAMD</span></code>. The exact submission script for a particular
 HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
@@ -315,21 +303,26 @@ solution to solve any issues we would suggest consulting user manuals of both HP
 <p>When using NAMD the version is specified in namd.cfg as <code class="docutils literal notranslate"><span class="pre">namd_version</span> <span class="pre">=</span> <span class="pre">2.14</span></code> for example. This is critical to the result
 as pre NAMD 2.12 different columns are used by NAMD to write the output potentials. Please take care the version is set correctly.</p>
 </div>
-<p>The analysis of the files found in the output can be performed using the <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> package which is included in the
+<p>The analysis of the files found in the output can be performed by <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> which is included in the
 conda installation of <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> or is available for separate <a class="reference external" href="https://github.com/adw62/TIES_analysis">download</a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> will create the input need to perform the analysis. Input configuration files for <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> will be filled
 in with information such as the lambda schedule or which MD engine was used. If the directory structure
 <code class="docutils literal notranslate"><span class="pre">study/system/ligand/thermodynamic_leg/build</span></code> was used then these config files are written to the <code class="docutils literal notranslate"><span class="pre">study</span></code> directory.
 Some information is missing from these config files which must be filled out. The missing information is for the names
-of the <code class="docutils literal notranslate"><span class="pre">system</span></code>, <code class="docutils literal notranslate"><span class="pre">ligand</span></code> and <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code> directories. Add the names of the <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code> to the
-config file <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> under the option <code class="docutils literal notranslate"><span class="pre">legs</span></code> and add the <code class="docutils literal notranslate"><span class="pre">system</span></code> and <code class="docutils literal notranslate"><span class="pre">ligand</span></code> names into <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> instead of <code class="docutils literal notranslate"><span class="pre">'SYSTEM</span> <span class="pre">NAME'</span></code>
-and <code class="docutils literal notranslate"><span class="pre">'LIGAND</span> <span class="pre">NAME'</span></code>. As an example see the option <a class="reference external" href="https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L8">legs</a>
+of the <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code> directories. Add the names of the <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code> to the
+config file <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> under the option <code class="docutils literal notranslate"><span class="pre">legs</span></code> as an example see the option <a class="reference external" href="https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L8">legs</a>
 in this example script for the analysis of protein-ligand binding calculation with two thermodynamic legs named
-<code class="docutils literal notranslate"><span class="pre">'lig'</span></code> and <code class="docutils literal notranslate"><span class="pre">'com'</span></code>. This example analysis input also has the <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> <a class="reference external" href="https://github.com/adw62/TIES_analysis/blob/main/example/exp.dat">file</a>
+<code class="docutils literal notranslate"><span class="pre">'lig'</span></code> and <code class="docutils literal notranslate"><span class="pre">'com'</span></code>. This example analysis input also has an <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> <a class="reference external" href="https://github.com/adw62/TIES_analysis/blob/main/example/exp.dat">file</a>
 populated for the protein target named <code class="docutils literal notranslate"><span class="pre">ptp1b</span></code> and a ligand transformation in that protein named l6-l14, this transformation
 has an experimental ΔΔG of -1.04 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
-values in <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> which need to be populated can be left as 0.0. With <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> and <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> populated the analysis
-can then be executed on a HPC head node or PC by running <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> in the <code class="docutils literal notranslate"><span class="pre">study</span></code> directory using the command:</p>
+values in <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> which need to be populated can be left as 0.0. To save time an <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> file with all values
+set to 0.0 can be generated with <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_ana</span> <span class="o">--</span><span class="n">run_type</span><span class="o">=</span><span class="n">setup</span>
+</pre></div>
+</div>
+<p>The information in the generated <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> will be inferred from the directory structure.  With <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> and
+<code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> populated the analysis can then be executed on a HPC head node or PC by running <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">study</span></code> directory using the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_ana</span>
 </pre></div>
 </div>
@@ -346,14 +339,20 @@ would look something like:</p>
 <section id="binding-free-energy-calculations">
 <h2>Binding Free Energy Calculations<a class="headerlink" href="#binding-free-energy-calculations" title="Permalink to this heading"></a></h2>
 <p>What has been discussed up until now is performing one alchemical simulation with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> for a binding free
-energy calculation we need to alchemical simulations. We call these two simulations the complex and ligand simulations
+energy calculation we need two alchemical simulations. We call these two simulations the complex and ligand simulations
 shortened to com and lig respectively. The lig simulation transforms one ligand A into another B in water the com
 simulation does the same but now inside the protein. The com and lig simulations give us <span class="math notranslate nohighlight">\({Δ G_{mutation1}}\)</span> and
-<span class="math notranslate nohighlight">\({Δ G_{mutation2}}\)</span> respectively the differnce of these values is equal to the binding
-free energy <span class="math notranslate nohighlight">\({ΔΔ G}\)</span></p>
+<span class="math notranslate nohighlight">\({Δ G_{mutation2}}\)</span> respectively the difference of these values is equal to the binding
+free energy <span class="math notranslate nohighlight">\({ΔΔ G}\)</span>. This idea of complex and ligand simulations relating to the difference in binding free energy
+is shown in the following figure.</p>
 <a class="reference internal image-reference" href="_images/thermo_cycle.png"><img alt="Alternative text" class="align-center" src="_images/thermo_cycle.png" style="width: 600px;" /></a>
-<p>constraints file discussions</p>
-<p>General behaviour of many legs and two legs</p>
+<p>When we discus the running of X replica simulations this whole thermodynamic cycle is run X times. To run the com and lig
+simulations these must be setup by hand or by using <code class="docutils literal notranslate"><span class="pre">TIES_20</span></code>. Setting up the lig and com simulations follows the same
+principles as discussed above. Some additional ideas however are that a constraints file is normally used for the com
+simulation, this is included to avoid rapid changes of the protein crystal structure conformation early in the simulation,
+caused by close atom contacts. Also the com simulation will contain more atoms and so be more expensive computationally.
+Once the lig and com simulations are setup these are normally run separately due to the aforementioned
+asymmetry in computational cost.</p>
 </section>
 </section>
 

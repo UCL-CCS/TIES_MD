@@ -18,14 +18,14 @@ and navigating to ``TIES_MD/TIES_MD/examples/``
 Input
 ------
 
-``TIES MD`` expects a number of input files, these are two essential files files, e.g. ``complex.pdb`` and ``complex.prmtop``.
+``TIES MD`` expects a number of input files, these are two essential files, e.g. ``complex.pdb`` and ``complex.prmtop``.
 These files contain information about the position, topology and parameters for the system. Currently we only support
 the ``AMBER`` based format ``prmtop`` but provide a utility to `build <https://ccs-ties.org/ties/>`_ them online. ``complex.pdb`` also
 contains the alchemical indexes denoting which atoms will appear and disappear during the simulation. There is also
 an optional input file, ``constraints.pdb``, and this contains indexes denoting which atoms, if any, are constrained
 during the pre-production simulation. This input should all be placed in a directory named build located
 where the user wishes to run the simulation. Examples of these files can be found `here <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples>`_.
-We suggest using the directory structure ``study/system/ligand/thermodynamic_leg/build`` this will allow the analysis scripts to
+Please use a directory structure like ``study/system/ligand/thermodynamic_leg/build`` this will allow the analysis scripts to
 understand the structure and perform analysis automatically. ``study``, ``system``, ``ligand`` and ``thermodynamic_leg``
 can be renamed to anything but the name of the ``build`` directory is fixed. If input for novel ligand transformations is desired the
 `TIES20 <https://github.com/UCL-CCS/TIES20>`_ program can be used to generate all required inputs.
@@ -208,24 +208,12 @@ There are a lot of options for how these ``OpenMM`` calcualtions can be structur
 nodes each with 128 cores the run lines in the submission script might look like::
 
 
-    for stage in {{0..2}}; do
+    for stage in {{0..3}}; do
     win_id=0
     for lambda in 0.0, 0.2, 0.4, 0.6, 0.8, 1.0;
     do
             cd $build/replica-confs
-            srun -N 1 -n 128 namd2 --tclmain eq$stage-replicas.conf $lambda $win_id &
-            (( win_id++ ))
-            sleep 1
-    done
-    wait
-    done
-
-    for stage in {{1..1}}; do
-    win_id=0
-    for lambda in 0.0, 0.2, 0.4, 0.6, 0.8, 1.0;
-    do
-            cd $build/replica-confs
-            srun -N 1 -n 128 namd2 --tclmain sim$stage-replicas.conf $lambda $win_id&
+            srun -N 1 -n 128 namd2 --tclmain sim$stage-replicas.conf $lambda $win_id &
             (( win_id++ ))
             sleep 1
     done
@@ -233,7 +221,7 @@ nodes each with 128 cores the run lines in the submission script might look like
     done
 
 Notice in the ``NAMD`` example reference is made to a directory ``replica-confs`` this is where the NAMD input scripts are writen
-during the ``TIES_MD`` setup stage. Also notice in the ``NAMD`` examples there are 2 loops over ``stage`` these are three
+during the ``TIES_MD`` setup stage. Also notice in the ``NAMD`` examples there is a loop over the ``stages`` these are three
 pre-production stages ``eq0``, ``eq1`` and ``eq2`` and one production stage ``sim1`` these stages are performed automatically by ``TIES MD``
 when running with ``OpenMM`` but must be explicitly executed when using ``NAMD``. The exact submission script for a particular
 HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
@@ -247,22 +235,27 @@ Analysis
     When using NAMD the version is specified in namd.cfg as ``namd_version = 2.14`` for example. This is critical to the result
     as pre NAMD 2.12 different columns are used by NAMD to write the output potentials. Please take care the version is set correctly.
 
-The analysis of the files found in the output can be performed using the ``TIES_analysis`` package which is included in the
+The analysis of the files found in the output can be performed by ``TIES_analysis`` which is included in the
 conda installation of ``TIES_MD`` or is available for separate `download <https://github.com/adw62/TIES_analysis>`_.
 
 ``TIES_MD`` will create the input need to perform the analysis. Input configuration files for ``TIES_analysis`` will be filled
 in with information such as the lambda schedule or which MD engine was used. If the directory structure
 ``study/system/ligand/thermodynamic_leg/build`` was used then these config files are written to the ``study`` directory.
 Some information is missing from these config files which must be filled out. The missing information is for the names
-of the ``system``, ``ligand`` and ``thermodynamic_leg`` directories. Add the names of the ``thermodynamic_leg`` to the
-config file ``analysis.cfg`` under the option ``legs`` and add the ``system`` and ``ligand`` names into ``exp.dat`` instead of ``'SYSTEM NAME'``
-and ``'LIGAND NAME'``. As an example see the option `legs <https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L8>`_
+of the ``thermodynamic_leg`` directories. Add the names of the ``thermodynamic_leg`` to the
+config file ``analysis.cfg`` under the option ``legs`` as an example see the option `legs <https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L8>`_
 in this example script for the analysis of protein-ligand binding calculation with two thermodynamic legs named
-``'lig'`` and ``'com'``. This example analysis input also has the ``exp.dat`` `file <https://github.com/adw62/TIES_analysis/blob/main/example/exp.dat>`_
+``'lig'`` and ``'com'``. This example analysis input also has an ``exp.dat`` `file <https://github.com/adw62/TIES_analysis/blob/main/example/exp.dat>`_
 populated for the protein target named ``ptp1b`` and a ligand transformation in that protein named l6-l14, this transformation
 has an experimental ΔΔG of -1.04 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
-values in ``exp.dat`` which need to be populated can be left as 0.0. With ``analysis.cfg`` and ``exp.dat`` populated the analysis
-can then be executed on a HPC head node or PC by running ``TIES_analysis`` in the ``study`` directory using the command::
+values in ``exp.dat`` which need to be populated can be left as 0.0. To save time an ``exp.dat`` file with all values
+set to 0.0 can be generated with ``TIES_analysis`` by running::
+
+    TIES_ana --run_type=setup
+
+The information in the generated ``exp.dat`` will be inferred from the directory structure.  With ``analysis.cfg`` and
+``exp.dat`` populated the analysis can then be executed on a HPC head node or PC by running ``TIES_analysis`` in the
+``study`` directory using the command::
 
     TIES_ana
 
@@ -293,12 +286,9 @@ is shown in the following figure.
   :alt: Alternative text
 
 When we discus the running of X replica simulations this whole thermodynamic cycle is run X times. To run the com and lig
-simulations these must be setup by hand or using ``TIES_20``. Setting up the lig and com simulations follows the same
+simulations these must be setup by hand or by using ``TIES_20``. Setting up the lig and com simulations follows the same
 principles as discussed above. Some additional ideas however are that a constraints file is normally used for the com
-simulation, this is included to avoid rapid changes of the protein crystal structure conformation early in the simulation
-caused by close atom contacts. Also the com simulation with the protein will be more expensive computationally and thus
-the time and resources allocated.
-
-Work in progress ...
-constraints file discussions
-General behaviour of many legs and two legs
+simulation, this is included to avoid rapid changes of the protein crystal structure conformation early in the simulation,
+caused by close atom contacts. Also the com simulation will contain more atoms and so be more expensive computationally.
+Once the lig and com simulations are setup these are normally run separately due to the aforementioned
+asymmetry in computational cost.

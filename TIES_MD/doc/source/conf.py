@@ -23,7 +23,7 @@ copyright = '2021, UCL CCS'
 author = 'Alex Wade'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '1.0'
 
 
 # -- General configuration ---------------------------------------------------

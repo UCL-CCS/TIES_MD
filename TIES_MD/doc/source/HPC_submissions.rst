@@ -35,19 +35,7 @@ Here is an example of a submission script for a large system (≈100k atoms) run
     #change this line to point to your project
     ties_dir=/hppfs/work/pn98ve/di67rov/test_TIES/study/prot/ties-l2-l1/com
 
-    for stage in {0..2}; do
-    win_id=0
-    for lambda in 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0;
-    do
-            cd $ties_dir/replica-confs
-            srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain eq$stage-replicas.conf $lambda $win_id&
-            (( win_id++ ))
-            sleep 1
-    done
-    wait
-    done
-
-    for stage in {1..1}; do
+    for stage in {0..3}; do
     win_id=0
     for lambda in 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0;
     do
