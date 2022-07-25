@@ -397,7 +397,6 @@ class TIES(object):
             self.write_namd_scripts()
         else:
             folders = ['equilibration', 'simulation', 'results']
-            print('writing sub')
             self.write_openmm_submission()
         TIES.build_results_dirs(self, folders)
         self.write_analysis_cfg()

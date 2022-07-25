@@ -207,20 +207,17 @@ There are a lot of options for how these ``OpenMM`` calcualtions can be structur
 :ref:`Parallelization` page for more information on this. For a ``NAMD`` calculation if the submission script requested 6 CPU
 nodes each with 128 cores the run lines in the submission script might look like::
 
-
-    for stage in {{0..3}}; do
-    win_id=0
-    for lambda in 0.0, 0.2, 0.4, 0.6, 0.8, 1.0;
-    do
-            cd $build/replica-confs
-            srun -N 1 -n 128 namd2 --tclmain sim$stage-replicas.conf $lambda $win_id &
-            (( win_id++ ))
-            sleep 1
+   cd $build/replica-confs
+   for stage in {{0..3}}; do
+        for lambda in in 0.0 0.2 0.4 0.6 0.8 1.0; do
+            for i in {{0..0}}; do
+                srun -N 1 -n 128 namd2 --tclmain sim$stage.conf $lambda $i &
+                sleep 1
+            done
+        done
+        wait
     done
-    wait
-    done
-
-Notice in the ``NAMD`` example reference is made to a directory ``replica-confs`` this is where the NAMD input scripts are writen
+Notice in the ``NAMD`` example reference is made to a directory ``$build/replica-confs` this is where the NAMD input scripts are writen
 during the ``TIES_MD`` setup stage. Also notice in the ``NAMD`` examples there is a loop over the ``stages`` these are three
 pre-production stages ``eq0``, ``eq1`` and ``eq2`` and one production stage ``sim1`` these stages are performed automatically by ``TIES MD``
 when running with ``OpenMM`` but must be explicitly executed when using ``NAMD``. The exact submission script for a particular
@@ -268,27 +265,3 @@ would look something like::
     {'OpenMM_FEP': {'ethane': {'zero_sum': [-0.023, 0.023]}},
       'OpenMM_TI': {'ethane': {'zero_sum': [0.003, 0.076]}}}
 
-Binding Free Energy Calculations
---------------------------------
-
-What has been discussed up until now is performing one alchemical simulation with ``TIES_MD`` for a binding free
-energy calculation we need two alchemical simulations. We call these two simulations the complex and ligand simulations
-shortened to com and lig respectively. The lig simulation transforms one ligand A into another B in water the com
-simulation does the same but now inside the protein. The com and lig simulations give us :math:`{Δ G_{mutation1}}` and
-:math:`{Δ G_{mutation2}}` respectively the difference of these values is equal to the binding
-free energy :math:`{ΔΔ G}`. This idea of complex and ligand simulations relating to the difference in binding free energy
-is shown in the following figure.
-
-
-.. image:: _static/images/thermo_cycle.png
-  :align: center
-  :width: 600
-  :alt: Alternative text
-
-When we discus the running of X replica simulations this whole thermodynamic cycle is run X times. To run the com and lig
-simulations these must be setup by hand or by using ``TIES_20``. Setting up the lig and com simulations follows the same
-principles as discussed above. Some additional ideas however are that a constraints file is normally used for the com
-simulation, this is included to avoid rapid changes of the protein crystal structure conformation early in the simulation,
-caused by close atom contacts. Also the com simulation will contain more atoms and so be more expensive computationally.
-Once the lig and com simulations are setup these are normally run separately due to the aforementioned
-asymmetry in computational cost.

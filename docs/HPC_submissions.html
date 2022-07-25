@@ -1,77 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>HPC Submission scripts &mdash; TIES_MD 1.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Parallelization" href="parallelization.html" />
-    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
+    <link rel="prev" title="Binding Free Energy Tutorial" href="binding_free_energies.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #D7ECD9" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> TIES_MD
-          
-
-          
-            
             <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -79,21 +38,11 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HPC Submission scripts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#namd">NAMD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#openmm">OpenMM</a></li>
@@ -108,76 +57,35 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">TIES_MD</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #D7ECD9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">TIES_MD</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>HPC Submission scripts</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/HPC_submissions.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <section id="hpc-submission-scripts">
-<h1>HPC Submission scripts<a class="headerlink" href="#hpc-submission-scripts" title="Permalink to this headline">¶</a></h1>
+<h1>HPC Submission scripts<a class="headerlink" href="#hpc-submission-scripts" title="Permalink to this heading"></a></h1>
 <p>Here we provide some example submission scripts for various HPC systems.</p>
 <section id="namd">
-<h2>NAMD<a class="headerlink" href="#namd" title="Permalink to this headline">¶</a></h2>
+<h2>NAMD<a class="headerlink" href="#namd" title="Permalink to this heading"></a></h2>
 <p>Here is an example of a submission script for a large system (≈100k atoms) running on
 <a class="reference external" href="https://doku.lrz.de/display/PUBLIC/SuperMUC-NG">SuperMUC-NG</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
@@ -207,12 +115,10 @@ echo $cpus_per_namd
 ties_dir=/hppfs/work/pn98ve/di67rov/test_TIES/study/prot/ties-l2-l1/com
 
 for stage in {0..3}; do
-win_id=0
 for lambda in 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0;
 do
         cd $ties_dir/replica-confs
-        srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda $win_id&amp;
-        (( win_id++ ))
+        srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda&amp;
         sleep 1
 done
 wait
@@ -244,7 +150,7 @@ done
 </div>
 </section>
 <section id="openmm">
-<h2>OpenMM<a class="headerlink" href="#openmm" title="Permalink to this headline">¶</a></h2>
+<h2>OpenMM<a class="headerlink" href="#openmm" title="Permalink to this heading"></a></h2>
 <p>Here we provide an example of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> running with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> on <a class="reference external" href="https://www.olcf.ornl.gov/summit/">Summit</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
 #BSUB -P XXX
@@ -270,57 +176,40 @@ wait
 </div>
 </section>
 <section id="namd-3">
-<h2>NAMD 3<a class="headerlink" href="#namd-3" title="Permalink to this headline">¶</a></h2>
+<h2>NAMD 3<a class="headerlink" href="#namd-3" title="Permalink to this heading"></a></h2>
 <p>Under construction</p>
 </section>
 </section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="binding_free_energies.html" class="btn btn-neutral float-left" title="Binding Free Energy Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="parallelization.html" class="btn btn-neutral float-right" title="Parallelization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, UCL CCS.
-
-    </p>
+    <p>&#169; Copyright 2021, UCL CCS.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

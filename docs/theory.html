@@ -1,77 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Theory &mdash; TIES_MD 1.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="TIES_MD" href="modules.html" />
     <link rel="prev" title="Parallelization" href="parallelization.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #D7ECD9" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> TIES_MD
-          
-
-          
-            
             <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -79,21 +38,11 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Theory</a><ul>
@@ -108,75 +57,34 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">TIES_MD</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #D7ECD9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">TIES_MD</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Theory</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/theory.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <section id="theory">
-<h1>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h1>
+<h1>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h1>
 <section id="outline">
-<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
+<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES</span></code> or <a class="reference external" href="http://alchemistry.org/wiki/Thermodynamic_Integration">thermodynamic integration</a> with enhanced sampling is a method
 for calculating binding free energies. This document considers the application of <code class="docutils literal notranslate"><span class="pre">TIES</span></code> to calculate binding
 free energies between a target protein and small molecule which binds non-covalently to that protein.
@@ -188,7 +96,7 @@ but more information can be found in the publications for <a class="reference ex
 topology small molecules).</p>
 </section>
 <section id="alchemical-calculations">
-<h2>Alchemical Calculations<a class="headerlink" href="#alchemical-calculations" title="Permalink to this headline">¶</a></h2>
+<h2>Alchemical Calculations<a class="headerlink" href="#alchemical-calculations" title="Permalink to this heading"></a></h2>
 <p>To calculate relative binding free energies <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> uses an <a class="reference external" href="http://alchemistry.org/wiki/Main_Page">alchemical</a> approach.
 This involves changing chemical moieties of the dual topology ligand to transform it from one physical ligand A to another B.
 Generally this transformations involves ‘creating’ a set of appearing atoms an ‘destroying’ a set of disappearing atoms.
@@ -199,7 +107,7 @@ contains ligand A and when <code class="docutils literal notranslate"><span clas
 contains some alchemical hybrid of ligands A and B.</p>
 </section>
 <section id="alchemical-pathways">
-<h2>Alchemical Pathways<a class="headerlink" href="#alchemical-pathways" title="Permalink to this headline">¶</a></h2>
+<h2>Alchemical Pathways<a class="headerlink" href="#alchemical-pathways" title="Permalink to this heading"></a></h2>
 <p>As a user of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> three options can be used to tune the alchemical path way between the A and B end states. These are
 <code class="docutils literal notranslate"><span class="pre">global_lambdas</span></code>, <code class="docutils literal notranslate"><span class="pre">ster_edges</span></code> and <code class="docutils literal notranslate"><span class="pre">elec_edges</span></code> and these options are provided in the <a class="reference internal" href="tutorial.html#input"><span class="std std-ref">Input</span></a> config file. <code class="docutils literal notranslate"><span class="pre">global_lambdas</span></code>
 is input as comma separate list of floats, each value in the list sets the value of the control parameter <code class="docutils literal notranslate"><span class="pre">λ</span></code>
@@ -218,50 +126,33 @@ and figure 1 plots the lambda schedule for <code class="docutils literal notrans
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="modules.html" class="btn btn-neutral float-right" title="TIES_MD" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="parallelization.html" class="btn btn-neutral float-left" title="Parallelization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="TIES_MD" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, UCL CCS.
-
-    </p>
+    <p>&#169; Copyright 2021, UCL CCS.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

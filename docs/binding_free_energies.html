@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binding Free Energy Tutorial &mdash; TIES_MD 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="HPC Submission scripts" href="HPC_submissions.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #D7ECD9" >
+            <a href="index.html" class="icon icon-home"> TIES_MD
+            <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Binding Free Energy Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-bfe-background">General BFE background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running">Running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bfe-analysis">BFE Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/UCL-CCS/TIES_MD">🚀Github</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">TIES_MD</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #D7ECD9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TIES_MD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Binding Free Energy Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/binding_free_energies.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="binding-free-energy-tutorial">
+<h1>Binding Free Energy Tutorial<a class="headerlink" href="#binding-free-energy-tutorial" title="Permalink to this heading"></a></h1>
+<section id="general-bfe-background">
+<h2>General BFE background<a class="headerlink" href="#general-bfe-background" title="Permalink to this heading"></a></h2>
+<p>The discussion in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> section outlines performing one alchemical simulation with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code>
+for a binding free energy calculation we need two alchemical simulations. We call these two simulations
+the complex and ligand simulations shortened to com and lig respectively. The lig simulation transforms one ligand A
+into another B in water the com simulation does the same but now inside the protein. The com and lig simulations
+give us <span class="math notranslate nohighlight">\({Δ G_{mutation1}}\)</span> and <span class="math notranslate nohighlight">\({Δ G_{mutation2}}\)</span> respectively the difference of these values is equal
+to the binding free energy <span class="math notranslate nohighlight">\({ΔΔ G}\)</span>. This idea of complex and ligand simulations relating to the difference
+in binding free energy is shown in the following figure:</p>
+<a class="reference internal image-reference" href="_images/thermo_cycle.png"><img alt="Alternative text" class="align-center" src="_images/thermo_cycle.png" style="width: 600px;" /></a>
+<p>More details of these methods can be found in the publications of <a class="reference external" href="https://pubs.acs.org/doi/full/10.1021/acs.jcim.7b00564">Cournia et al.</a>.
+When we discuss the running of X replica simulations this whole thermodynamic cycle is run X times. To run the com and
+lig simulations these must be setup by hand or by using <code class="docutils literal notranslate"><span class="pre">TIES20</span></code>. Setting up the lig and com simulations follows the same
+principles as discussed in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> section. Some additional ideas however are that a constraints file is normally
+used for the com simulation, this is included to avoid rapid changes of the protein crystal structure conformation early
+in the simulation, caused by close atom contacts. Also the com simulation will contain more atoms and so be more expensive
+computationally.</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>To set up these calculation we recommend the use of <code class="docutils literal notranslate"><span class="pre">TIES20</span></code>. This is a program designed to both build and parameterize
+hybrid ligands but also setup binding free energy calculations for the TIES protocol that can be run with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code>.
+<code class="docutils literal notranslate"><span class="pre">TIES20</span></code> can be used in <a class="reference external" href="https://ccs-ties.org/ties/">browser</a>. Alternatively one can use the <code class="docutils literal notranslate"><span class="pre">TIES20</span></code> API to set up
+simulations as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#ties20 imports</span>
+<span class="kn">from</span> <span class="nn">ties</span> <span class="kn">import</span> <span class="n">Pair</span><span class="p">,</span> <span class="n">Ligand</span>
+<span class="kn">from</span> <span class="nn">ties</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">ties.protein</span> <span class="kn">import</span> <span class="n">Protein</span>
+
+<span class="c1">#Setting for system building</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">ligand_ff_name</span> <span class="o">=</span> <span class="s1">&#39;gaff2&#39;</span>
+<span class="n">config</span><span class="o">.</span><span class="n">ligand_net_charge</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">config</span><span class="o">.</span><span class="n">md_engine</span> <span class="o">=</span> <span class="s1">&#39;openmm&#39;</span>
+
+<span class="c1">#prep ligandA</span>
+<span class="n">ligandA</span> <span class="o">=</span> <span class="n">Ligand</span><span class="p">(</span><span class="s1">&#39;ligandA.mol2&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="n">ligandA</span><span class="o">.</span><span class="n">antechamber_prepare_mol2</span><span class="p">()</span>
+
+<span class="c1">#prep ligandB</span>
+<span class="n">ligandB</span> <span class="o">=</span> <span class="n">Ligand</span><span class="p">(</span><span class="s1">&#39;ligandB.mol2&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="n">ligandB</span><span class="o">.</span><span class="n">antechamber_prepare_mol2</span><span class="p">()</span>
+
+<span class="c1">#make ligandA and ligandB into a pair</span>
+<span class="n">pair</span> <span class="o">=</span> <span class="n">Pair</span><span class="p">(</span><span class="n">ligandA</span><span class="p">,</span> <span class="n">ligandB</span><span class="p">,</span> <span class="n">ligand_net_charge</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">ligand_net_charge</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c1">#ensure the names of all atoms are different (needed for hybridizing)</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">make_atom_names_unique</span><span class="p">()</span>
+
+<span class="c1">#turn the pair into a hybrid</span>
+<span class="n">hybrid</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">superimpose</span><span class="p">()</span>
+
+<span class="c1">#Since no protein is declared this will build lig simulation</span>
+<span class="n">hybrid</span><span class="o">.</span><span class="n">prepare_inputs</span><span class="p">()</span>
+
+<span class="c1">#now declare protein</span>
+<span class="n">config</span><span class="o">.</span><span class="n">protein</span> <span class="o">=</span> <span class="s1">&#39;receptor.pdb&#39;</span>
+<span class="n">config</span><span class="o">.</span><span class="n">protein_ff</span> <span class="o">=</span> <span class="s1">&#39;leaprc.protein.ff14SB&#39;</span>
+<span class="n">protein</span> <span class="o">=</span> <span class="n">Protein</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">protein</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+<span class="c1">#re-prepare simulation input, now protein is declared and passed as argument com simulation is built</span>
+<span class="n">hybrid</span><span class="o">.</span><span class="n">prepare_inputs</span><span class="p">(</span><span class="n">protein</span><span class="o">=</span><span class="n">protein</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will build all the input needed to run these a BFE for the <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> between ligandA and
+ligandB. However, in order to run at this point the user must execute their own HPC submission scripts or run via the
+command line on a cluster. We can however build own submission scripts and or change any of the simulation setting
+as detailed in the next section.</p>
+</section>
+<section id="running">
+<h2>Running<a class="headerlink" href="#running" title="Permalink to this heading"></a></h2>
+<p>At this point we have prepped a simulation of one thermodynamic cycle with two legs named lig and com. <code class="docutils literal notranslate"><span class="pre">TIES20</span></code> will
+set these legs up in the directories <code class="docutils literal notranslate"><span class="pre">ties/ties-ligandA-ligandB/(lig/com)</span></code> and these map to the
+<code class="docutils literal notranslate"><span class="pre">system/ligand/thermodynamic_leg/</span></code> directory structure that was discussed in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> section.
+In <code class="docutils literal notranslate"><span class="pre">ties/ties-ligandA-ligandB/(lig/com)</span></code> there will be the <code class="docutils literal notranslate"><span class="pre">build</span></code> directory and  <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code> files as also seen in
+the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a>. The settings in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code> will be good for a default simulation but in general we may wish to
+change these quickly and or write submission scripts for these simulations. To do this we can use the <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> API as
+follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#tiesMD imports</span>
+<span class="kn">from</span> <span class="nn">TIES_MD</span> <span class="kn">import</span> <span class="n">TIES</span><span class="p">,</span> <span class="n">cli</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1">#iterate over both legs of BFE calculation</span>
+<span class="k">for</span> <span class="n">thermo_leg</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;com&#39;</span><span class="p">,</span> <span class="s1">&#39;lig&#39;</span><span class="p">]:</span>
+    <span class="c1">#point to the simulation directory</span>
+    <span class="n">ties_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;ties&#39;</span><span class="p">,</span> <span class="s1">&#39;ties-ligandA-ligandB&#39;</span><span class="p">,</span> <span class="n">thermo_leg</span><span class="p">)</span>
+
+    <span class="c1">#read the default TIES.cfg to initialize</span>
+    <span class="n">args_dict</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="n">read_config</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ties_dir</span><span class="p">,</span> <span class="s1">&#39;TIES.cfg&#39;</span><span class="p">))</span>
+    <span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="o">.</span><span class="n">TIES</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">ties_dir</span><span class="p">,</span> <span class="n">exp_name</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">args_dict</span><span class="p">)</span>
+
+    <span class="c1">#change some settings in TIES.cfg</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">reps_per_exec</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">total_reps</span> <span class="o">=</span> <span class="mi">6</span>
+
+    <span class="c1">#inspect all the options we can configure and change</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">get_options</span><span class="p">()</span>
+
+    <span class="c1">#change the header of generated submission scripts</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">sub_header</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;#Example script for Summit OpenMM</span>
+<span class="s2">#BSUB -P CHM155_001</span>
+<span class="s2">#BSUB -W 120</span>
+<span class="s2">#BSUB -nnodes 13</span>
+<span class="s2">#BSUB -alloc_flags &quot;gpudefault smt1&quot;</span>
+<span class="s2">#BSUB -J LIGPAIR</span>
+<span class="s2">#BSUB -o oLIGPAIR.%J</span>
+<span class="s2">#BSUB -e eLIGPAIR.%J&quot;&quot;&quot;</span>
+
+    <span class="c1">#run line in submission scripts can also be changed</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">sub_run_line</span> <span class="o">=</span> <span class="s1">&#39;jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;&#39;</span>
+
+    <span class="c1">#setup the new simulation with changed options (also writes submission script)</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+    <span class="c1">#must make sure the TIES.cfg on disk is updated with new settings.</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">update_cfg</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This changes the TIES.cfg options <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span></code> to 1 and <code class="docutils literal notranslate"><span class="pre">total_reps</span></code> to 6. To see all configurable options the user
+can run <code class="docutils literal notranslate"><span class="pre">md.get_options()</span></code> as shown above. To generate a general submission script we are modifying the
+<code class="docutils literal notranslate"><span class="pre">sub_header</span></code> and <code class="docutils literal notranslate"><span class="pre">sub_run_line</span></code> internal options and these set what <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> writes into the submission script. The
+settings above yield the following script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+#Example script for Summit OpenMM
+#BSUB -P CHM155_001
+#BSUB -W 120
+#BSUB -nnodes 13
+#BSUB -alloc_flags &quot;gpudefault smt1&quot;
+#BSUB -J LIGPAIR
+#BSUB -o oLIGPAIR.%J
+#BSUB -e eLIGPAIR.%J
+
+export ties_dir=&quot;ties/ties-ligandA-ligandB/lig&quot;
+cd $ties_dir
+
+for lambda in 0 1 2 3 4 5 6 7 8 9 10 11 12; do
+  for i in {0..5}; do
+        jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;
+    done
+    done
+wait
+</pre></div>
+</div>
+<p>These scripts can be summited to the HPC scheduler, once they finish the last step to get a <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> is analysis.</p>
+</section>
+<section id="bfe-analysis">
+<h2>BFE Analysis<a class="headerlink" href="#bfe-analysis" title="Permalink to this heading"></a></h2>
+<p>Once the simulations are finished the analysis can be performed as discussed in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> section. If we are in
+the <code class="docutils literal notranslate"><span class="pre">ties/ties-ligandA-ligandB/(lig/com)</span></code> directory run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">../../..</span>
+<span class="n">TIES_ana</span> <span class="o">--</span><span class="n">run_type</span><span class="o">=</span><span class="n">setup</span>
+</pre></div>
+</div>
+<p>Then modify the analysis.cfg file such the legs option is now to <code class="docutils literal notranslate"><span class="pre">legs</span> <span class="pre">=</span> <span class="pre">lig,</span> <span class="pre">com</span></code> (the two legs of our cycle). Note,
+configured like this the <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> is computed as the <span class="math notranslate nohighlight">\({Δ G}\)</span> of the ligand simulation minus the <span class="math notranslate nohighlight">\({Δ G}\)</span>
+of the complex simulation, take care this gives you the same <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> as you want to compare to in experiment
+and it depends on which ligand is ligandA/B in the cycle. running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_ana</span>
+</pre></div>
+</div>
+<p>will once again give a <code class="docutils literal notranslate"><span class="pre">results.dat</span></code> file as out put this is the same as in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> section but it now
+contains the <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> of each transformation and the associated SEM. The print out on the terminal  will detail
+the individual <span class="math notranslate nohighlight">\({Δ G}\)</span> results for each thermodynamic leg.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HPC_submissions.html" class="btn btn-neutral float-right" title="HPC Submission scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, UCL CCS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

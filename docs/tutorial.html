@@ -1,78 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Tutorial &mdash; TIES_MD 1.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="HPC Submission scripts" href="HPC_submissions.html" />
+    <link rel="next" title="Binding Free Energy Tutorial" href="binding_free_energies.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #D7ECD9" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> TIES_MD
-          
-
-          
-            
             <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -80,18 +38,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
@@ -101,9 +48,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#simulation-preparation">Simulation Preparation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-simulations">Running Simulations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#binding-free-energy-calculations">Binding Free Energy Calculations</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
@@ -113,75 +60,34 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">TIES_MD</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #D7ECD9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">TIES_MD</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Tutorial</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <section id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
 <section id="getting-started">
-<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a package which is intended to be used on the command line and submitted to a HPC system. In this document
 we will outline what commands should be run to calculate binding free energies. To start with any free energy calculations
 we must first outline what are the expected input files to the <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> program.</p>
@@ -193,7 +99,7 @@ provided <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/
 <p>and navigating to <code class="docutils literal notranslate"><span class="pre">TIES_MD/TIES_MD/examples/</span></code></p>
 </section>
 <section id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> expects a number of input files, these are two essential files, e.g. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> and <code class="docutils literal notranslate"><span class="pre">complex.prmtop</span></code>.
 These files contain information about the position, topology and parameters for the system. Currently we only support
 the <code class="docutils literal notranslate"><span class="pre">AMBER</span></code> based format <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> but provide a utility to <a class="reference external" href="https://ccs-ties.org/ties/">build</a> them online. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> also
@@ -292,7 +198,7 @@ drug like molecule in only solvent. It will be show later in the Binding Free En
 why we use a constraints file.</p>
 </section>
 <section id="command-line">
-<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this heading"></a></h2>
 <p>With all input present in the build directory and <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> installed we are almost ready to calculate binding
 free energies. <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> can be invoked on the command line by just running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> and this will use all default
 settings and the settings found in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>. The setting which can be taken on the command line and their default
@@ -329,7 +235,7 @@ A value of 1 sets the simulation box as periodic a value of 0 sets the simulatio
 </div>
 </section>
 <section id="simulation-preparation">
-<h2>Simulation Preparation<a class="headerlink" href="#simulation-preparation" title="Permalink to this headline">¶</a></h2>
+<h2>Simulation Preparation<a class="headerlink" href="#simulation-preparation" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> is run in two stages first using the option <code class="docutils literal notranslate"><span class="pre">--run_type=setup</span></code> this prepares output directories and MD engine
 input scripts, this stage is not compute intensive and can be run on a PC or HPC head node. The setup stage can but does
 not have to be run of you are using <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> and directories are built when using <code class="docutils literal notranslate"><span class="pre">--run_type=run</span></code> also. Output directories are prepared
@@ -349,7 +255,7 @@ for the zero sum transformation of ethane to ethane the setup command would be:<
 as an example of what to change.</p>
 </section>
 <section id="running-simulations">
-<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
+<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this heading"></a></h2>
 <p>The second stage of running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code>, after setup, involves the running of the MD simulations, this is compute intensive
 and can only be run on a HPC for all but the smallest systems. The execution of <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> branches at this point dependant
 on what MD engine is being used. HPC submission scripts should be prepared with the target MD engine in mind.</p>
@@ -369,28 +275,27 @@ to <code class="docutils literal notranslate"><span class="pre">1</span></code>,
 <p>There are a lot of options for how these <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calcualtions can be structured and parallelized with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> see our
 <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> page for more information on this. For a <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> calculation if the submission script requested 6 CPU
 nodes each with 128 cores the run lines in the submission script might look like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for stage in {{0..3}}; do
-win_id=0
-for lambda in 0.0, 0.2, 0.4, 0.6, 0.8, 1.0;
-do
-        cd $build/replica-confs
-        srun -N 1 -n 128 namd2 --tclmain sim$stage-replicas.conf $lambda $win_id &amp;
-        (( win_id++ ))
-        sleep 1
-done
-wait
-done
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $build/replica-confs
+for stage in {{0..3}}; do
+     for lambda in in 0.0 0.2 0.4 0.6 0.8 1.0; do
+         for i in {{0..0}}; do
+             srun -N 1 -n 128 namd2 --tclmain sim$stage.conf $lambda $i &amp;
+             sleep 1
+         done
+     done
+     wait
+ done
 </pre></div>
 </div>
-<p>Notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> example reference is made to a directory <code class="docutils literal notranslate"><span class="pre">replica-confs</span></code> this is where the NAMD input scripts are writen
-during the <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> setup stage. Also notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> examples there is a loop over the <code class="docutils literal notranslate"><span class="pre">stages</span></code> these are three
+<p>Notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> example reference is made to a directory <code class="docutils literal notranslate"><span class="pre">$build/replica-confs`</span> <span class="pre">this</span> <span class="pre">is</span> <span class="pre">where</span> <span class="pre">the</span> <span class="pre">NAMD</span> <span class="pre">input</span> <span class="pre">scripts</span> <span class="pre">are</span> <span class="pre">writen</span>
+<span class="pre">during</span> <span class="pre">the</span> <span class="pre">``TIES_MD</span></code> setup stage. Also notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> examples there is a loop over the <code class="docutils literal notranslate"><span class="pre">stages</span></code> these are three
 pre-production stages <code class="docutils literal notranslate"><span class="pre">eq0</span></code>, <code class="docutils literal notranslate"><span class="pre">eq1</span></code> and <code class="docutils literal notranslate"><span class="pre">eq2</span></code> and one production stage <code class="docutils literal notranslate"><span class="pre">sim1</span></code> these stages are performed automatically by <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>
 when running with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> but must be explicitly executed when using <code class="docutils literal notranslate"><span class="pre">NAMD</span></code>. The exact submission script for a particular
 HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
 solution to solve any issues we would suggest consulting user manuals of both HPC and MD engine, reading our example <a class="reference internal" href="HPC_submissions.html#hpc-submission-scripts"><span class="std std-ref">HPC Submission scripts</span></a> or submitting an <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/issues">issue</a> on <code class="docutils literal notranslate"><span class="pre">Github</span></code>.</p>
 </section>
 <section id="analysis">
-<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When using NAMD the version is specified in namd.cfg as <code class="docutils literal notranslate"><span class="pre">namd_version</span> <span class="pre">=</span> <span class="pre">2.14</span></code> for example. This is critical to the result
@@ -429,72 +334,37 @@ would look something like:</p>
 </pre></div>
 </div>
 </section>
-<section id="binding-free-energy-calculations">
-<h2>Binding Free Energy Calculations<a class="headerlink" href="#binding-free-energy-calculations" title="Permalink to this headline">¶</a></h2>
-<p>What has been discussed up until now is performing one alchemical simulation with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> for a binding free
-energy calculation we need two alchemical simulations. We call these two simulations the complex and ligand simulations
-shortened to com and lig respectively. The lig simulation transforms one ligand A into another B in water the com
-simulation does the same but now inside the protein. The com and lig simulations give us <span class="math notranslate nohighlight">\({Δ G_{mutation1}}\)</span> and
-<span class="math notranslate nohighlight">\({Δ G_{mutation2}}\)</span> respectively the difference of these values is equal to the binding
-free energy <span class="math notranslate nohighlight">\({ΔΔ G}\)</span>. This idea of complex and ligand simulations relating to the difference in binding free energy
-is shown in the following figure.</p>
-<a class="reference internal image-reference" href="_images/thermo_cycle.png"><img alt="Alternative text" class="align-center" src="_images/thermo_cycle.png" style="width: 600px;" /></a>
-<p>When we discus the running of X replica simulations this whole thermodynamic cycle is run X times. To run the com and lig
-simulations these must be setup by hand or by using <code class="docutils literal notranslate"><span class="pre">TIES_20</span></code>. Setting up the lig and com simulations follows the same
-principles as discussed above. Some additional ideas however are that a constraints file is normally used for the com
-simulation, this is included to avoid rapid changes of the protein crystal structure conformation early in the simulation,
-caused by close atom contacts. Also the com simulation will contain more atoms and so be more expensive computationally.
-Once the lig and com simulations are setup these are normally run separately due to the aforementioned
-asymmetry in computational cost.</p>
-</section>
 </section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="HPC_submissions.html" class="btn btn-neutral float-right" title="HPC Submission scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="binding_free_energies.html" class="btn btn-neutral float-right" title="Binding Free Energy Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, UCL CCS.
-
-    </p>
+    <p>&#169; Copyright 2021, UCL CCS.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -13,7 +13,7 @@ specifics of this method.
 Within the ``TIES`` collection there are two packages: ``TIES 20``, ``TIES MD``. ``TIES 20`` is available online and
 can be used to build all input for ``TIES MD``. ``TIES MD`` is an open source implementation of the ``TIES`` protocol that
 is built on ``OpenMM`` and ``NAMD``. This document will explain the use of ``TIES MD`` software packages
-please see the `TIES 20 <https://ccs-ties.org/ties/>`_ website for information on our online system builder.
+please see the `TIES 20 <https://ccs-ties.org>`_ website for information on our online system builder.
 
 Contents
 =========
@@ -23,6 +23,7 @@ Contents
 
     install
     tutorial
+    binding_free_energies
     HPC_submissions
     parallelization
     theory

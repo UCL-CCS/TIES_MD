@@ -1,7 +1,6 @@
 #!/bin/bash
 {header}
 
-export PATH="{py_bin}:$PATH"
 export ties_dir="{root}"
 cd $ties_dir
 
