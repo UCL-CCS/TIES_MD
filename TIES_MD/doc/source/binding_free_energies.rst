@@ -97,7 +97,7 @@ follows::
     #iterate over both legs of BFE calculation
     for thermo_leg in ['com', 'lig']:
         #point to the simulation directory
-        ties_dir = os.path.join('ties', 'ties-ligandA-ligandB', thermo_leg)
+        ties_dir = os.path.join(os.getcwd(), 'ties', 'ties-ligandA-ligandB', thermo_leg)
 
         #read the default TIES.cfg to initialize
         args_dict = cli.read_config(os.path.join(ties_dir, 'TIES.cfg'))

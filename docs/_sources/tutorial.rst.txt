@@ -71,7 +71,7 @@ occasionally change. This file must be placed alongside the build directory. Her
     ster_edges = 0.0, 0.5
 
     #The value the global controlling parameter takes in each window (13 windows of this spacing recommended)
-    global_lambdas = 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.0
+    global_lambdas = 0.00, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.00
 
     #The name of the pdb file with constraints in the build directory, i.e. cons.pdb If no constraints pass na
     constraint_file = na
