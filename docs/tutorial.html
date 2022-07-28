@@ -113,73 +113,72 @@ can be renamed to anything but the name of the <code class="docutils literal not
 <a class="reference external" href="https://github.com/UCL-CCS/TIES20">TIES20</a> program can be used to generate all required inputs.</p>
 <p>The only non standard input to <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a configuration file (<code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>) which specifies options which the user my wish to
 occasionally change. This file must be placed alongside the build directory. Here we provide an example of such a file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   #################################################################
-   #                                                               #
-   #                             TIES                              #
-   #                                                               #
-   #################################################################
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#################################################################</span>
+<span class="c1">#                                                               #</span>
+<span class="c1">#                             TIES                              #</span>
+<span class="c1">#                                                               #</span>
+<span class="c1">#################################################################</span>
 
-   #Which molecular dynamics engine will be used, valid options are namd/openmm
-   engine = openmm
+<span class="c1">#Which molecular dynamics engine will be used, valid options are namd/openmm</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">openmm</span>
 
-   #Target temperature for the thermostat
-   temperature = 300*unit.kelvin
+<span class="c1">#Target temperature for the thermostat</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">kelvin</span>
 
-   #Target pressure for barostat
-   pressure = 1*unit.atmospheres
+<span class="c1">#Target pressure for barostat</span>
+<span class="n">pressure</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">atmospheres</span>
 
-   #How much production sampling to run per alchemical window (4ns recommended)
-   sampling_per_window = 4*unit.nanoseconds
+<span class="c1">#How much production sampling to run per alchemical window (4ns recommended)</span>
+<span class="n">sampling_per_window</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">nanoseconds</span>
 
-   #How much equilibration to run per alchemical window (2ns recommended)
-   equili_per_window = 2*unit.nanoseconds
+<span class="c1">#How much equilibration to run per alchemical window (2ns recommended)</span>
+<span class="n">equili_per_window</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">nanoseconds</span>
 
-   #Which estimators to use. Valid options are: TI, FEP
-   methods = FEP, TI
+<span class="c1">#Which estimators to use. Valid options are: TI, FEP</span>
+<span class="n">methods</span> <span class="o">=</span> <span class="n">FEP</span><span class="p">,</span> <span class="n">TI</span>
 
-   #How many total replicas of each window are run (we recommend at least 5).
-   total_reps = 5
+<span class="c1">#How many total replicas of each window are run (we recommend at least 5).</span>
+<span class="n">total_reps</span> <span class="o">=</span> <span class="mi">5</span>
 
-   #How many replicas should this evocation of TIES_MD run, used for parallelisation
-   reps_per_exec = 5
+<span class="c1">#How many replicas should this evocation of TIES_MD run, used for parallelisation</span>
+<span class="n">reps_per_exec</span> <span class="o">=</span> <span class="mi">5</span>
 
-   #Where in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.
-   elec_edges = 0.5, 1.0
+<span class="c1">#Where in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.</span>
+<span class="n">elec_edges</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span>
 
-   #Where in lambda schedule (0-&gt;1) should the Lennard_Jones potentials begin, stop appearing.
-   ster_edges = 0.0, 0.5
+<span class="c1">#Where in lambda schedule (0-&gt;1) should the Lennard_Jones potentials begin, stop appearing.</span>
+<span class="n">ster_edges</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span>
 
-   #The value the global controlling parameter takes in each window (13 windows of this spacing recommended)
-   global_lambdas = 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.0
+<span class="c1">#The value the global controlling parameter takes in each window (13 windows of this spacing recommended)</span>
+<span class="n">global_lambdas</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.0</span>
 
-   #The name of the pdb file with constraints in the build directory, i.e. cons.pdb If no constraints pass na
-   constraint_file = na
+<span class="c1">#The name of the pdb file with constraints in the build directory, i.e. cons.pdb If no constraints pass na</span>
+<span class="n">constraint_file</span> <span class="o">=</span> <span class="n">na</span>
 
-   #Which column in pdb are constraints provided valid options are occupancy/beta_factor. (beta_factor is standard)
-   constraint_column = beta_factor
+<span class="c1">#Which column in pdb are constraints provided valid options are occupancy/beta_factor. (beta_factor is standard)</span>
+<span class="n">constraint_column</span> <span class="o">=</span> <span class="n">beta_factor</span>
 
-   #What type of simulation cell is used valid options are cube, truncatedOctahedron, rhombicDodecahedron or na for manual.
-   box_type = na
+<span class="c1">#What type of simulation cell is used valid options are cube, truncatedOctahedron, rhombicDodecahedron or na for manual.</span>
+<span class="n">box_type</span> <span class="o">=</span> <span class="n">na</span>
 
-   #The edge length used to compute the cube or truncatedOctahedron or rhombicDodecahedron box vectors
-   edge_length = 10*unit.nanometer
+<span class="c1">#The edge length used to compute the cube or truncatedOctahedron or rhombicDodecahedron box vectors</span>
+<span class="n">edge_length</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">nanometer</span>
 
-   #If box_type is na the manually specify box vectors of this simulation, unit Angstrom.
-   cell_basis_vec1 = 50, 0.0, 0.0
-   cell_basis_vec2 = 0.0, 50, 0.0
-   cell_basis_vec3 = 0.0, 0.0, 50
+<span class="c1">#If box_type is na the manually specify box vectors of this simulation, unit Angstrom.</span>
+<span class="n">cell_basis_vec1</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+<span class="n">cell_basis_vec2</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.0</span>
+<span class="n">cell_basis_vec3</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">50</span>
 
-   #What input type is provided, only AMBER supported.
-   input_type = AMBER
+<span class="c1">#What input type is provided, only AMBER supported.</span>
+<span class="n">input_type</span> <span class="o">=</span> <span class="n">AMBER</span>
 
-   #NAMD specific options
-   #What version of NAMD to use &lt;= 2.12 effects how analysis files are read &gt;=3 uses NAMD3 alpha.
-   version = 2.12
-
-``total_reps`` and ``reps_per_exec`` are options which can be used to achieve simple parallelism of the simulations.
+<span class="c1">#NAMD specific options</span>
+<span class="c1">#What version of NAMD to use &lt;= 2.12 effects how analysis files are read &gt;=3 uses NAMD3 alpha.</span>
+<span class="n">version</span> <span class="o">=</span> <span class="mf">2.12</span>
 </pre></div>
 </div>
-<p>For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
+<p><code class="docutils literal notranslate"><span class="pre">total_reps</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span></code> are options which can be used to achieve simple parallelism of the simulations.
+For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
 <code class="docutils literal notranslate"><span class="pre">total_reps</span> <span class="pre">=</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span> <span class="pre">=</span> <span class="pre">1</span></code>. See the <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> section for more details of how to
 achieve this.</p>
 <p>The following image shows <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> applied to one alchemical transformation.</p>
@@ -318,7 +317,7 @@ set to 0.0 can be generated with <code class="docutils literal notranslate"><spa
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_ana</span> <span class="o">--</span><span class="n">run_type</span><span class="o">=</span><span class="n">setup</span>
 </pre></div>
 </div>
-<p>The information in the generated <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> will be inferred from the directory structure.  With <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> and
+<p>The information in the generated <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> will be inferred from the directory structure. With <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> and
 <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> populated the analysis can then be executed on a HPC head node or PC by running <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">study</span></code> directory using the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_ana</span>

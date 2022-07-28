@@ -97,7 +97,7 @@ occasionally change. This file must be placed alongside the build directory. Her
     #What version of NAMD to use <= 2.12 effects how analysis files are read >=3 uses NAMD3 alpha.
     version = 2.12
 
- ``total_reps`` and ``reps_per_exec`` are options which can be used to achieve simple parallelism of the simulations.
+``total_reps`` and ``reps_per_exec`` are options which can be used to achieve simple parallelism of the simulations.
 For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
 ``total_reps = 5`` and ``reps_per_exec = 1``. See the :ref:`Parallelization` section for more details of how to
 achieve this.
@@ -250,7 +250,7 @@ set to 0.0 can be generated with ``TIES_analysis`` by running::
 
     TIES_ana --run_type=setup
 
-The information in the generated ``exp.dat`` will be inferred from the directory structure.  With ``analysis.cfg`` and
+The information in the generated ``exp.dat`` will be inferred from the directory structure. With ``analysis.cfg`` and
 ``exp.dat`` populated the analysis can then be executed on a HPC head node or PC by running ``TIES_analysis`` in the
 ``study`` directory using the command::
 
