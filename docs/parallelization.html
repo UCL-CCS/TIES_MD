@@ -106,13 +106,13 @@ and run:</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> device 0 will then run 6 windows of the first repeat and CUDA device 1 will run 6 windows of the second repeat.
 Equally ths could be spit into to runs of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> masked to only see one device:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;_alpha&quot;</span>
-<span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;_beta&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="mi">1</span>
 </pre></div>
 </div>
 <p>To run in this configuration the options <code class="docutils literal notranslate"><span class="pre">total_reps=2</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec=1</span></code> are set in TIES.cfg to tell <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> that
 there are a total of 2 replicas being run and that each execution of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> should run only one. Also note we have set
-<code class="docutils literal notranslate"><span class="pre">--node_id</span></code> to some different strings for otherwise identical run lines and this ensures these parallel runs write output
+<code class="docutils literal notranslate"><span class="pre">--node_id</span></code> to some different values for otherwise identical run lines and this ensures these parallel runs write output
 to unique locations. <code class="docutils literal notranslate"><span class="pre">--node_id</span></code> only needs to be set when identical replicas of a simulation are run in separate executions
 of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>.</p>
 <p>If we need further parallelization over alchemical windows we can use the command line option <code class="docutils literal notranslate"><span class="pre">--windows_mask</span></code>
@@ -129,18 +129,18 @@ this option takes a <code class="docutils literal notranslate"><span class="pre"
 <p>These commands run submitted to a node with 6 GPUS would run one window on each GPU. To scale over multiple node
 we could use the resource allocator of the HPC for example <a class="reference external" href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=SSWRJV_10.1.0/jsm/jsrun.html">jsrun</a>
 on Summit <code class="docutils literal notranslate"><span class="pre">ORNL</span></code> would allow us to run with 2 replicas of 6 windows as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=&quot;_alpha&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=&quot;_alpha&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=&quot;_alpha&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=&quot;_alpha&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=&quot;_alpha&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=&quot;_alpha&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=&quot;_beta&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=&quot;_beta&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=&quot;_beta&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=&quot;_beta&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=&quot;_beta&quot;&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=&quot;_beta&quot;&amp;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=0&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=0&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=0&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=0&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=0&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=0&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=1&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=1&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=1&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=1&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=1&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=1&amp;
 </pre></div>
 </div>
 <p>Note here we do not set <code class="docutils literal notranslate"><span class="pre">--devices</span></code> as the masking of GPUs is handled by the resource allocator. If a resource allocator
@@ -148,18 +148,18 @@ is not available an alternative method to run multiple simulations across nodes 
 (<code class="docutils literal notranslate"><span class="pre">MPI</span></code>). The use of <code class="docutils literal notranslate"><span class="pre">MPI</span></code> can vary from system to system and there is no universal solution to running across many node
 for all HPC systems, however we provide an example here for reference which would work with
 <a class="reference external" href="https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview">ThetaGPU</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mpirun -host $node1 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=&quot;_alpha&quot;&amp;
-mpirun -host $node1 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=&quot;_alpha&quot;&amp;
-mpirun -host $node1 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=&quot;_alpha&quot;&amp;
-mpirun -host $node1 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=&quot;_alpha&quot;&amp;
-mpirun -host $node1 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=&quot;_alpha&quot;&amp;
-mpirun -host $node1 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=&quot;_alpha&quot;&amp;
-mpirun -host $node2 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=&quot;_beta&quot;&amp;
-mpirun -host $node2 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=&quot;_beta&quot;&amp;
-mpirun -host $node2 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=&quot;_beta&quot;&amp;
-mpirun -host $node2 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=&quot;_beta&quot;&amp;
-mpirun -host $node2 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=&quot;_beta&quot;&amp;
-mpirun -host $node2 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=&quot;_beta&quot;&amp;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mpirun -host $node1 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=0&amp;
+mpirun -host $node1 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=0&amp;
+mpirun -host $node1 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=0&amp;
+mpirun -host $node1 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=0&amp;
+mpirun -host $node1 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=0&amp;
+mpirun -host $node1 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=0&amp;
+mpirun -host $node2 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=1&amp;
+mpirun -host $node2 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=1&amp;
+mpirun -host $node2 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=1&amp;
+mpirun -host $node2 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=1&amp;
+mpirun -host $node2 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=1&amp;
+mpirun -host $node2 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=1&amp;
 </pre></div>
 </div>
 </section>

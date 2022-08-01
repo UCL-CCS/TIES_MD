@@ -28,12 +28,12 @@ and run::
 The ``CUDA`` device 0 will then run 6 windows of the first repeat and CUDA device 1 will run 6 windows of the second repeat.
 Equally ths could be spit into to runs of ``TIES MD`` masked to only see one device::
 
-    ties_md --exp_name=sys_solv --devices=0 --node_id="_alpha"
-    ties_md --exp_name=sys_solv --devices=1 --node_id="_beta"
+    ties_md --exp_name=sys_solv --devices=0 --node_id=0
+    ties_md --exp_name=sys_solv --devices=1 --node_id=1
 
 To run in this configuration the options ``total_reps=2`` and ``reps_per_exec=1`` are set in TIES.cfg to tell ``TIES MD`` that
 there are a total of 2 replicas being run and that each execution of ``TIES MD`` should run only one. Also note we have set
-``--node_id`` to some different strings for otherwise identical run lines and this ensures these parallel runs write output
+``--node_id`` to some different values for otherwise identical run lines and this ensures these parallel runs write output
 to unique locations. ``--node_id`` only needs to be set when identical replicas of a simulation are run in separate executions
 of ``TIES MD``.
 
@@ -52,18 +52,18 @@ These commands run submitted to a node with 6 GPUS would run one window on each 
 we could use the resource allocator of the HPC for example `jsrun <https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=SSWRJV_10.1.0/jsm/jsrun.html>`_
 on Summit ``ORNL`` would allow us to run with 2 replicas of 6 windows as follows::
 
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id="_alpha"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id="_alpha"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id="_alpha"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id="_alpha"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id="_alpha"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id="_alpha"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id="_beta"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id="_beta"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id="_beta"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id="_beta"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id="_beta"&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id="_beta"&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=1&
 
 Note here we do not set ``--devices`` as the masking of GPUs is handled by the resource allocator. If a resource allocator
 is not available an alternative method to run multiple simulations across nodes is to use a message passing interface
@@ -71,18 +71,18 @@ is not available an alternative method to run multiple simulations across nodes 
 for all HPC systems, however we provide an example here for reference which would work with
 `ThetaGPU <https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview>`_::
 
-    mpirun -host $node1 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id="_alpha"&
-    mpirun -host $node1 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id="_alpha"&
-    mpirun -host $node1 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id="_alpha"&
-    mpirun -host $node1 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id="_alpha"&
-    mpirun -host $node1 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id="_alpha"&
-    mpirun -host $node1 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id="_alpha"&
-    mpirun -host $node2 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id="_beta"&
-    mpirun -host $node2 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id="_beta"&
-    mpirun -host $node2 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id="_beta"&
-    mpirun -host $node2 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id="_beta"&
-    mpirun -host $node2 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id="_beta"&
-    mpirun -host $node2 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id="_beta"&
+    mpirun -host $node1 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=0&
+    mpirun -host $node1 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=0&
+    mpirun -host $node1 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id=0&
+    mpirun -host $node1 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id=0&
+    mpirun -host $node1 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=0&
+    mpirun -host $node1 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=0&
+    mpirun -host $node2 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=1&
+    mpirun -host $node2 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=1&
+    mpirun -host $node2 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id=1&
+    mpirun -host $node2 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id=1&
+    mpirun -host $node2 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=1&
+    mpirun -host $node2 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=1&
 
 
 TIES-NAMD
