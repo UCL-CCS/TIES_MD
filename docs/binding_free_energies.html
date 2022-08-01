@@ -194,7 +194,7 @@ follows:</p>
 <span class="s2">#BSUB -e eLIGPAIR.%J&quot;&quot;&quot;</span>
 
     <span class="c1">#run line in submission scripts can also be changed</span>
-    <span class="n">md</span><span class="o">.</span><span class="n">sub_run_line</span> <span class="o">=</span> <span class="s1">&#39;jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;&#39;</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">sub_run_line</span> <span class="o">=</span> <span class="s1">&#39;jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;&#39;</span>
 
     <span class="c1">#setup the new simulation with changed options (also writes submission script)</span>
     <span class="n">md</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
@@ -222,7 +222,7 @@ cd $ties_dir
 
 for lambda in 0 1 2 3 4 5 6 7 8 9 10 11 12; do
   for i in {0..5}; do
-        jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;
+        jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;
     done
     done
 wait
@@ -235,14 +235,14 @@ wait
 <p>Once the simulations are finished the analysis can be performed as discussed in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> section. If we are in
 the <code class="docutils literal notranslate"><span class="pre">ties/ties-ligandA-ligandB/(lig/com)</span></code> directory run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">../../..</span>
-<span class="n">TIES_ana</span> <span class="o">--</span><span class="n">run_type</span><span class="o">=</span><span class="n">setup</span>
+<span class="n">ties_ana</span> <span class="o">--</span><span class="n">run_type</span><span class="o">=</span><span class="n">setup</span>
 </pre></div>
 </div>
 <p>Then modify the analysis.cfg file such the legs option is now to <code class="docutils literal notranslate"><span class="pre">legs</span> <span class="pre">=</span> <span class="pre">lig,</span> <span class="pre">com</span></code> (the two legs of our cycle). Note,
 configured like this the <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> is computed as the <span class="math notranslate nohighlight">\({Δ G}\)</span> of the ligand simulation minus the <span class="math notranslate nohighlight">\({Δ G}\)</span>
 of the complex simulation, take care this gives you the same <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> as you want to compare to in experiment
 and it depends on which ligand is ligandA/B in the cycle. running:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TIES_ana</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_ana</span>
 </pre></div>
 </div>
 <p>will once again give a <code class="docutils literal notranslate"><span class="pre">results.dat</span></code> file as out put this is the same as in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> section but it now

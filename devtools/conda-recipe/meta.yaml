@@ -28,6 +28,9 @@ requirements:
     - cython
     - ties_ana
     - mpiplus
+    - scikit-learn
+    - six
+    - pymbar # [not ppc64le]
     - openmmtools # [not ppc64le]
 
 about:

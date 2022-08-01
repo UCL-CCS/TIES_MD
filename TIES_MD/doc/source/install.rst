@@ -88,6 +88,9 @@ provided `here <https://github.com/UCL-CCS/TIES_MD/tree/main/TIES_MD/examples>`_
 TIES OpenMM linux-ppc64le
 --------------------------
 
+.. note::
+    There is no conda version of PYMABR 4.0 for linux-ppc64le FEP will not work until this is updated.
+
 To use the OpenMM protocol in ``TIES_MD`` on ``linux-ppc64le`` a custom version of ``OpenMMTools`` is needed to perform the alchemical transformations
 of the system and allow for thermodynamic integration calculations. In order to install the custom version of ``OpenMMTools`` run::
 

@@ -234,24 +234,26 @@ Analysis
     as pre NAMD 2.12 different columns are used by NAMD to write the output potentials. Please take care the version is set correctly.
 
 The analysis of the files found in the output can be performed by ``TIES_analysis`` which is a submodule of ``TIES_MD``.
-``TIES_MD`` will create the input need to perform the analysis. Input configuration files for ``TIES_analysis`` will be filled
+``TIES_MD`` will create the input needed to perform the analysis. Input configuration files for ``TIES_analysis`` will be filled
 in with information such as the lambda schedule or which MD engine was used. If the directory structure
 ``study/system/ligand/thermodynamic_leg/build`` was used then these config files are written to the ``study`` directory.
 Some information is missing from these config files which must be filled out. The missing information is for the names
 of the ``thermodynamic_leg`` directories. Add the names of the ``thermodynamic_leg`` to the
-config file ``analysis.cfg`` under the option ``legs`` as an example see the option `legs <https://github.com/adw62/TIES_analysis/blob/main/example/analysis.cfg#L8>`_
-in this example script for the analysis of protein-ligand binding calculation with two thermodynamic legs named
-``'lig'`` and ``'com'``. This example analysis input also has an ``exp.dat`` `file <https://github.com/adw62/TIES_analysis/blob/main/example/exp.dat>`_
-populated for the protein target named ``ptp1b`` and a ligand transformation in that protein named l6-l14, this transformation
-has an experimental ΔΔG of -1.04 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
-values in ``exp.dat`` which need to be populated can be left as 0.0. To save time an ``exp.dat`` file with all values
-set to 0.0 can be generated with ``TIES_analysis`` by running::
+config file ``analysis.cfg`` under the option ``legs`` as an example see the option `legs <https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/analysis.cfg>`_
+in this example script. This example analysis input also has an ``exp.dat`` `file <https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/exp.dat>`_
+populated for the system named ``ethane`` and a ligand transformation in that system called ``zero_sum``, this transformation
+has an theoretical ΔG of 0.0 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
+values in ``exp.dat`` which need to be populated can be left as 0.0. The theoretical ΔG of this ethane zero sum system is zero
+because the transformation carried out is ethane into ethane so we should expect the result to sum to zero. This is not
+the result we would expect in general and is special only to a test case such as this. To save time an ``exp.dat`` file
+with all values set to 0.0 can be generated with ``TIES_analysis`` by running::
 
     ties_ana --run_type=setup
 
-The information in the generated ``exp.dat`` will be inferred from the directory structure. With ``analysis.cfg`` and
-``exp.dat`` populated the analysis can then be executed on a HPC head node or PC by running ``TIES_analysis`` in the
-``study`` directory using the command::
+The information in the generated ``exp.dat`` will be inferred from the directory structure.
+If desired the user can populate the ``exp.dat`` correct (non-zero) values at a later date for their own reference/analysis.
+With ``analysis.cfg`` and ``exp.dat`` populated the analysis can then be executed on a HPC head node or PC by running
+``TIES_analysis`` in the ``study`` directory using the command::
 
     ties_ana
 

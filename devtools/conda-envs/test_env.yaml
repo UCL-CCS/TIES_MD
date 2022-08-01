@@ -1,9 +1,9 @@
 name: test_ci
 channels:
   - conda-forge
-  - ucl-ccs
   - omnia
   - defaults
+
 dependencies:
   - docopt
   - multiprocess
@@ -11,5 +11,9 @@ dependencies:
   - openmm
   - pymbar
   - scipy
-  - ties_ana
-  - openmmtools 
+  - openmmtools
+  - scikit-learn
+  - scipy
+  - six
+  - nose
+
