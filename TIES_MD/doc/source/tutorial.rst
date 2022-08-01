@@ -8,8 +8,8 @@ Getting started
 we will outline what commands should be run to calculate binding free energies. To start with any free energy calculations
 we must first outline what are the expected input files to the ``TIES MD`` program.
 
-In this tutorial we will refer to example systems which can be found in the source code
-provided `here <https://github.com/UCL-CCS/TIES_MD/tree/main/TIES_MD/examples>`_. These examples can be download by running::
+In this tutorial we will refer to example systems which can be found in the
+`source code <https://github.com/UCL-CCS/TIES_MD/tree/main/TIES_MD/examples>`_. These examples can be download by running::
 
         git clone https://github.com/UCL-CCS/TIES_MD.git
 
@@ -177,7 +177,7 @@ The files in the ``results`` directories will be analysed to calculate binding f
 this setup stage to `this <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ example
 for the zero sum transformation of ethane to ethane the setup command would be::
 
-    TIES_MD --exp_name=sys_solv --run_type=setup
+    ties_md --exp_name=sys_solv --run_type=setup
 
 The above sets up an ``OpenMM`` calculation. Alternatively to use ``NAMD`` some options must be changed please see this
 `modified <https://github.com/UCL-CCS/TIES_MD/blob/master/TIES_MD/examples/ethane_namd/zero_sum/leg1/TIES.cfg>`_ config file
@@ -196,12 +196,12 @@ equal to ``0.0, 0.2, 0.4, 0.6, 0.8, 1.0`` therefore there are 6 alchemical windo
 to ``1``, there is therefore 6x1 = 6 total simulations to perform. If a HPC submission script was to request one node with
 6 GPUS with each GPU running one alchemical window the run lines for an ``OpenMM`` calculation would look like::
 
-    TIES_MD --exp_name=sys_solv --windows_mask=0,1 --devices=0&
-    TIES_MD --exp_name=sys_solv --windows_mask=1,2 --devices=1&
-    TIES_MD --exp_name=sys_solv --windows_mask=2,3 --devices=2&
-    TIES_MD --exp_name=sys_solv --windows_mask=3,4 --devices=3&
-    TIES_MD --exp_name=sys_solv --windows_mask=4,5 --devices=4&
-    TIES_MD --exp_name=sys_solv --windows_mask=5,6 --devices=5&
+    ties_md --exp_name=sys_solv --windows_mask=0,1 --devices=0&
+    ties_md --exp_name=sys_solv --windows_mask=1,2 --devices=1&
+    ties_md --exp_name=sys_solv --windows_mask=2,3 --devices=2&
+    ties_md --exp_name=sys_solv --windows_mask=3,4 --devices=3&
+    ties_md --exp_name=sys_solv --windows_mask=4,5 --devices=4&
+    ties_md --exp_name=sys_solv --windows_mask=5,6 --devices=5&
 
 There are a lot of options for how these ``OpenMM`` calcualtions can be structured and parallelized with ``TIES_MD`` see our
 :ref:`Parallelization` page for more information on this. For a ``NAMD`` calculation if the submission script requested 6 CPU
@@ -217,6 +217,7 @@ nodes each with 128 cores the run lines in the submission script might look like
         done
         wait
     done
+
 Notice in the ``NAMD`` example reference is made to a directory ``$build/replica-confs` this is where the NAMD input scripts are writen
 during the ``TIES_MD`` setup stage. Also notice in the ``NAMD`` examples there is a loop over the ``stages`` these are three
 pre-production stages ``eq0``, ``eq1`` and ``eq2`` and one production stage ``sim1`` these stages are performed automatically by ``TIES MD``
@@ -232,9 +233,7 @@ Analysis
     When using NAMD the version is specified in namd.cfg as ``namd_version = 2.14`` for example. This is critical to the result
     as pre NAMD 2.12 different columns are used by NAMD to write the output potentials. Please take care the version is set correctly.
 
-The analysis of the files found in the output can be performed by ``TIES_analysis`` which is included in the
-conda installation of ``TIES_MD`` or is available for separate `download <https://github.com/adw62/TIES_analysis>`_.
-
+The analysis of the files found in the output can be performed by ``TIES_analysis`` which is a submodule of ``TIES_MD``.
 ``TIES_MD`` will create the input need to perform the analysis. Input configuration files for ``TIES_analysis`` will be filled
 in with information such as the lambda schedule or which MD engine was used. If the directory structure
 ``study/system/ligand/thermodynamic_leg/build`` was used then these config files are written to the ``study`` directory.
@@ -248,13 +247,13 @@ has an experimental ΔΔG of -1.04 kcal/mol and an unknown standard deviation as
 values in ``exp.dat`` which need to be populated can be left as 0.0. To save time an ``exp.dat`` file with all values
 set to 0.0 can be generated with ``TIES_analysis`` by running::
 
-    TIES_ana --run_type=setup
+    ties_ana --run_type=setup
 
 The information in the generated ``exp.dat`` will be inferred from the directory structure. With ``analysis.cfg`` and
 ``exp.dat`` populated the analysis can then be executed on a HPC head node or PC by running ``TIES_analysis`` in the
 ``study`` directory using the command::
 
-    TIES_ana
+    ties_ana
 
 This will produce as output a file ``results.dat`` in the ``study`` directory which contains a python dictionary keyed
 first by the methodology used, then the system name and then ligand name. Each value in the dictionary is a list, the first

@@ -53,7 +53,7 @@ class TIES(object):
     :param run_type: str, flag to say if we should run dynamics or not
     :param exp_name: str, for the names of experiment i.e. complex -> complex.pdb/complex.prmtop
     :param devices: list, list of ints for which cuda devices to use
-    :param node_id: str, id denoting what replica of this simulation this execution of TIES_MD should run
+    :param node_id: float, id denoting what replica of this simulation this execution of TIES_MD should run
     :param windows_mask: list containing ints for start and end range of windows to be run
     :param periodic: boolean determines if the simulation will be periodic
     :param lam: Lambda class, allow passing of custom lambda schedule
@@ -63,7 +63,6 @@ class TIES(object):
     '''
     def __init__(self, cwd, exp_name, run_type='class', devices=None, node_id=None, windows_mask=None, periodic=True,
                  lam=None, platform='CUDA', **kwargs):
-
         nice_print('TIES')
 
         #check all the config file args we need are present
@@ -199,42 +198,93 @@ class TIES(object):
 
     @property
     def box_type(self):
+        """
+        What type of simulation box is being used (cube, truncatedOctahedron, rhombicDodecahedron or na for manual)
+
+        :return: string for box type.
+        """
         return self._box_type
 
     @property
     def exp_name(self):
+        '''
+        What is the name of the experiment, this is the prefix expected on input files e.g. experiment_name.pdb
+
+        :return: string for the experiment name.
+        '''
         return self._exp_name
 
     @property
     def engine(self):
+        '''
+        What molecular dynamics engine is going to be used (openmm/namd2.14/namd3)
+
+        :return: string for molecular dynamics engine.
+        '''
         return self._engine
 
     @property
     def global_lambdas(self):
+        '''
+        The global values of lambda in the lambda schedule.
+
+        :return: list of floats for lambda schedule
+        '''
         return self._global_lambdas
 
     @property
     def elec_edges(self):
+        '''
+        here in lambda schedule (0->1) should the electrostatic potentials begin, stop appearing.
+
+        :return: list of floats for when the electrostatic potentials begin, stop appearing.
+        '''
         return self._elec_edges
 
     @property
     def ster_edges(self):
+        '''
+        Where in lambda schedule (0->1) should the Lennard_Jones potentials begin, stop appearing.
+
+        :return: list of floats for when the Lennard_Jones potentials begin, stop appearing.
+        '''
         return self._ster_edges
 
     @property
     def split_run(self):
+        '''
+        boolean that sets if each execution of TIESMD or NAMD runs all replicas or a subset.
+
+        :return: bool for if run is split
+        '''
         return self._split_run
 
     @property
     def total_reps(self):
+        '''
+        What is the total number of replicas we expect to run
+
+        :return: int for total number of replicas.
+        '''
         return self._total_reps
 
     @property
     def reps_per_exec(self):
+        '''
+        How many replicas will each run of the program execute.
+
+        :return: int for replicas per run.
+        '''
         return self._reps_per_exec
 
     @box_type.setter
     def box_type(self, value):
+        '''
+        Setting function for box type, will build manual box from cell basis vectors if user passes box type na
+        :param value: str, for what box type we want
+
+        :return: None
+        '''
         self._box_type = value
         if self._box_type == 'na':
             vecs = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3']
@@ -267,12 +317,24 @@ class TIES(object):
 
     @exp_name.setter
     def exp_name(self, value):
+        '''
+        Setter for exp_name, will rebuild the submission file to reflect updated name.
+        :param value: str, for the exp_name
+
+        :return: None
+        '''
         self._exp_name = value
         self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
                                                                 self._global_lambdas, self._total_reps, self._exp_name)
 
     @engine.setter
     def engine(self, value):
+        '''
+        Setter for the engine type, check logic on selection and updates submission scripts
+        :param value: str, for what engine we want.
+
+        :return: None
+        '''
         self._engine = value.lower()
         if self._engine == 'openmm':
             self.namd_version = None
@@ -298,16 +360,34 @@ class TIES(object):
 
     @ster_edges.setter
     def ster_edges(self, value):
+        '''
+        Setter for ster_edges, rebuilds Lambdas class with updated schedule.
+        :param value: list of floats, for where the Lennard_Jones potentials begin, stop appearing.
+
+        :return: None
+        '''
         self._ster_edges = value
         self.lam = Lambdas(self._elec_edges, self._ster_edges, self._global_lambdas, debug=False)
 
     @elec_edges.setter
     def elec_edges(self, value):
+        '''
+        Setter for elec_edges, rebuilds Lambdas class with updated schedule.
+        :param value: list of floats, for where the electrostatic potentials begin, stop appearing.
+
+        :return: None
+        '''
         self._elec_edges = value
         self.lam = Lambdas(self._elec_edges, self._ster_edges, self._global_lambdas, debug=False)
 
     @global_lambdas.setter
     def global_lambdas(self, value):
+        '''
+        Setter for global_lambdas, rebuilds Lambdas class and submission scripts with updated info.
+        :param value: list of floats for the value the global controlling parameter takes in each window.
+
+        :return: None
+        '''
         self._global_lambdas = [round(x, 2) for x in value]
         self.lam = Lambdas(self._elec_edges, self._ster_edges, self._global_lambdas, debug=False)
         self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
@@ -316,6 +396,12 @@ class TIES(object):
 
     @split_run.setter
     def split_run(self, value):
+        '''
+        Setter for split run, checks logic on selection and rebuilds submission scripts.
+        :param value: bool for if run is split or not.
+
+        :return: None
+        '''
         self._split_run = value
         if self._split_run:
             # check the user has not given too many GPUS for the one replica
@@ -337,6 +423,12 @@ class TIES(object):
 
     @total_reps.setter
     def total_reps(self, value):
+        '''
+        Setter for total_reps, updates split_run bool.
+        :param value: int for the total number of replicas.
+
+        :return: None
+        '''
         self._total_reps = value
         if self._total_reps != self._reps_per_exec:
             self.split_run = True
@@ -345,6 +437,12 @@ class TIES(object):
 
     @reps_per_exec.setter
     def reps_per_exec(self, value):
+        '''
+        Setter for reps_per_exec, updates split_run bool.
+        :param value: int for how many replicas each run of the program should execute.
+
+        :return: None
+        '''
         self._reps_per_exec = value
         if self._total_reps != self._reps_per_exec:
             self.split_run = True
@@ -353,8 +451,9 @@ class TIES(object):
 
     def update_cfg(self):
         '''
-        Write a TIES congig file this should be called after api changes are made
-        :return:
+        Write a TIES congig file this should be called after api changes are made.
+
+        :return: None
         '''
         if self.engine == 'namd':
             engine = self.engine+str(self.namd_version)
@@ -389,6 +488,7 @@ class TIES(object):
         '''
         Function to setup simulations and then stop
 
+        :return: None
         '''
         if self.engine == 'namd':
             folders = ['equilibration', 'simulation']
@@ -404,7 +504,8 @@ class TIES(object):
     def build_results_dirs(self, folders):
         '''
         Helper function to build output directories.
-        :param folders: List of strings for what folders to build
+        :param folders: List of strings for what folders to build.
+
         :return: None
         '''
         # If output folders do not exist make them.
@@ -425,6 +526,11 @@ class TIES(object):
                     Path(path).mkdir(parents=True, exist_ok=True)
 
     def get_options(self):
+        '''
+        Prints out the options the user can change and their current values.
+
+        :return: None
+        '''
         for arg in self.all_args:
             print('{}: {}'.format(arg, self.__getattribute__(arg)))
 
@@ -432,6 +538,7 @@ class TIES(object):
         '''
         Function to run the simulations in parallel
 
+        :return: None
         '''
         folders = ['equilibration', 'simulation', 'results']
         TIES.build_results_dirs(self, folders)
@@ -484,6 +591,7 @@ class TIES(object):
         '''
         Function to write the input configuration files for analysis.
 
+        :return: None
         '''
 
         vdw_a = ','.join(str(x) for x in self.lam.lambda_sterics_appear)
@@ -544,6 +652,7 @@ ele_d = {9}
         '''
         Function to call all functions needed to write all namd input scripts
 
+        :return: None
         '''
         self.write_namd_min()
         self.write_namd_eq()
@@ -554,6 +663,7 @@ ele_d = {9}
         '''
         Function to write eq0.conf scripts used in minimization stage
 
+        :return: None
         '''
         
         if self.namd_version < 3:
@@ -628,7 +738,9 @@ minimize 2000
 
     def write_namd_eq(self):
         '''
-        Function to write eq1 and eq2 namd scripts used for equilibration
+        Function to write eq1 and eq2 namd scripts used for equilibration.
+
+        :return: None
         '''
 
         # prep common elements in eq1 and eq2
@@ -758,7 +870,9 @@ conskcol  {}
 
     def write_namd_prod(self):
         '''
-        Function to write sim1 namd conf script for production simulation
+        Function to write sim1 namd conf script for production simulation.
+
+        :return: None
         '''
 
         # check units on steps, temp and pressure and make unit less for writing to file
@@ -815,7 +929,9 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
 
     def write_namd_submissions(self):
         '''
-        Function to write an example submission script of NAMD job on HPC (ARCHER2)
+        Function to write an example submission script of NAMD job on HPC (ARCHER2).
+
+        :return: None
         '''
         lambs = ' '.join(self.lam.str_lams)
         if self.namd_version < 3:
@@ -836,9 +952,8 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
 
     def write_openmm_submission(self):
         '''
-        Function to write an example submission script of OpenMM job on HPC (Summit)
+        Function to write an example submission script of OpenMM job on HPC (Summit).
 
-        :return:
         '''
 
         lambs = [str(x) for x in range(len(self.global_lambdas))]
@@ -861,7 +976,6 @@ def get_box_vectors(box_type, d):
     :param d: float for edge length of box unit angstrom
 
     :return: list of Vec3 for each basis vector
-
     '''
 
     supported = ['cube', 'truncatedOctahedron', 'rhombicDodecahedron']
@@ -878,22 +992,12 @@ def get_box_vectors(box_type, d):
     return [d * v * unit.angstrom for v in vectors]
 
 
-def sort_results(string):
-    '''
-    Helper function to sort directory paths by specific index in file name.
-
-    :param string: Path to a results file.
-
-    '''
-    return int(string.split('/')[-4].split('_')[1])
-
-
 def nice_print(string):
     '''
     Function to print str with padding.
-
     :param string: A string which should be printed.
 
+    :return: None
     '''
     string = string.center(75, '#')
     print(string)
@@ -909,7 +1013,8 @@ def get_header_and_run(engine, namd_version, split_run, global_lambdas, reps, ex
     :param split_run: bool, Should each run line run all or one replica
     :param global_lambdas: list of floats for value of global lambda in eah window
     :param reps: int, number of replica simulations
-    :param exp_name str, name of the experiment e.g. complex
+    :param exp_name: str, name of the experiment e.g. complex
+
     :return: str, str for header and run line of HPC sub script
     '''
 

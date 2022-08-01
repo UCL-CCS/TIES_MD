@@ -1,2 +1,2 @@
 #The minimal command line input to run this example would be:
-TIES_MD --exp_name='sol'
+ties_md --exp_name='sol'

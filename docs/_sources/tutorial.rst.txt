@@ -8,8 +8,8 @@ Getting started
 we will outline what commands should be run to calculate binding free energies. To start with any free energy calculations
 we must first outline what are the expected input files to the ``TIES MD`` program.
 
-In this tutorial we will refer to example systems which can be found in the source code
-provided `here <https://github.com/UCL-CCS/TIES_MD/tree/main/TIES_MD/examples>`_. These examples can be download by running::
+In this tutorial we will refer to example systems which can be found in the
+`source code <https://github.com/UCL-CCS/TIES_MD/tree/main/TIES_MD/examples>`_. These examples can be download by running::
 
         git clone https://github.com/UCL-CCS/TIES_MD.git
 
@@ -217,6 +217,7 @@ nodes each with 128 cores the run lines in the submission script might look like
         done
         wait
     done
+
 Notice in the ``NAMD`` example reference is made to a directory ``$build/replica-confs` this is where the NAMD input scripts are writen
 during the ``TIES_MD`` setup stage. Also notice in the ``NAMD`` examples there is a loop over the ``stages`` these are three
 pre-production stages ``eq0``, ``eq1`` and ``eq2`` and one production stage ``sim1`` these stages are performed automatically by ``TIES MD``

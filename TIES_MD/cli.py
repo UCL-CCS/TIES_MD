@@ -31,7 +31,7 @@ usage = """
 TIES_MD
 Command line input should be used as follows...
 Usage:
-TIES_MD [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--periodic=BOOL] [--node_id=STRING] [--windows_mask=LIST] [--exp_name=STR]...
+TIES_MD [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--periodic=BOOL] [--node_id=INT] [--windows_mask=LIST] [--exp_name=STR]...
 """
 
 def main(argv=None):
@@ -92,11 +92,10 @@ def main(argv=None):
         if not_openmm:
             raise ValueError(not_openmm_msg.format('--node_id'))
         node_id = args['--node_id']
-        node_id = str(node_id)
+        node_id = int(node_id)
     else:
         node_id = None
-        #node_id will be set to _alpha in TIES.py after options check
-        print(msg.format('node id string', '_alpha'))
+        print(msg.format('node id string', 'None'))
 
     if args['--windows_mask']:
         if not_openmm:

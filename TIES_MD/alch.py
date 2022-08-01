@@ -238,6 +238,8 @@ class AlchSys(object):
         Function to update the stored positions if a clash of atoms is found during initialization.
 
         :param positions: list, for the positions of all atoms in the system to be used to initialise simulations
+
+        :return: None
         '''
         self.og_positions = positions
 
@@ -246,6 +248,8 @@ class AlchSys(object):
         Function to test if system can be minimized, useful to find clashed atoms or undefined potentials
 
         :param simulation: OpenMM simulation object to test.
+
+        :return: None
         '''
         simulation['sim'].context.setPositions(self.og_positions)
         mm.LocalEnergyMinimizer.minimize(simulation['sim'].context, maxIterations=10)
@@ -255,6 +259,8 @@ class AlchSys(object):
         '''
         Function to add a small pertubation to the positions of all appearing atoms in alchemical region.
         This can help to resolve any nans caused by overlapping atoms.
+
+        :return: None
         '''
 
         new_pos = self.og_positions
@@ -316,6 +322,7 @@ class AlchSys(object):
         :param system: OpenMM system object
         :param appear_idxs: list of indexes for appearing atoms
         :param disappear_idxs: list of indexes for disappearing atoms
+
         :return: list of indexes for torsions which straddle alchemical regions
         '''
         intersect_tor= []
@@ -336,7 +343,8 @@ class AlchSys(object):
 
         :param system: OpenMM system
         :param intersect_torsions: List of ints, ints references torsions that straddle the alchemical regions.
-        :return:
+
+        :return: None
         '''
         found_torsion = False
         forces_to_remove = []
@@ -373,7 +381,8 @@ class AlchSys(object):
         :param param_vals: dict, containing lambda values
         :param context: the context we want to modify
         :param NPT: bool, flag to see if this is the NPT or NVT context
-        :return:
+
+        :return: None
         '''
 
         if NPT:
@@ -396,6 +405,7 @@ class AlchSys(object):
         :param context: OpenMM Context
         :param h: float, finite difference to use
         :param analitic_sterics: boolean, are analytic steric gradients calculated (experimental)
+
         :return: float, gradient calculated with numerical finite difference
         '''
 
@@ -443,6 +453,7 @@ class AlchSys(object):
 
         :param system: OpenMM system object
         :param device_id: str, index for which cuda device this simulation will run on
+
         :return: dict, containing OpenMM simulation and integrator.
         '''
 
@@ -468,7 +479,8 @@ class AlchSys(object):
         Function which removes all but nonbonded forces while maintaining NPT ensemble
 
         :param system: OpenMM system to modify
-        :return:
+
+        :return: None
         '''
         to_remove = []
         for force_index, force in enumerate(system.getForces()):
@@ -488,6 +500,7 @@ class AlchSys(object):
         Function to add constraints to OpenMM system. Uses values for constrains initialized from file during class
         construction. Note: as written these constraints may not work with periodic boundary conditions on GPU.
 
+        :return: None
         '''
         force = mm.CustomExternalForce("scale*k*periodicdistance(x, y, z, x0, y0, z0)^2")
         force.addGlobalParameter("scale", 0.0)
@@ -508,8 +521,7 @@ class PDB_line(object):
     '''
     Class to let us address line of a PDB file in a readable format
 
-    :param str: line from a pdb file
-
+    :param line: str, file path to pdb
     '''
     def __init__(self, line):
         self.ah_f = str(line[0:6])
@@ -592,8 +604,8 @@ class System_ID(object):
 
     :param device_id: int, for OpenMM GPU device id
     :param node_id: str, id number denoting which replica this is
-    '''
 
+    '''
     def __init__(self, device_id, node_id):
         self.device_id = str(device_id)
         self.node_id = str(node_id)
@@ -606,6 +618,7 @@ def minimization(NVT, constraint):
     :param NVT: list[context, integrator] for NVT system
     :param constraint: list or None, indicates whether this system has constraints
 
+    :return: None
     '''
     #Assumed that position and state is set correctly
 
@@ -634,6 +647,7 @@ def equilibriation(NVT, NPT, steps, save_file, constraint):
     :param save_file: string, where to write the equilibrating state
     :param constraint: list or None, indicates whether this system has constraints
 
+    :return: None
     '''
     # Assumed that positions of (NVT) and state and are set correctly
 
@@ -705,6 +719,8 @@ def preproduction(NVT, NPT, equili_steps, equili_state_file,  constraint):
     :param equili_steps: int, number of total NVT and NPT equilib steps to perform
     :param equili_state_file: string, where to write the equilibrating state
     :param constraint: list or None, indicates whether this system has constraints
+
+    :return: None
     '''
     minimization(NVT, constraint)
     equilibriation(NVT, NPT, equili_steps, equili_state_file, constraint)
@@ -716,6 +732,8 @@ def add_simulation_reporters(sim, total_steps, save):
     :param sim: OpenMM simulation object to add a reporter to
     :param total_steps: int for the number of total steps in the simulation
     :param save: string pointing to the file location to save dcd
+
+    :return: None
     '''
     if save is not None:
         log_out = save+'.log'
@@ -731,8 +749,10 @@ def add_simulation_reporters(sim, total_steps, save):
 
 def remove_simulation_reporters(sim):
     '''
-
+    Function to strip OpenMM reporters out of a simulation
     :param sim: OpenMM simulation object to remove reporter from
+
+    :return: None
     '''
     del sim.reporters
     sim.reporters = []
@@ -756,6 +776,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
     :param equili_steps: int, number of 2fs steps for equilibration
     :param steps_per_iter: int, number of 2fs steps per iteration #How much sampling between sampling grad
 
+    :return: None
     '''
 
     beta = 1.0 / (unit.BOLTZMANN_CONSTANT_kB * alch_sys.temp)

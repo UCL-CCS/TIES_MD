@@ -30,9 +30,10 @@ class Lambdas(object):
     :param global_lambs: list of floats for global lambda schedule
     :param custom: dict, containing keys lambda_(sterics/electrostatics)_(appear/disappear) with list of floats for values
     :param debug: boolean, whether to print the schedule to terminal
+
     '''
     def __init__(self, elec_edges, ster_edges, global_lambs, custom=None, debug=True):
-        
+
         self.global_lambdas = global_lambs
         self.str_lams = ["%.2f" % float(x) for x in self.global_lambdas]
         if custom is None:
@@ -70,6 +71,8 @@ class Lambdas(object):
     def update_attrs_from_schedule(self):
         '''
         Function to update the lambda attributes e.g. self.lambda_sterics_appear from self.schedule if it has changed.
+
+        :return: None
         '''
         self.lambda_sterics_appear = [x['lambda_sterics_appear'] for x in self.schedule]
         self.lambda_electrostatics_appear = [x['lambda_electrostatics_appear'] for x in self.schedule]

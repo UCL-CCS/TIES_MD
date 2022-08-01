@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIES_MD.ties_analysis package &mdash; TIES_MD 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TIES_MD.ties_analysis.engines package" href="TIES_MD.ties_analysis.engines.html" />
+    <link rel="prev" title="TIES_MD.openmmtools package" href="TIES_MD.openmmtools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #D7ECD9" >
+            <a href="index.html" class="icon icon-home"> TIES_MD
+            <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/UCL-CCS/TIES_MD">🚀Github</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">TIES_MD</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="TIES_MD.html">TIES_MD package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="TIES_MD.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.html">TIES_MD.eng_scripts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html">TIES_MD.openmmtools package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TIES_MD.ties_analysis package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD.TIES">TIES_MD.TIES module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD.alch">TIES_MD.alch module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD.cli">TIES_MD.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD.lambdas">TIES_MD.lambdas module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #D7ECD9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TIES_MD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">TIES_MD</a> &raquo;</li>
+          <li><a href="TIES_MD.html">TIES_MD package</a> &raquo;</li>
+      <li>TIES_MD.ties_analysis package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/TIES_MD.ties_analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ties-md-ties-analysis-package">
+<h1>TIES_MD.ties_analysis package<a class="headerlink" href="#ties-md-ties-analysis-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html">TIES_MD.ties_analysis.engines package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines.namd">TIES_MD.ties_analysis.engines.namd module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines.openmm">TIES_MD.ties_analysis.engines.openmm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html">TIES_MD.ties_analysis.methods package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods.FEP">TIES_MD.ties_analysis.methods.FEP module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods.TI">TIES_MD.ties_analysis.methods.TI module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-TIES_MD.ties_analysis.config">
+<span id="ties-md-ties-analysis-config-module"></span><h2>TIES_MD.ties_analysis.config module<a class="headerlink" href="#module-TIES_MD.ties_analysis.config" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.ties_analysis.config.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analysis_cfg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./analysis.cfg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.config.Config" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that reads the config file and set options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>analysis_cfg</strong> – path to file containing general analysis params</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.ties_analysis.config.Config.get_options">
+<span class="sig-name descname"><span class="pre">get_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.config.Config.get_options" title="Permalink to this definition"></a></dt>
+<dd><p>Function to print options stored in config class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIES_MD.ties_analysis.config.read_config">
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.config.</span></span><span class="sig-name descname"><span class="pre">read_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.config.read_config" title="Permalink to this definition"></a></dt>
+<dd><p>Function that is reading config file and build dict of options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config_file</strong> – str, path to a config file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict, containing all options to run analysis</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-TIES_MD.ties_analysis.ties_analysis">
+<span id="ties-md-ties-analysis-ties-analysis-module"></span><h2>TIES_MD.ties_analysis.ties_analysis module<a class="headerlink" href="#module-TIES_MD.ties_analysis.ties_analysis" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.ties_analysis.ties_analysis.Analysis">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.ties_analysis.</span></span><span class="sig-name descname"><span class="pre">Analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.ties_analysis.Analysis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that is setting up all engines and methods for analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cfg</strong> – dict, holding all options</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.ties_analysis.ties_analysis.Analysis.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.ties_analysis.Analysis.run" title="Permalink to this definition"></a></dt>
+<dd><p>Function to run the analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIES_MD.ties_analysis.ties_analysis.main">
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.ties_analysis.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.ties_analysis.main" title="Permalink to this definition"></a></dt>
+<dd><p>Main function where we chose to setup or run analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIES_MD.ties_analysis.ties_analysis.nice_print">
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.ties_analysis.</span></span><span class="sig-name descname"><span class="pre">nice_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.ties_analysis.nice_print" title="Permalink to this definition"></a></dt>
+<dd><p>Function to print to terminal with padding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> – str to format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-TIES_MD.ties_analysis">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-TIES_MD.ties_analysis" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="TIES_MD.openmmtools.html" class="btn btn-neutral float-left" title="TIES_MD.openmmtools package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="TIES_MD.ties_analysis.engines.html" class="btn btn-neutral float-right" title="TIES_MD.ties_analysis.engines package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, UCL CCS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

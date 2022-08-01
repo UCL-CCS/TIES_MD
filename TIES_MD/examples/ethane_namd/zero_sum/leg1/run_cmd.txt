@@ -1,2 +1,2 @@
 #The minimal command line input to run this example would be:
-TIES_MD --exp_name='sys_solv' --run_type=setup
+ties_md --exp_name='sys_solv' --run_type=setup

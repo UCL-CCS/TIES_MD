@@ -54,6 +54,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.html">TIES_MD.eng_scripts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html">TIES_MD.openmmtools package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
@@ -128,6 +129,30 @@
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.openmmtools.html#module-TIES_MD.openmmtools">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html">TIES_MD.ties_analysis.engines package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines.namd">TIES_MD.ties_analysis.engines.namd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines.openmm">TIES_MD.ties_analysis.engines.openmm module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html">TIES_MD.ties_analysis.methods package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods.FEP">TIES_MD.ties_analysis.methods.FEP module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods.TI">TIES_MD.ties_analysis.methods.TI module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis.config">TIES_MD.ties_analysis.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis.ties_analysis">TIES_MD.ties_analysis.ties_analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -148,7 +173,7 @@
 <li><p><strong>run_type</strong> – str, flag to say if we should run dynamics or not</p></li>
 <li><p><strong>exp_name</strong> – str, for the names of experiment i.e. complex -&gt; complex.pdb/complex.prmtop</p></li>
 <li><p><strong>devices</strong> – list, list of ints for which cuda devices to use</p></li>
-<li><p><strong>node_id</strong> – str, id denoting what replica of this simulation this execution of TIES_MD should run</p></li>
+<li><p><strong>node_id</strong> – float, id denoting what replica of this simulation this execution of TIES_MD should run</p></li>
 <li><p><strong>windows_mask</strong> – list containing ints for start and end range of windows to be run</p></li>
 <li><p><strong>periodic</strong> – boolean determines if the simulation will be periodic</p></li>
 <li><p><strong>lam</strong> – Lambda class, allow passing of custom lambda schedule</p></li>
@@ -161,125 +186,228 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.box_type">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">box_type</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.box_type" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>What type of simulation box is being used (cube, truncatedOctahedron, rhombicDodecahedron or na for manual)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string for box type.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.build_results_dirs">
 <span class="sig-name descname"><span class="pre">build_results_dirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folders</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.build_results_dirs" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to build output directories.
-:param folders: List of strings for what folders to build
-:return: None</p>
+:param folders: List of strings for what folders to build.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.elec_edges">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">elec_edges</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.elec_edges" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>here in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of floats for when the electrostatic potentials begin, stop appearing.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.engine">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">engine</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.engine" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>What molecular dynamics engine is going to be used (openmm/namd2.14/namd3)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string for molecular dynamics engine.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.exp_name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exp_name</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.exp_name" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>What is the name of the experiment, this is the prefix expected on input files e.g. experiment_name.pdb</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string for the experiment name.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.get_options">
 <span class="sig-name descname"><span class="pre">get_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.get_options" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Prints out the options the user can change and their current values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.global_lambdas">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_lambdas</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.global_lambdas" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>The global values of lambda in the lambda schedule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of floats for lambda schedule</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.reps_per_exec">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reps_per_exec</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.reps_per_exec" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>How many replicas will each run of the program execute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>int for replicas per run.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.run" title="Permalink to this definition"></a></dt>
 <dd><p>Function to run the simulations in parallel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.setup">
 <span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.setup" title="Permalink to this definition"></a></dt>
 <dd><p>Function to setup simulations and then stop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.split_run">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">split_run</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.split_run" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>boolean that sets if each execution of TIESMD or NAMD runs all replicas or a subset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bool for if run is split</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.ster_edges">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ster_edges</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.ster_edges" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Where in lambda schedule (0-&gt;1) should the Lennard_Jones potentials begin, stop appearing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of floats for when the Lennard_Jones potentials begin, stop appearing.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.total_reps">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_reps</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.total_reps" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>What is the total number of replicas we expect to run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>int for total number of replicas.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.update_cfg">
 <span class="sig-name descname"><span class="pre">update_cfg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.update_cfg" title="Permalink to this definition"></a></dt>
-<dd><p>Write a TIES congig file this should be called after api changes are made
-:return:</p>
+<dd><p>Write a TIES congig file this should be called after api changes are made.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.write_analysis_cfg">
 <span class="sig-name descname"><span class="pre">write_analysis_cfg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.write_analysis_cfg" title="Permalink to this definition"></a></dt>
 <dd><p>Function to write the input configuration files for analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.write_namd_eq">
 <span class="sig-name descname"><span class="pre">write_namd_eq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.write_namd_eq" title="Permalink to this definition"></a></dt>
-<dd><p>Function to write eq1 and eq2 namd scripts used for equilibration</p>
+<dd><p>Function to write eq1 and eq2 namd scripts used for equilibration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.write_namd_min">
 <span class="sig-name descname"><span class="pre">write_namd_min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.write_namd_min" title="Permalink to this definition"></a></dt>
 <dd><p>Function to write eq0.conf scripts used in minimization stage</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.write_namd_prod">
 <span class="sig-name descname"><span class="pre">write_namd_prod</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.write_namd_prod" title="Permalink to this definition"></a></dt>
-<dd><p>Function to write sim1 namd conf script for production simulation</p>
+<dd><p>Function to write sim1 namd conf script for production simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.write_namd_scripts">
 <span class="sig-name descname"><span class="pre">write_namd_scripts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.write_namd_scripts" title="Permalink to this definition"></a></dt>
 <dd><p>Function to call all functions needed to write all namd input scripts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.write_namd_submissions">
 <span class="sig-name descname"><span class="pre">write_namd_submissions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.write_namd_submissions" title="Permalink to this definition"></a></dt>
-<dd><p>Function to write an example submission script of NAMD job on HPC (ARCHER2)</p>
+<dd><p>Function to write an example submission script of NAMD job on HPC (ARCHER2).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.write_openmm_submission">
 <span class="sig-name descname"><span class="pre">write_openmm_submission</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.write_openmm_submission" title="Permalink to this definition"></a></dt>
-<dd><p>Function to write an example submission script of OpenMM job on HPC (Summit)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
+<dd><p>Function to write an example submission script of OpenMM job on HPC (Summit).</p>
 </dd></dl>
 
 </dd></dl>
@@ -314,31 +442,23 @@ number of nodes and CPUS/GPUS</p>
 <li><p><strong>split_run</strong> – bool, Should each run line run all or one replica</p></li>
 <li><p><strong>global_lambdas</strong> – list of floats for value of global lambda in eah window</p></li>
 <li><p><strong>reps</strong> – int, number of replica simulations</p></li>
+<li><p><strong>exp_name</strong> – str, name of the experiment e.g. complex</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>str, str for header and run line of HPC sub script</p>
+</dd>
 </dl>
-<p>:param exp_name str, name of the experiment e.g. complex
-:return: str, str for header and run line of HPC sub script</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="TIES_MD.TIES.nice_print">
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">nice_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.nice_print" title="Permalink to this definition"></a></dt>
-<dd><p>Function to print str with padding.</p>
+<dd><p>Function to print str with padding.
+:param string: A string which should be printed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>string</strong> – A string which should be printed.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TIES_MD.TIES.sort_results">
-<span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">sort_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.sort_results" title="Permalink to this definition"></a></dt>
-<dd><p>Helper function to sort directory paths by specific index in file name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>string</strong> – Path to a results file.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -375,6 +495,11 @@ number of nodes and CPUS/GPUS</p>
 <span class="sig-name descname"><span class="pre">add_consraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.alch.AlchSys.add_consraints" title="Permalink to this definition"></a></dt>
 <dd><p>Function to add constraints to OpenMM system. Uses values for constrains initialized from file during class
 construction. Note: as written these constraints may not work with periodic boundary conditions on GPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -384,6 +509,9 @@ construction. Note: as written these constraints may not work with periodic boun
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>positions</strong> – list, for the positions of all atoms in the system to be used to initialise simulations</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -414,7 +542,7 @@ construction. Note: as written these constraints may not work with periodic boun
 <dd class="field-odd"><p><strong>system</strong> – OpenMM system to modify</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -507,7 +635,7 @@ want to remove these fully as some times they result in nan evals.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -525,7 +653,7 @@ want to remove these fully as some times they result in nan evals.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -535,6 +663,11 @@ want to remove these fully as some times they result in nan evals.</p>
 <span class="sig-name descname"><span class="pre">shift_alchemical_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.alch.AlchSys.shift_alchemical_positions" title="Permalink to this definition"></a></dt>
 <dd><p>Function to add a small pertubation to the positions of all appearing atoms in alchemical region.
 This can help to resolve any nans caused by overlapping atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -544,6 +677,9 @@ This can help to resolve any nans caused by overlapping atoms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>simulation</strong> – OpenMM simulation object to test.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -557,7 +693,7 @@ This can help to resolve any nans caused by overlapping atoms.</p>
 <p>Class to let us address line of a PDB file in a readable format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>str</strong> – line from a pdb file</p>
+<dd class="field-odd"><p><strong>line</strong> – str, file path to pdb</p>
 </dd>
 </dl>
 </dd></dl>
@@ -590,6 +726,9 @@ what number repeat this simulation is out of some total number of repeats.</p>
 <li><p><strong>save</strong> – string pointing to the file location to save dcd</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -606,6 +745,9 @@ what number repeat this simulation is out of some total number of repeats.</p>
 <li><p><strong>save_file</strong> – string, where to write the equilibrating state</p></li>
 <li><p><strong>constraint</strong> – list or None, indicates whether this system has constraints</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -655,6 +797,9 @@ what number repeat this simulation is out of some total number of repeats.</p>
 <li><p><strong>constraint</strong> – list or None, indicates whether this system has constraints</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -672,15 +817,20 @@ what number repeat this simulation is out of some total number of repeats.</p>
 <li><p><strong>constraint</strong> – list or None, indicates whether this system has constraints</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="TIES_MD.alch.remove_simulation_reporters">
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.alch.</span></span><span class="sig-name descname"><span class="pre">remove_simulation_reporters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.alch.remove_simulation_reporters" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>sim</strong> – OpenMM simulation object to remove reporter from</p>
+<dd><p>Function to strip OpenMM reporters out of a simulation
+:param sim: OpenMM simulation object to remove reporter from</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -704,6 +854,9 @@ to disk.</p>
 <li><p><strong>equili_steps</strong> – int, number of 2fs steps for equilibration</p></li>
 <li><p><strong>steps_per_iter</strong> – int, number of 2fs steps per iteration #How much sampling between sampling grad</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -759,6 +912,11 @@ to disk.</p>
 <dt class="sig sig-object py" id="TIES_MD.lambdas.Lambdas.update_attrs_from_schedule">
 <span class="sig-name descname"><span class="pre">update_attrs_from_schedule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.lambdas.Lambdas.update_attrs_from_schedule" title="Permalink to this definition"></a></dt>
 <dd><p>Function to update the lambda attributes e.g. self.lambda_sterics_appear from self.schedule if it has changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

@@ -1,0 +1,16 @@
+#       STEP      Elec_dU/dl      Elec_avg        vdW_dU/dl      vdw_avg       Elec_dU/dl      Elec_avg      vdW_dU/dl       vdw_avg       PME_dU/dl      PME_avg
+#               <---------------------PARTITION 1------------------------>    <---------------------PARTITION 2--------------------->
+#NEW TI WINDOW: LAMBDA 0
+#PARTITION 1 VDW LAMBDA 0
+#PARTITION 1 ELEC LAMBDA 0
+#PARTITION 2 VDW LAMBDA 1
+#PARTITION 2 ELEC LAMBDA 1
+
+#0 STEPS OF EQUILIBRATION AT LAMBDA 0 COMPLETED
+#STARTING COLLECTION OF ENSEMBLE AVERAGE
+TI        0        -26.7703       -26.7703       -12.4162       -12.4162      -113.6954      -113.6954       111.7324       111.7324
+TI     1000        -63.6872       -63.6503       -12.2928       -12.2929      -117.6372      -117.6333        74.8770        74.9138
+TI     2000        -82.7020       -73.1714        -8.2692       -10.2820      -111.0170      -114.3268        72.9064        73.9106
+TI     3000        -74.6786       -73.6736         2.5405        -6.0093      -114.1721      -114.2752        71.3811        73.0677
+TI     4000        -87.6489       -77.1666       -13.4956        -7.8804      -117.8366      -115.1654        80.7265        74.9819
+TI     5000        -62.0604       -74.1460       -12.4687        -8.7979      -116.6829      -115.4688        77.0065        75.3868

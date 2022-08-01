@@ -11,4 +11,4 @@ setup(name='TIES_MD',
       license='LGPL',
       packages=find_packages(),
       include_package_data = True,
-      entry_points = {'console_scripts':['TIES_MD = TIES_MD.cli:main']})
+      entry_points = {'console_scripts':['ties_md = TIES_MD.cli:main', 'ties_ana = TIES_MD.ties_analysis.ties_analysis:main']})
