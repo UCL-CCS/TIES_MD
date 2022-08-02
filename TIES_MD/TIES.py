@@ -35,6 +35,8 @@ import os
 import sys
 import time
 from pathlib import Path
+import glob
+import shutil
 
 import importlib.resources as pkg_resources
 #split means we will explicitly deal with reps in the submission
@@ -517,11 +519,13 @@ class TIES(object):
         # If output folders do not exist make them.
         rep_dirs = range(self.total_reps)
 
-        '''
-        Note: here we could check there are any present result folders we dont expect to see.
-        If there are unexpected results folders which are populated throw an error.
-        this is needed if the user wants to run 5 windows (CG) then add more (FG).
-        '''
+        populated_results = list(glob.iglob(os.path.join(self.cwd, 'LAMBDA*', 'rep*', 'results', '*.npy')))
+        if len(populated_results) > 0:
+            raise ValueError('Results files found please check these are not needed then manually delete LAMBDA_X.XX dirs')
+
+        exiting_lam_dirs = list(glob.iglob(os.path.join(self.cwd, 'LAMBDA*')))
+        for lam_dir in exiting_lam_dirs:
+            shutil.rmtree(lam_dir)
 
         for i in rep_dirs:
             for lam in self.lam.str_lams:
@@ -961,6 +965,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         '''
         Function to write an example submission script of OpenMM job on HPC (Summit).
 
+        :return: None
         '''
 
         lambs = [str(x) for x in range(len(self.global_lambdas))]
@@ -972,6 +977,7 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
                                                          header=self.sub_header, root=self.cwd, py_bin=sys.path[0])
             open(os.path.join(self.cwd, 'sub.sh'), 'w').write(openmm_initialised)
         else:
+            # no OpenMM unified job configured for HPC
             pass
 
 
@@ -1094,7 +1100,7 @@ cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cp
                            ' --exp_name={} --windows_mask=$lambda,$(expr $lambda + 1)' \
                            ' --node_id=$i > $ties_dir/$lambda$i.out&'.format(exp_name)
         else:
-            # no OpenMM unified job on HPC
+            # no OpenMM unified job configured for HPC
             sub_header = None
             sub_run_line = None
 
