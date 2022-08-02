@@ -62,6 +62,9 @@ class Config():
         self.ele_a = [float(x) for x in general_args['ele_a']]
         self.ele_d = [float(x) for x in general_args['ele_d']]
 
+        if self.simulation_legs == ['EDITME']:
+            raise ValueError('Please set legs option in analysis.cfg')
+
         if general_args['windows_mask'][0] != 'None':
             self.windows_mask = [int(x) for x in general_args['windows_mask']]
         else:

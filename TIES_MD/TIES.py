@@ -19,11 +19,7 @@ __copyright__ = """
 __license__ = "LGPL"
 
 from .lambdas import Lambdas
-try:
-    from .alch import AlchSys, System_ID, simulate_system
-    openmm_av = True
-except ImportError:
-    openmm_av = False
+from .alch import AlchSys, System_ID, simulate_system
 
 try:
     from openmm import unit, Vec3
@@ -41,7 +37,7 @@ import time
 from pathlib import Path
 
 import importlib.resources as pkg_resources
-#split means we will explitlly deal with reps in the submission
+#split means we will explicitly deal with reps in the submission
 #for non split namd or TIES_MD will handle the parallisim of replicas
 from .eng_scripts import namd_sub, namd_sub_split, openmm_sub_split, cfg_scripts
 
@@ -64,6 +60,13 @@ class TIES(object):
     def __init__(self, cwd, exp_name, run_type='class', devices=None, node_id=None, windows_mask=None, periodic=True,
                  lam=None, platform='CUDA', **kwargs):
         nice_print('TIES')
+        print('Wade, A.D., et al. 2022. Alchemical Free Energy Estimators and Molecular Dynamics Engines:'
+              ' Accuracy, Precision, and Reproducibility. Journal of chemical theory and computation, 18(6), pp.3972-3987.\n')
+
+        print('If you use OpenMM with this software please cite:')
+        print('Chodera, J., et al. 2022. choderalab/openmmtools: 0.21.4. Zenodo. doi: 10.5281/zenodo.6625266.')
+        print('Eastman, P., et al. 2017. OpenMM 7: Rapid development of high performance algorithms'
+              ' for molecular dynamics. PLoS computational biology, 13(7), p.e1005659.\n')
 
         #check all the config file args we need are present
         args_list = ['engine', 'temperature', 'pressure', 'sampling_per_window', 'equili_per_window', 'methods',
@@ -90,7 +93,7 @@ class TIES(object):
                          'box_type']
 
         #Iterate over our args_dict to set attributes of class to values in dict
-        print('Read arguments from file...')
+        print('Read arguments from file:')
         for k, v in kwargs.items():
             if k in api_sensitive:
                 full_k = '_'+k
@@ -98,6 +101,7 @@ class TIES(object):
                 full_k = k
             print('{} = {}'.format(k, v))
             setattr(self, full_k, v)
+        print('')
 
         #set any nonexistant optional args to None
         for option in optional_args:
@@ -168,12 +172,14 @@ class TIES(object):
                                                                 self.global_lambdas, self.total_reps, self.exp_name)
 
         # build schedule for lambdas do this last so passed lam can overwrite if desired
+        print('Lambda schedule:')
         if lam is None:
             # build lambda schedule
             self.lam = Lambdas(self.elec_edges, self._ster_edges, self.global_lambdas)
         else:
             self.lam = lam
             print('Using custom lambda schedule all schedule options will be ignored')
+        print('')
 
         #Perform a job
         if self.run_type == 'run':
@@ -566,6 +572,7 @@ class TIES(object):
         pool = Pool(processes=len(self.devices))
 
         tic = time.perf_counter()
+        nice_print('Beginning simulations')
         simulated = pool.map(func, system_ids) ### MAIN MD
         toc = time.perf_counter()
         total_simulation_time = (toc - tic)
@@ -585,7 +592,7 @@ class TIES(object):
         #The differnce between the time reported here and the time in the logs is from alchemy
         print('Simulation speed per GPU = {} ns/day'.format(speed))
 
-        nice_print('Finished simulation')
+        nice_print('Finished simulations')
 
     def write_analysis_cfg(self):
         '''

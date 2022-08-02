@@ -57,7 +57,7 @@ class TI_Analysis(object):
             Path(self.analysis_dir).mkdir(parents=True, exist_ok=True)
 
         print('Data shape is {} repeats, {} states, {} lambda dimensions, {} iterations\n'.format(*self.shape))
-        if not skip_graphs:
+        if not skip_graphs and self.analysis_dir is not None:
             self.plot_du_by_dl()
 
     def analysis(self, distributions=False, rep_convg=None, sampling_convg=None, mask_windows=None):

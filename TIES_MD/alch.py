@@ -139,19 +139,22 @@ class AlchSys(object):
             disappear_idxs = disappear_idxs+appear_idxs
             appear_idxs = []
 
+        print('Alchemical indexes:')
         print('Appearing atoms {}'.format(appear_idxs))
-        print('Disappearing atoms {}'.format(disappear_idxs))
+        print('Disappearing atoms {}\n'.format(disappear_idxs))
 
         self.appearing_idxs = appear_idxs
 
         print('Default box vectors were:')
-        print(system.getDefaultPeriodicBoxVectors())
+        for axis in system.getDefaultPeriodicBoxVectors():
+            print(axis)
 
         print('Switching to explicit box vectors:')
         system.setDefaultPeriodicBoxVectors(*basis_vectors)
         self.PBV = system.getDefaultPeriodicBoxVectors()
         for axis in self.PBV:
             print(axis)
+        print('')
 
         if debug:
             AlchSys.debug_force(self, system)
@@ -190,7 +193,7 @@ class AlchSys(object):
                 for i in range(force.getNumGlobalParameters()):
                     param_name = force.getGlobalParameterName(i)
                     if 'lambda_sterics' in param_name:
-                        print('Adding derivative for {} to a CustomNonbondedForce or CustomBondForce'.format(param_name))
+                        #print('Adding derivative for {} to a CustomNonbondedForce or CustomBondForce'.format(param_name))
                         force.addEnergyParameterDerivative(param_name)
                         continue
 
@@ -209,6 +212,7 @@ class AlchSys(object):
         self.NVT_compound_state = openmmtools.states.CompoundThermodynamicState(thermodynamic_state=ts,
                                                                             composable_states=composable_states)
         #Turn off intersect angle, bond, torsions
+        print('Cleaning system:')
         if len(intersect_angles) > 0:
             print('Found angles {} straddling alchemical regions these will be turned off'.format(intersect_angles))
             self.NVT_compound_state.lambda_angles_appear = 0.0
@@ -217,6 +221,7 @@ class AlchSys(object):
             self.NVT_compound_state.lambda_bonds_appear = 0.0
         if len(intersect_torsions) > 0:
             print('Found torsion {} straddling alchemical regions these will be removed'.format(intersect_torsions))
+        print('')
 
         self.NPT_alchemical_system = copy.deepcopy(self.NVT_alchemical_system)
         self.NPT_compound_state = copy.deepcopy(self.NVT_compound_state)
@@ -230,7 +235,7 @@ class AlchSys(object):
 
         # Add constraints to NVT system
         if self.constraints is not None:
-            print('Constraining NVT system')
+            print('Constraining NVT system...\n')
             AlchSys.add_consraints(self)
 
     def amend_original_positions(self, positions):
@@ -836,7 +841,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
         equili_files = list(glob.iglob(equili_file))
 
         load = False
-        print('Load flag for equilibrated data is {}'.format(load))
+        #print('Load flag for equilibrated data is {}'.format(load))
         if len(equili_files) > 0 and load:
             # load the equilibriated state from disk
             print('Loading equilibriated state from disk located here: {}'.format(equili_files[0]))
@@ -868,7 +873,9 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
 
         #Production
         for iteration in range(niter):
-            print('Propagating iteration {}/{} in state {}/{}'.format(iteration + 1, niter, i+mask[0], all_states))
+            print('Propagating iteration {}/{} in window {}/{} for replica {}'.format(iteration + 1,
+                                                                                        niter, i+mask[0]+1,
+                                                                                        all_states, ids.node_id))
 
             # propogate system in current state
             NPT['sim'].step(steps_per_iter)
@@ -894,17 +901,18 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
         remove_simulation_reporters(NPT['sim'])
 
     #Save results to disk
+    print('Saving results')
     for i, j in enumerate(Lam.str_lams[mask[0]: mask[1]]):
         if 'TI' in alch_sys.methods:
             file = os.path.join(cwd, 'LAMBDA_{}'.format(j), 'rep{}'.format(ids.node_id), 'results',
                                 'TI.npy')
-            print('Saving {} result to disk'.format(file))
+            #print('Saving {} result to disk'.format(file))
             np.save(file, grads[i, :, :])
 
         if 'FEP' in alch_sys.methods:
             file = os.path.join(cwd, 'LAMBDA_{}'.format(j), 'rep{}'.format(ids.node_id), 'results',
                                 'FEP.npy')
-            print('Saving {} result to disk'.format(file))
+            #print('Saving {} result to disk'.format(file))
             np.save(file, u_kln[i, :, :])
 
     #clean up
