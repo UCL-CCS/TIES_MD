@@ -19,27 +19,27 @@ running an example system from our ``TIES MD`` ``Github`` page. This example can
 
     ties_md --exp_name=sys_solv
 
-This would use 1 available GPU to execute all 6 alchemical windows and the 1 repeat specified in the config file ``TIES.cfg``
-If we wanted to parallelize 2 repeats over 2 GPUs on one node we would change the option repeats in ``TIES.cfg`` to equal 2
-and run::
+This would use 1 available GPU to execute all 8 alchemical windows and the 3 repeat specified in the config file ``TIES.cfg``
+If we wanted to parallelize 3 repeats over 3 GPUs on one node we would run::
 
-    ties_md --exp_name=sys_solv --devices=0,1
+    ties_md --exp_name=sys_solv --devices=0,1,2
 
-The ``CUDA`` device 0 will then run 6 windows of the first repeat and CUDA device 1 will run 6 windows of the second repeat.
-Equally ths could be spit into to runs of ``TIES MD`` masked to only see one device::
+Each ``CUDA`` device will then run 8 windows of the 1 replica. Equally ths could be spit into to separate runs of ``TIES MD``
+masked to only see one device::
 
     ties_md --exp_name=sys_solv --devices=0 --node_id=0
     ties_md --exp_name=sys_solv --devices=1 --node_id=1
+    ties_md --exp_name=sys_solv --devices=3 --node_id=1
 
-To run in this configuration the options ``total_reps=2`` and ``reps_per_exec=1`` are set in TIES.cfg to tell ``TIES MD`` that
-there are a total of 2 replicas being run and that each execution of ``TIES MD`` should run only one. Also note we have set
+To run in this configuration the options ``total_reps=3`` and ``reps_per_exec=1`` are set in TIES.cfg to tell ``TIES MD`` that
+there are a total of 3 replicas being run and that each execution of ``TIES MD`` should run only one. Also note we have set
 ``--node_id`` to some different values for otherwise identical run lines and this ensures these parallel runs write output
 to unique locations. ``--node_id`` only needs to be set when identical replicas of a simulation are run in separate executions
 of ``TIES MD``.
 
 If we need further parallelization over alchemical windows we can use the command line option ``--windows_mask``
 this option takes a ``Python`` range (start inclusive and end exclusive) of the windows which that instance of
-``TIES MD`` should run. So returning to the original reference example with one repeat we would run::
+``TIES MD`` should run.::
 
     ties_md --exp_name=sys_solv --windows_mask=0,1 --devices=0&
     ties_md --exp_name=sys_solv --windows_mask=1,2 --devices=1&
@@ -47,10 +47,17 @@ this option takes a ``Python`` range (start inclusive and end exclusive) of the 
     ties_md --exp_name=sys_solv --windows_mask=3,4 --devices=3&
     ties_md --exp_name=sys_solv --windows_mask=4,5 --devices=4&
     ties_md --exp_name=sys_solv --windows_mask=5,6 --devices=5&
+    ties_md --exp_name=sys_solv --windows_mask=7,7 --devices=6&
+    ties_md --exp_name=sys_solv --windows_mask=7,8 --devices=7&
 
-These commands run submitted to a node with 6 GPUS would run one window on each GPU. To scale over multiple node
+Again using the configuration options ``total_reps=3`` and ``reps_per_exec=1`` the above runs 1 replica of each alchemical
+window on a different GPU.
+
+For maximum parallelism we combine parallelizing over replicas and alchemical windows. For clarity we now consider the
+same example as above but now with 6 alchemical windows, 2 replica simulations and one simulation per GPU, so in
+TIES.cfg ``global_lambdas=0.0, 0.1, 0.4, 0.6, 0.9, 1.0``, ``total_reps=2`` and ``reps_per_exec=1``. To scale over multiple node
 we could use the resource allocator of the HPC for example `jsrun <https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=SSWRJV_10.1.0/jsm/jsrun.html>`_
-on Summit ``ORNL`` would allow us to run with 2 replicas of 6 windows as follows::
+on `Summit <https://www.olcf.ornl.gov/summit/>`_. would allow us to run with 2 replicas of 6 windows as follows::
 
     jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=0&
     jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=0&
@@ -65,27 +72,49 @@ on Summit ``ORNL`` would allow us to run with 2 replicas of 6 windows as follows
     jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=1&
     jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=1&
 
-Note here we do not set ``--devices`` as the masking of GPUs is handled by the resource allocator. If a resource allocator
-is not available an alternative method to run multiple simulations across nodes is to use a message passing interface
+Note here we do not set ``--devices`` as the masking of GPUs is handled by the resource allocator, this is not the general case.
+If a resource allocator is not available an alternative method to run multiple simulations across nodes is to use a message passing interface
 (``MPI``). The use of ``MPI`` can vary from system to system and there is no universal solution to running across many node
-for all HPC systems, however we provide an example here for reference which would work with
-`ThetaGPU <https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview>`_::
-
-    mpirun -host $node1 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=0&
-    mpirun -host $node1 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=0&
-    mpirun -host $node1 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id=0&
-    mpirun -host $node1 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id=0&
-    mpirun -host $node1 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=0&
-    mpirun -host $node1 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=0&
-    mpirun -host $node2 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=1&
-    mpirun -host $node2 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=1&
-    mpirun -host $node2 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id=1&
-    mpirun -host $node2 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id=1&
-    mpirun -host $node2 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=1&
-    mpirun -host $node2 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=1&
-
+for all HPC systems, however we provide an example (:ref:`NAMD 3`) which would work with
+`ThetaGPU <https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview>`_.
 
 TIES-NAMD
 ---------
 
-Under construction
+The parallelization of TIES in ``NAMD2`` follows the same ideas as ``OpenMM`` above. We want to run independent simulations
+for all alchemical window and replica simulations. To achieve parallelization over replica simulations there are two options.
+If in TIES.cfg ``total_reps==reps_per_exec`` the submission script that ``TIES_MD`` writes will use the ``NAMD`` option
+``+replicas X`` this makes each ``NAMD`` run ``X`` replicas and the run lines in sub.sh will look something like::
+
+    for stage in {0..3}; do
+    for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
+            cd $ties_dir/replica-confs
+            srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda&
+            sleep 1
+    done
+    wait
+    done
+
+Alternatively if ``total_reps=!reps_per_exec`` with ``reps_per_exec=1`` the run lines will look like::
+
+    for stage in {0..3}; do
+    for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
+            for i in {{0..4}}; do
+                srun -N $nodes_per_namd -n $cpus_per_namd namd2 --tclmain sim$stage.conf $lambda $i &
+                sleep 1
+            done
+        done
+        wait
+    done
+
+Notice now the additional loop over ``$i``. So these run line are creating 65 different instances of ``NAMD`` each
+running 1 replica and one alchemical window. Anecdotally using the ``+replicas` results in less crashes and
+we have tested up to ``+replicas 135`` on `ARCHER 2 <https://www.archer2.ac.uk/>`_ with no crashes.
+
+In the two above examples the parallelism over alchemical windows is achieved in the loop over lambda. As configured there
+is no way to undo this parallelism and run multiple alchemical windows in one ``NAMD`` instance.
+
+Using ``NAMD3`` parallelization can be achieved like so (:ref:`NAMD 3`). ``NAMD`` in general has extensive options to provision
+hardware and achieve parallelism what have outlined here is not exhaustive and we would suggest consulting the `documentation <https://www.ks.uiuc.edu/Research/namd/2.14/ug/>`_
+for more a more comprehensive information.
+

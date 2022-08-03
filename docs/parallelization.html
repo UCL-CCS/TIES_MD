@@ -98,37 +98,43 @@ running an example system from our <code class="docutils literal notranslate"><s
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span>
 </pre></div>
 </div>
-<p>This would use 1 available GPU to execute all 6 alchemical windows and the 1 repeat specified in the config file <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>
-If we wanted to parallelize 2 repeats over 2 GPUs on one node we would change the option repeats in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code> to equal 2
-and run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span>
+<p>This would use 1 available GPU to execute all 8 alchemical windows and the 3 repeat specified in the config file <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>
+If we wanted to parallelize 3 repeats over 3 GPUs on one node we would run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> device 0 will then run 6 windows of the first repeat and CUDA device 1 will run 6 windows of the second repeat.
-Equally ths could be spit into to runs of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> masked to only see one device:</p>
+<p>Each <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> device will then run 8 windows of the 1 replica. Equally ths could be spit into to separate runs of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>
+masked to only see one device:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="mi">0</span>
 <span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">3</span> <span class="o">--</span><span class="n">node_id</span><span class="o">=</span><span class="mi">1</span>
 </pre></div>
 </div>
-<p>To run in this configuration the options <code class="docutils literal notranslate"><span class="pre">total_reps=2</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec=1</span></code> are set in TIES.cfg to tell <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> that
-there are a total of 2 replicas being run and that each execution of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> should run only one. Also note we have set
+<p>To run in this configuration the options <code class="docutils literal notranslate"><span class="pre">total_reps=3</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec=1</span></code> are set in TIES.cfg to tell <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> that
+there are a total of 3 replicas being run and that each execution of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> should run only one. Also note we have set
 <code class="docutils literal notranslate"><span class="pre">--node_id</span></code> to some different values for otherwise identical run lines and this ensures these parallel runs write output
 to unique locations. <code class="docutils literal notranslate"><span class="pre">--node_id</span></code> only needs to be set when identical replicas of a simulation are run in separate executions
 of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>.</p>
 <p>If we need further parallelization over alchemical windows we can use the command line option <code class="docutils literal notranslate"><span class="pre">--windows_mask</span></code>
 this option takes a <code class="docutils literal notranslate"><span class="pre">Python</span></code> range (start inclusive and end exclusive) of the windows which that instance of
-<code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> should run. So returning to the original reference example with one repeat we would run:</p>
+<code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> should run.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">0</span><span class="o">&amp;</span>
 <span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">1</span><span class="o">&amp;</span>
 <span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">2</span><span class="o">&amp;</span>
 <span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">3</span><span class="o">&amp;</span>
 <span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">4</span><span class="o">&amp;</span>
 <span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">5</span><span class="o">&amp;</span>
+<span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">6</span><span class="o">&amp;</span>
+<span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">7</span><span class="o">&amp;</span>
 </pre></div>
 </div>
-<p>These commands run submitted to a node with 6 GPUS would run one window on each GPU. To scale over multiple node
+<p>Again using the configuration options <code class="docutils literal notranslate"><span class="pre">total_reps=3</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec=1</span></code> the above runs 1 replica of each alchemical
+window on a different GPU.</p>
+<p>For maximum parallelism we combine parallelizing over replicas and alchemical windows. For clarity we now consider the
+same example as above but now with 6 alchemical windows, 2 replica simulations and one simulation per GPU, so in
+TIES.cfg <code class="docutils literal notranslate"><span class="pre">global_lambdas=0.0,</span> <span class="pre">0.1,</span> <span class="pre">0.4,</span> <span class="pre">0.6,</span> <span class="pre">0.9,</span> <span class="pre">1.0</span></code>, <code class="docutils literal notranslate"><span class="pre">total_reps=2</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec=1</span></code>. To scale over multiple node
 we could use the resource allocator of the HPC for example <a class="reference external" href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=SSWRJV_10.1.0/jsm/jsrun.html">jsrun</a>
-on Summit <code class="docutils literal notranslate"><span class="pre">ORNL</span></code> would allow us to run with 2 replicas of 6 windows as follows:</p>
+on <a class="reference external" href="https://www.olcf.ornl.gov/summit/">Summit</a>. would allow us to run with 2 replicas of 6 windows as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=0&amp;
 jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=0&amp;
 jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=0&amp;
@@ -143,29 +149,48 @@ jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --confi
 jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=1&amp;
 </pre></div>
 </div>
-<p>Note here we do not set <code class="docutils literal notranslate"><span class="pre">--devices</span></code> as the masking of GPUs is handled by the resource allocator. If a resource allocator
-is not available an alternative method to run multiple simulations across nodes is to use a message passing interface
+<p>Note here we do not set <code class="docutils literal notranslate"><span class="pre">--devices</span></code> as the masking of GPUs is handled by the resource allocator, this is not the general case.
+If a resource allocator is not available an alternative method to run multiple simulations across nodes is to use a message passing interface
 (<code class="docutils literal notranslate"><span class="pre">MPI</span></code>). The use of <code class="docutils literal notranslate"><span class="pre">MPI</span></code> can vary from system to system and there is no universal solution to running across many node
-for all HPC systems, however we provide an example here for reference which would work with
-<a class="reference external" href="https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview">ThetaGPU</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mpirun -host $node1 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=0&amp;
-mpirun -host $node1 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=0&amp;
-mpirun -host $node1 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=0&amp;
-mpirun -host $node1 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=0&amp;
-mpirun -host $node1 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=0&amp;
-mpirun -host $node1 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=0&amp;
-mpirun -host $node2 -np 1 ties_md --devices=0 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=0,1 --node_id=1&amp;
-mpirun -host $node2 -np 1 ties_md --devices=1 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=1,2 --node_id=1&amp;
-mpirun -host $node2 -np 1 ties_md --devices=2 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=2,3 --node_id=1&amp;
-mpirun -host $node2 -np 1 ties_md --devices=3 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=3,4 --node_id=1&amp;
-mpirun -host $node2 -np 1 ties_md --devices=4 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=4,5 --node_id=1&amp;
-mpirun -host $node2 -np 1 ties_md --devices=5 --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39; --windows_mask=5,6 --node_id=1&amp;
-</pre></div>
-</div>
+for all HPC systems, however we provide an example (<a class="reference internal" href="HPC_submissions.html#namd-3"><span class="std std-ref">NAMD 3</span></a>) which would work with
+<a class="reference external" href="https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview">ThetaGPU</a>.</p>
 </section>
 <section id="ties-namd">
 <h2>TIES-NAMD<a class="headerlink" href="#ties-namd" title="Permalink to this heading"></a></h2>
-<p>Under construction</p>
+<p>The parallelization of TIES in <code class="docutils literal notranslate"><span class="pre">NAMD2</span></code> follows the same ideas as <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> above. We want to run independent simulations
+for all alchemical window and replica simulations. To achieve parallelization over replica simulations there are two options.
+If in TIES.cfg <code class="docutils literal notranslate"><span class="pre">total_reps==reps_per_exec</span></code> the submission script that <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> writes will use the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> option
+<code class="docutils literal notranslate"><span class="pre">+replicas</span> <span class="pre">X</span></code> this makes each <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> run <code class="docutils literal notranslate"><span class="pre">X</span></code> replicas and the run lines in sub.sh will look something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for stage in {0..3}; do
+for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
+        cd $ties_dir/replica-confs
+        srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda&amp;
+        sleep 1
+done
+wait
+done
+</pre></div>
+</div>
+<p>Alternatively if <code class="docutils literal notranslate"><span class="pre">total_reps=!reps_per_exec</span></code> with <code class="docutils literal notranslate"><span class="pre">reps_per_exec=1</span></code> the run lines will look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for stage in {0..3}; do
+for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
+        for i in {{0..4}}; do
+            srun -N $nodes_per_namd -n $cpus_per_namd namd2 --tclmain sim$stage.conf $lambda $i &amp;
+            sleep 1
+        done
+    done
+    wait
+done
+</pre></div>
+</div>
+<p>Notice now the additional loop over <code class="docutils literal notranslate"><span class="pre">$i</span></code>. So these run line are creating 65 different instances of <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> each
+running 1 replica and one alchemical window. Anecdotally using the <code class="docutils literal notranslate"><span class="pre">+replicas`</span> <span class="pre">results</span> <span class="pre">in</span> <span class="pre">less</span> <span class="pre">crashes</span> <span class="pre">and</span>
+<span class="pre">we</span> <span class="pre">have</span> <span class="pre">tested</span> <span class="pre">up</span> <span class="pre">to</span> <span class="pre">``+replicas</span> <span class="pre">135</span></code> on <a class="reference external" href="https://www.archer2.ac.uk/">ARCHER 2</a> with no crashes.</p>
+<p>In the two above examples the parallelism over alchemical windows is achieved in the loop over lambda. As configured there
+is no way to undo this parallelism and run multiple alchemical windows in one <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> instance.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">NAMD3</span></code> parallelization can be achieved like so (<a class="reference internal" href="HPC_submissions.html#namd-3"><span class="std std-ref">NAMD 3</span></a>). <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> in general has extensive options to provision
+hardware and achieve parallelism what have outlined here is not exhaustive and we would suggest consulting the <a class="reference external" href="https://www.ks.uiuc.edu/Research/namd/2.14/ug/">documentation</a>
+for more a more comprehensive information.</p>
 </section>
 </section>
 

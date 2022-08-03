@@ -1,7 +1,12 @@
 HPC Submission scripts
 ======================
 
-Here we provide some example submission scripts for various HPC systems.
+Here we provide some example submission scripts for various HPC systems. ``TIES MD`` will attempt to automatically write sensible submission
+scripts for ``NAMD2`` targeting `ARCHER 2 <https://www.archer2.ac.uk/>`_ and for ``OpenMM`` targeting `Summit <https://www.olcf.ornl.gov/summit/>`_.
+In general the user can make there own script for whichever HPC or cluster they prefer. To aid with writing general
+scripts ``TIES MD`` exposes 2 options ``sub_header`` and ``sub_run_line``. The strings passed with these options will be
+injected into a genral template for a ``NAMD2`` or ``OpenMM`` submission. All generated submission scripts are written
+to the base ``TIES MD`` directory as sub.sh. An example of this is provided in here :ref:`Running`.
 
 NAMD
 ----
@@ -34,11 +39,10 @@ Here is an example of a submission script for a large system (≈100k atoms) run
 
     #change this line to point to your project
     ties_dir=/hppfs/work/pn98ve/di67rov/test_TIES/study/prot/ties-l2-l1/com
+    cd $ties_dir/replica-confs
 
     for stage in {0..3}; do
-    for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0;
-    do
-            cd $ties_dir/replica-confs
+    for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
             srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda&
             sleep 1
     done
@@ -192,14 +196,5 @@ script would allow us to scale up on ThetaGPU::
                             node += 1
                 #make sure we wait between simulation stages for all sims to finish
                 f.write('wait\n')
-
-
-
-
-
-
-
-
-
 
 
