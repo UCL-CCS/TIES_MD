@@ -163,7 +163,6 @@ If in TIES.cfg <code class="docutils literal notranslate"><span class="pre">tota
 <code class="docutils literal notranslate"><span class="pre">+replicas</span> <span class="pre">X</span></code> this makes each <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> run <code class="docutils literal notranslate"><span class="pre">X</span></code> replicas and the run lines in sub.sh will look something like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for stage in {0..3}; do
 for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
-        cd $ties_dir/replica-confs
         srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda&amp;
         sleep 1
 done
@@ -174,12 +173,12 @@ done
 <p>Alternatively if <code class="docutils literal notranslate"><span class="pre">total_reps=!reps_per_exec</span></code> with <code class="docutils literal notranslate"><span class="pre">reps_per_exec=1</span></code> the run lines will look like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for stage in {0..3}; do
 for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
-        for i in {{0..4}}; do
-            srun -N $nodes_per_namd -n $cpus_per_namd namd2 --tclmain sim$stage.conf $lambda $i &amp;
-            sleep 1
-        done
-    done
-    wait
+for i in {{0..4}}; do
+    srun -N $nodes_per_namd -n $cpus_per_namd namd2 --tclmain sim$stage.conf $lambda $i &amp;
+    sleep 1
+done
+done
+wait
 done
 </pre></div>
 </div>
