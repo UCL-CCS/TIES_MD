@@ -98,7 +98,9 @@ Here we provide an example of ``TIES MD`` running with ``OpenMM`` on `Summit <ht
 NAMD 3
 ------
 
-Under construction
+Here we provide an example of ``TIES MD`` running with ``NAMD3`` on `ThetaGPU <https://www.alcf.anl.gov/alcf-resources/theta>`_::
+
+
 
 
 

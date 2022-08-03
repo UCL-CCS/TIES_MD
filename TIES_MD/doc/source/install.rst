@@ -4,8 +4,8 @@ Installation
 TIES MD
 -----------
 
-``TIES_MD`` can be installed with ``Conda`` on ``Linux-64`` and ``Linux-ppc64le`` machines. The steps to do this are as follows,
-starting with an install of ``Miniconda``::
+``TIES_MD`` can be installed with ``Conda`` on ``Linux-64`` and ``Linux-ppc64le`` machines. Assuming the user does not
+have Conda the steps to do this are as follows, starting with an install of ``Miniconda``::
 
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     chmod +x Miniconda3-latest-Linux-x86_64.sh
@@ -20,10 +20,9 @@ using this command::
 
     conda install python=3.7.3
 
-Finally add ``conda-forge`` to your available conda channels and install ``TIES MD``::
+Finally install ``TIES MD`` with::
 
-    conda config --add channels conda-forge
-    conda install -c ucl-ccs ties_md
+    conda install -c conda-forge ties_md
 
 The install of ``OpenMM`` which was installed with ``TIES_MD`` can be verified by running::
 
@@ -78,7 +77,7 @@ appropriate value for this by running ``nvidia-smi`` in a terminal which yields:
     +-------------------------------+----------------------+----------------------+
 
 The top right value here ``11.2`` can be used as the version of ``CUDA`` you wish to target. If ``nvidia-smi`` does not
-return the above output your GPU and drivers my not be configured correctly.
+return the above output your GPU and or drivers my not be configured correctly.
 
 The install of ``TIES MD`` can be tested by downloading and running (:ref:`Tutorial`) any of the examples
 provided `here <https://github.com/UCL-CCS/TIES_MD/tree/main/TIES_MD/examples>`_. These examples can be download by running::
@@ -89,7 +88,7 @@ TIES OpenMM linux-ppc64le
 --------------------------
 
 .. note::
-    There is no conda version of PYMABR 4.0 for linux-ppc64le FEP will not work until this is updated.
+    There is no conda version of PyMABR 4.0 for linux-ppc64le FEP will not work until this is updated.
 
 To use the OpenMM protocol in ``TIES_MD`` on ``linux-ppc64le`` a custom version of ``OpenMMTools`` is needed to perform the alchemical transformations
 of the system and allow for thermodynamic integration calculations. In order to install the custom version of ``OpenMMTools`` run::
