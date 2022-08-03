@@ -100,6 +100,101 @@ NAMD 3
 
 Here we provide an example of ``TIES MD`` running with ``NAMD3`` on `ThetaGPU <https://www.alcf.anl.gov/alcf-resources/theta>`_::
 
+    #!/bin/bash
+    #COBALT -A XXX
+    #COBALT -t 100
+    #COBALT -n 2
+    #COBALT -q full-node
+    export mpirun="/lus/theta-fs0/software/thetagpu/openmpi-4.0.5/bin/mpirun"
+    export namd3="/lus/theta-fs0/projects/CompBioAffin/awade/NAMD3/NAMD_3.0alpha9_Linux-x86_64-multicore-CUDA/namd3"
+    node1=$(sed "1q;d" $COBALT_NODEFILE)
+    node2=$(sed "2q;d" $COBALT_NODEFILE)
+
+    cd /lus/theta-fs0/projects/CompBioAffin/awade/many_reps/mcl1/l18-l39/com/replica-confs
+    for stage in {0..3}; do
+      $mpirun -host $node1 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain sim$stage.conf 0.00 0&
+      $mpirun -host $node1 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain sim$stage.conf 0.05 0&
+      $mpirun -host $node1 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain sim$stage.conf 0.10 0&
+      $mpirun -host $node1 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain sim$stage.conf 0.20 0&
+      $mpirun -host $node1 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain sim$stage.conf 0.30 0&
+      $mpirun -host $node1 --cpu-set 5 --bind-to core -np 1 $namd3 +devices 5 --tclmain sim$stage.conf 0.40 0&
+      $mpirun -host $node1 --cpu-set 6 --bind-to core -np 1 $namd3 +devices 6 --tclmain sim$stage.conf 0.50 0&
+      $mpirun -host $node1 --cpu-set 7 --bind-to core -np 1 $namd3 +devices 7 --tclmain sim$stage.conf 0.60 0&
+      $mpirun -host $node2 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain sim$stage.conf 0.70 0&
+      $mpirun -host $node2 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain sim$stage.conf 0.80 0&
+      $mpirun -host $node2 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain sim$stage.conf 0.90 0&
+      $mpirun -host $node2 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain sim$stage.conf 0.95 0&
+      $mpirun -host $node2 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain sim$stage.conf 1.00 0&
+    wait
+    done
+
+This script is running 13 alchemical windows using only 1 replica simulation in each window. Additionally 3 GPUs are idle
+on node2. For real world application this script needs to be scaled up. Currently ``TIES MD`` will not attempt to build
+``NAMD3`` HPC scripts automatically. For creating general scripts a ``Python`` script can be very helpful the following
+script would allow us to scale up on ThetaGPU::
+
+    import os
+
+    if __name__ == "__main__":
+
+        ###OPTIONS###
+
+        #account name
+        acc_name = 'XXX'
+        #how many nodes do we want
+        nodes = 9
+        #what thermodynamic leg to run (these may have different wall times)
+        leg = 'com'
+        #Where is the namd3 binary
+        namd3_exe = '/lus/theta-fs0/projects/CompBioAffin/awade/NAMD3/NAMD_3.0alpha9_Linux-x86_64-multicore-CUDA/namd3'
+
+        #############
+
+        cwd = os.getcwd()
+        #give com and lig simulations differnt wall times if needed
+        if leg == 'com':
+            wall_time = 100
+        else:
+            wall_time = 60
+        with open(os.path.join(cwd, 'thetagpu_{}.sub'.format(leg)), 'w') as f:
+
+            #Writing a header
+            f.write('#!/bin/bash\n')
+            f.write('#COBALT -A {}\n'.format(acc_name))
+            f.write('#COBALT -t {}\n'.format(wall_time))
+            f.write('#COBALT -n {}\n'.format(nodes))
+            f.write('#COBALT -q full-node\n')
+
+            #exporting mpirun and namd3 install locations
+            f.write('export mpirun=\"/lus/theta-fs0/software/thetagpu/openmpi-4.0.5/bin/mpirun\"\n')
+            f.write('export namd3=\"/lus/theta-fs0/projects/CompBioAffin/awade/NAMD3/NAMD_3.0alpha9_Linux-x86_64-multicore-CUDA/namd3\"\n')
+
+            #writing line to read node file
+            for node in range(nodes):
+                f.write('node{0}=$(sed \"{1}q;d\" $COBALT_NODEFILE)\n'.format(node+1, node+1))
+
+            #move to ties directory
+            f.write('cd {}\n'.format(os.path.join(cwd, 'replica-confs')))
+
+            #iterate over minimization, NVT eq, NPT eq and production
+            for stage in ['sim0', 'sim1', 'sim2', 'sim3']:
+                count = 0
+                node = 1
+                #iterate over alchemical windows
+                for lam in [0.00, 0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 1.00]:
+                    #iterate over replica siulations
+                    for rep in [0, 1, 2, 3, 4]:
+                        #write the run line
+                        f.write('$mpirun -host $node{} --cpu-set {} --bind-to core -np 1 $namd3 +devices {} --tclmain {} {} {}&\n'.format(node, count%8, count%8, '{}.conf'.format(stage), lam, rep))
+                        # count the number of gpus move to next node when gpus all filled
+                        count += 1
+                        if count%8 == 0:
+                            node += 1
+                #make sure we wait between simulation stages for all sims to finish
+                f.write('wait\n')
+
+
+
 
 
 

@@ -178,6 +178,100 @@ wait
 <section id="namd-3">
 <h2>NAMD 3<a class="headerlink" href="#namd-3" title="Permalink to this heading"></a></h2>
 <p>Here we provide an example of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> running with <code class="docutils literal notranslate"><span class="pre">NAMD3</span></code> on <a class="reference external" href="https://www.alcf.anl.gov/alcf-resources/theta">ThetaGPU</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+#COBALT -A XXX
+#COBALT -t 100
+#COBALT -n 2
+#COBALT -q full-node
+export mpirun=&quot;/lus/theta-fs0/software/thetagpu/openmpi-4.0.5/bin/mpirun&quot;
+export namd3=&quot;/lus/theta-fs0/projects/CompBioAffin/awade/NAMD3/NAMD_3.0alpha9_Linux-x86_64-multicore-CUDA/namd3&quot;
+node1=$(sed &quot;1q;d&quot; $COBALT_NODEFILE)
+node2=$(sed &quot;2q;d&quot; $COBALT_NODEFILE)
+
+cd /lus/theta-fs0/projects/CompBioAffin/awade/many_reps/mcl1/l18-l39/com/replica-confs
+for stage in {0..3}; do
+  $mpirun -host $node1 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain sim$stage.conf 0.00 0&amp;
+  $mpirun -host $node1 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain sim$stage.conf 0.05 0&amp;
+  $mpirun -host $node1 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain sim$stage.conf 0.10 0&amp;
+  $mpirun -host $node1 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain sim$stage.conf 0.20 0&amp;
+  $mpirun -host $node1 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain sim$stage.conf 0.30 0&amp;
+  $mpirun -host $node1 --cpu-set 5 --bind-to core -np 1 $namd3 +devices 5 --tclmain sim$stage.conf 0.40 0&amp;
+  $mpirun -host $node1 --cpu-set 6 --bind-to core -np 1 $namd3 +devices 6 --tclmain sim$stage.conf 0.50 0&amp;
+  $mpirun -host $node1 --cpu-set 7 --bind-to core -np 1 $namd3 +devices 7 --tclmain sim$stage.conf 0.60 0&amp;
+  $mpirun -host $node2 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain sim$stage.conf 0.70 0&amp;
+  $mpirun -host $node2 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain sim$stage.conf 0.80 0&amp;
+  $mpirun -host $node2 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain sim$stage.conf 0.90 0&amp;
+  $mpirun -host $node2 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain sim$stage.conf 0.95 0&amp;
+  $mpirun -host $node2 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain sim$stage.conf 1.00 0&amp;
+wait
+done
+</pre></div>
+</div>
+<p>This script is running 13 alchemical windows using only 1 replica simulation in each window. Additionally 3 GPUs are idle
+on node2. For real world application this script needs to be scaled up. Currently <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> will not attempt to build
+<code class="docutils literal notranslate"><span class="pre">NAMD3</span></code> HPC scripts automatically. For creating general scripts a <code class="docutils literal notranslate"><span class="pre">Python</span></code> script can be very helpful the following
+script would allow us to scale up on ThetaGPU:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="c1">###OPTIONS###</span>
+
+    <span class="c1">#account name</span>
+    <span class="n">acc_name</span> <span class="o">=</span> <span class="s1">&#39;XXX&#39;</span>
+    <span class="c1">#how many nodes do we want</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="c1">#what thermodynamic leg to run (these may have different wall times)</span>
+    <span class="n">leg</span> <span class="o">=</span> <span class="s1">&#39;com&#39;</span>
+    <span class="c1">#Where is the namd3 binary</span>
+    <span class="n">namd3_exe</span> <span class="o">=</span> <span class="s1">&#39;/lus/theta-fs0/projects/CompBioAffin/awade/NAMD3/NAMD_3.0alpha9_Linux-x86_64-multicore-CUDA/namd3&#39;</span>
+
+    <span class="c1">#############</span>
+
+    <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="c1">#give com and lig simulations differnt wall times if needed</span>
+    <span class="k">if</span> <span class="n">leg</span> <span class="o">==</span> <span class="s1">&#39;com&#39;</span><span class="p">:</span>
+        <span class="n">wall_time</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wall_time</span> <span class="o">=</span> <span class="mi">60</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s1">&#39;thetagpu_</span><span class="si">{}</span><span class="s1">.sub&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">leg</span><span class="p">)),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+
+        <span class="c1">#Writing a header</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/bash</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#COBALT -A </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">acc_name</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#COBALT -t </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wall_time</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#COBALT -n </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#COBALT -q full-node</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1">#exporting mpirun and namd3 install locations</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;export mpirun=</span><span class="se">\&quot;</span><span class="s1">/lus/theta-fs0/software/thetagpu/openmpi-4.0.5/bin/mpirun</span><span class="se">\&quot;\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;export namd3=</span><span class="se">\&quot;</span><span class="s1">/lus/theta-fs0/projects/CompBioAffin/awade/NAMD3/NAMD_3.0alpha9_Linux-x86_64-multicore-CUDA/namd3</span><span class="se">\&quot;\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1">#writing line to read node file</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;node</span><span class="si">{0}</span><span class="s1">=$(sed </span><span class="se">\&quot;</span><span class="si">{1}</span><span class="s1">q;d</span><span class="se">\&quot;</span><span class="s1"> $COBALT_NODEFILE)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">node</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1">#move to ties directory</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;cd </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s1">&#39;replica-confs&#39;</span><span class="p">)))</span>
+
+        <span class="c1">#iterate over minimization, NVT eq, NPT eq and production</span>
+        <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;sim0&#39;</span><span class="p">,</span> <span class="s1">&#39;sim1&#39;</span><span class="p">,</span> <span class="s1">&#39;sim2&#39;</span><span class="p">,</span> <span class="s1">&#39;sim3&#39;</span><span class="p">]:</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1">#iterate over alchemical windows</span>
+            <span class="k">for</span> <span class="n">lam</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.40</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.60</span><span class="p">,</span> <span class="mf">0.70</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">]:</span>
+                <span class="c1">#iterate over replica siulations</span>
+                <span class="k">for</span> <span class="n">rep</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+                    <span class="c1">#write the run line</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;$mpirun -host $node</span><span class="si">{}</span><span class="s1"> --cpu-set </span><span class="si">{}</span><span class="s1"> --bind-to core -np 1 $namd3 +devices </span><span class="si">{}</span><span class="s1"> --tclmain </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&amp;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">count</span><span class="o">%</span><span class="mi">8</span><span class="p">,</span> <span class="n">count</span><span class="o">%</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.conf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stage</span><span class="p">),</span> <span class="n">lam</span><span class="p">,</span> <span class="n">rep</span><span class="p">))</span>
+                    <span class="c1"># count the number of gpus move to next node when gpus all filled</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">count</span><span class="o">%</span><span class="mi">8</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">node</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1">#make sure we wait between simulation stages for all sims to finish</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;wait</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 
