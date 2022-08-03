@@ -47,7 +47,7 @@ this option takes a ``Python`` range (start inclusive and end exclusive) of the 
     ties_md --exp_name=sys_solv --windows_mask=3,4 --devices=3&
     ties_md --exp_name=sys_solv --windows_mask=4,5 --devices=4&
     ties_md --exp_name=sys_solv --windows_mask=5,6 --devices=5&
-    ties_md --exp_name=sys_solv --windows_mask=7,7 --devices=6&
+    ties_md --exp_name=sys_solv --windows_mask=6,7 --devices=6&
     ties_md --exp_name=sys_solv --windows_mask=7,8 --devices=7&
 
 Again using the configuration options ``total_reps=3`` and ``reps_per_exec=1`` the above runs 1 replica of each alchemical

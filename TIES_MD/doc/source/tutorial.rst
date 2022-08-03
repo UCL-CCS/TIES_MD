@@ -150,8 +150,8 @@ values are as follows::
     A comma separated list of integers which tells TIES OpenMM which GPUs to run on. If multiple GPUs
     are specified then TIES OpenMM will parallelize requested replicas over the available GPUs.
 
-    [--node_id=_alpha]
-    A string which will be used to generate the names of output files. Should be used if many independent replicas of the
+    [--node_id=0]
+    An int which will be used to generate the names of output files. Should be used if many independent replicas of the
     same simulation are run on different nodes to ensure output is writen to unique location.
 
     [--windows_mask=None]
@@ -168,7 +168,7 @@ Simulation Preparation
 ``TIES_MD`` is run in two stages first using the option ``--run_type=setup`` this prepares output directories and MD engine
 input scripts, this stage is not compute intensive and can be run on a PC or HPC head node. The setup stage can but does
 not have to be run of you are using ``OpenMM`` and directories are built when using ``--run_type=run`` also. Output directories are prepared
-with the structure ``LAMBDA_X`` where ``X`` is an integer denoting what alchemical window that folder contains the output for.
+with the structure ``LAMBDA_X`` where ``X`` is a float denoting what alchemical window that folder contains the output for.
 Within ``LAMBDA_X`` there are directories named ``repY`` where ``Y`` is an integer which denotes a replica in the ensemble. In the
 ``repY`` directories there are three more directories: ``equilibration``, ``simulation`` and ``results``. The ``equilibration`` and
 ``simulation`` directory will contain all the output for the pre-production and production stages of the simulation
@@ -191,8 +191,8 @@ and can only be run on a HPC for all but the smallest systems. The execution of 
 on what MD engine is being used. HPC submission scripts should be prepared with the target MD engine in mind.
 
 Consider the same `example, <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ used in the
-setup stage, for the transformation of ethane to ethane. In TIES.cfg the option ``global_lambdas`` is set
-equal to ``0.0, 0.2, 0.4, 0.6, 0.8, 1.0`` therefore there are 6 alchemical windows and the option ``total_reps`` is set equal
+setup stage, for the transformation of ethane to ethane. If in TIES.cfg the option ``global_lambdas`` is set
+equal to ``0.0, 0.2, 0.4, 0.6, 0.8, 1.0`` there are 6 alchemical windows and the option ``total_reps`` is set equal
 to ``1``, there is therefore 6x1 = 6 total simulations to perform. If a HPC submission script was to request one node with
 6 GPUS with each GPU running one alchemical window the run lines for an ``OpenMM`` calculation would look like::
 
