@@ -108,13 +108,11 @@ Alternatively if ``total_reps=!reps_per_exec`` with ``reps_per_exec=1`` the run 
     done
 
 Notice now the additional loop over ``$i``. So these run line are creating 65 different instances of ``NAMD`` each
-running 1 replica and one alchemical window. Anecdotally using the ``+replicas` results in less crashes and
-we have tested up to ``+replicas 135`` on `ARCHER 2 <https://www.archer2.ac.uk/>`_ with no crashes.
-
-In the two above examples the parallelism over alchemical windows is achieved in the loop over lambda. As configured there
-is no way to undo this parallelism and run multiple alchemical windows in one ``NAMD`` instance.
+running 1 replica and one alchemical window. Anecdotally using the ``+replicas`` results in less crashes and
+we have tested up to ``+replicas 135`` on `ARCHER 2 <https://www.archer2.ac.uk/>`_ with no crashes. In the two above
+examples the parallelism over alchemical windows is achieved in the loop over lambda.
 
 Using ``NAMD3`` parallelization can be achieved like so (:ref:`NAMD 3`). ``NAMD`` in general has extensive options to provision
-hardware and achieve parallelism what have outlined here is not exhaustive and we would suggest consulting the `documentation <https://www.ks.uiuc.edu/Research/namd/2.14/ug/>`_
+hardware and achieve parallelism, what have outlined here is not exhaustive and we would suggest consulting the `documentation <https://www.ks.uiuc.edu/Research/namd/2.14/ug/>`_
 for more a more comprehensive information.
 

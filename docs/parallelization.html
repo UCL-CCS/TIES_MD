@@ -184,12 +184,11 @@ done
 </pre></div>
 </div>
 <p>Notice now the additional loop over <code class="docutils literal notranslate"><span class="pre">$i</span></code>. So these run line are creating 65 different instances of <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> each
-running 1 replica and one alchemical window. Anecdotally using the <code class="docutils literal notranslate"><span class="pre">+replicas`</span> <span class="pre">results</span> <span class="pre">in</span> <span class="pre">less</span> <span class="pre">crashes</span> <span class="pre">and</span>
-<span class="pre">we</span> <span class="pre">have</span> <span class="pre">tested</span> <span class="pre">up</span> <span class="pre">to</span> <span class="pre">``+replicas</span> <span class="pre">135</span></code> on <a class="reference external" href="https://www.archer2.ac.uk/">ARCHER 2</a> with no crashes.</p>
-<p>In the two above examples the parallelism over alchemical windows is achieved in the loop over lambda. As configured there
-is no way to undo this parallelism and run multiple alchemical windows in one <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> instance.</p>
+running 1 replica and one alchemical window. Anecdotally using the <code class="docutils literal notranslate"><span class="pre">+replicas</span></code> results in less crashes and
+we have tested up to <code class="docutils literal notranslate"><span class="pre">+replicas</span> <span class="pre">135</span></code> on <a class="reference external" href="https://www.archer2.ac.uk/">ARCHER 2</a> with no crashes. In the two above
+examples the parallelism over alchemical windows is achieved in the loop over lambda.</p>
 <p>Using <code class="docutils literal notranslate"><span class="pre">NAMD3</span></code> parallelization can be achieved like so (<a class="reference internal" href="HPC_submissions.html#namd-3"><span class="std std-ref">NAMD 3</span></a>). <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> in general has extensive options to provision
-hardware and achieve parallelism what have outlined here is not exhaustive and we would suggest consulting the <a class="reference external" href="https://www.ks.uiuc.edu/Research/namd/2.14/ug/">documentation</a>
+hardware and achieve parallelism, what have outlined here is not exhaustive and we would suggest consulting the <a class="reference external" href="https://www.ks.uiuc.edu/Research/namd/2.14/ug/">documentation</a>
 for more a more comprehensive information.</p>
 </section>
 </section>
