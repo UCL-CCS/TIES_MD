@@ -11,8 +11,7 @@ build:
 
 requirements:
   build:
-    - python {{ python }} # [not ppc64le]
-    - python 3.7.3 # [ppc64le]
+    - python {{ python }}
     - setuptools
   run:
     - python
@@ -24,12 +23,11 @@ requirements:
     - numba
     - docopt
     - multiprocess
-    - openmm
     - cython
-    - ties_ana
     - mpiplus
     - scikit-learn
     - six
+    - openmm # [not ppc64le]
     - pymbar # [not ppc64le]
     - openmmtools # [not ppc64le]
 

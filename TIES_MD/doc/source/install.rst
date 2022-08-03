@@ -4,23 +4,21 @@ Installation
 TIES MD
 -----------
 
-``TIES_MD`` can be installed with ``Conda`` on ``Linux-64`` and ``Linux-ppc64le`` machines. Assuming the user does not
-have Conda the steps to do this are as follows, starting with an install of ``Miniconda``::
+``TIES_MD`` can be installed with the ``Conda`` package manager. Assuming the user does not have ``Conda`` the
+steps to do this are as follows, starting with an install of ``Miniconda``::
 
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     chmod +x Miniconda3-latest-Linux-x86_64.sh
     ./Miniconda3-latest-Linux-x86_64.sh -b -p $prefix
     export PATH="$prefix/bin:$PATH"
 
-
 Ensure the ``Miniconda`` used matches the platform on which you are running, for example use ``Miniconda3-latest-Linux-ppc64le.sh``
-for ``Linux-ppc64le`` machines, and that ``$prefix`` is set to some directory with read write permissions. We provide ``Conda`` installs for
-``Python 3.7/3.8/3.9`` on ``Linux-64`` and ``Python 3.7`` on ``Linux-ppc64le``. If required you can change your python version in ``Conda``
-using this command::
+for ``Linux-ppc64le`` machines, and that ``$prefix`` is set to some directory with read write permissions.
 
-    conda install python=3.7.3
+.. note::
+    If you are attempting a ``Linux-ppc64le`` read the final section of this page.
 
-Finally install ``TIES MD`` with::
+With ``Conda`` installed ``TIES MD`` can be installed with with::
 
     conda install -c conda-forge ties_md
 
@@ -32,7 +30,7 @@ for older ``OpenMM`` versions ``< 7.6`` this command was::
 
     python -m simtk.testInstallation
 
-In some instances the wrong version of ``OpenMM`` and ``CUDAtoolkit`` could be installed. If this has happend the above
+In some instances the wrong version of ``OpenMM`` and ``CUDAtoolkit`` could be installed. If this has happened the above
 test of ``OpenMM`` will produce an output which looks like::
 
     OpenMM Version: 7.7
@@ -88,9 +86,18 @@ TIES OpenMM linux-ppc64le
 --------------------------
 
 .. note::
-    There is no conda version of PyMABR 4.0 for linux-ppc64le FEP will not work until this is updated.
+    There is no version of PyMABR 4.0.1 for ``linux-ppc64le`` therefore FEP analysis will not work until this is updated.
+    To work around this FEP simulations can be run on ``linux-ppc64le`` but the result must be copied elsewhere for analysis.
 
-To use the OpenMM protocol in ``TIES_MD`` on ``linux-ppc64le`` a custom version of ``OpenMMTools`` is needed to perform the alchemical transformations
+To use ``TIES_MD`` on ``linux-ppc64le`` skip the above install of ``TIES MD`` and instead run::
+
+    conda install -c ucl-ccs ties_md
+
+Then install OpenMM with::
+
+    conda install -c conda-forge openmm
+
+And to use the OpenMM protocol a custom version of ``OpenMMTools`` is also needed to perform the alchemical transformations
 of the system and allow for thermodynamic integration calculations. In order to install the custom version of ``OpenMMTools`` run::
 
     mkdir openmmtools_install

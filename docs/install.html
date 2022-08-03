@@ -84,8 +84,8 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <section id="ties-md">
 <h2>TIES MD<a class="headerlink" href="#ties-md" title="Permalink to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> can be installed with <code class="docutils literal notranslate"><span class="pre">Conda</span></code> on <code class="docutils literal notranslate"><span class="pre">Linux-64</span></code> and <code class="docutils literal notranslate"><span class="pre">Linux-ppc64le</span></code> machines. Assuming the user does not
-have Conda the steps to do this are as follows, starting with an install of <code class="docutils literal notranslate"><span class="pre">Miniconda</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> can be installed with the <code class="docutils literal notranslate"><span class="pre">Conda</span></code> package manager. Assuming the user does not have <code class="docutils literal notranslate"><span class="pre">Conda</span></code> the
+steps to do this are as follows, starting with an install of <code class="docutils literal notranslate"><span class="pre">Miniconda</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh -b -p $prefix
@@ -93,15 +93,13 @@ export PATH=&quot;$prefix/bin:$PATH&quot;
 </pre></div>
 </div>
 <p>Ensure the <code class="docutils literal notranslate"><span class="pre">Miniconda</span></code> used matches the platform on which you are running, for example use <code class="docutils literal notranslate"><span class="pre">Miniconda3-latest-Linux-ppc64le.sh</span></code>
-for <code class="docutils literal notranslate"><span class="pre">Linux-ppc64le</span></code> machines, and that <code class="docutils literal notranslate"><span class="pre">$prefix</span></code> is set to some directory with read write permissions. We provide <code class="docutils literal notranslate"><span class="pre">Conda</span></code> installs for
-<code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.7/3.8/3.9</span></code> on <code class="docutils literal notranslate"><span class="pre">Linux-64</span></code> and <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.7</span></code> on <code class="docutils literal notranslate"><span class="pre">Linux-ppc64le</span></code>. If required you can change your python version in <code class="docutils literal notranslate"><span class="pre">Conda</span></code>
-using this command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.7.3</span>
-</pre></div>
+for <code class="docutils literal notranslate"><span class="pre">Linux-ppc64le</span></code> machines, and that <code class="docutils literal notranslate"><span class="pre">$prefix</span></code> is set to some directory with read write permissions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are attempting a <code class="docutils literal notranslate"><span class="pre">Linux-ppc64le</span></code> read the final section of this page.</p>
 </div>
-<p>Finally add <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> to your available conda channels and install <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="n">ties_md</span>
+<p>With <code class="docutils literal notranslate"><span class="pre">Conda</span></code> installed <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> can be installed with with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">ties_md</span>
 </pre></div>
 </div>
 <p>The install of <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> which was installed with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> can be verified by running:</p>
@@ -112,7 +110,7 @@ using this command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">simtk</span><span class="o">.</span><span class="n">testInstallation</span>
 </pre></div>
 </div>
-<p>In some instances the wrong version of <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> and <code class="docutils literal notranslate"><span class="pre">CUDAtoolkit</span></code> could be installed. If this has happend the above
+<p>In some instances the wrong version of <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> and <code class="docutils literal notranslate"><span class="pre">CUDAtoolkit</span></code> could be installed. If this has happened the above
 test of <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> will produce an output which looks like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OpenMM</span> <span class="n">Version</span><span class="p">:</span> <span class="mf">7.7</span>
 <span class="n">Git</span> <span class="n">Revision</span><span class="p">:</span> <span class="mi">130124</span><span class="n">a3f9277b054ec40927360a6ad20c8f5fa6</span>
@@ -168,9 +166,18 @@ provided <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/
 <h2>TIES OpenMM linux-ppc64le<a class="headerlink" href="#ties-openmm-linux-ppc64le" title="Permalink to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>There is no conda version of PyMABR 4.0 for linux-ppc64le FEP will not work until this is updated.</p>
+<p>There is no version of PyMABR 4.0.1 for <code class="docutils literal notranslate"><span class="pre">linux-ppc64le</span></code> therefore FEP analysis will not work until this is updated.
+To work around this FEP simulations can be run on <code class="docutils literal notranslate"><span class="pre">linux-ppc64le</span></code> but the result must be copied elsewhere for analysis.</p>
 </div>
-<p>To use the OpenMM protocol in <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> on <code class="docutils literal notranslate"><span class="pre">linux-ppc64le</span></code> a custom version of <code class="docutils literal notranslate"><span class="pre">OpenMMTools</span></code> is needed to perform the alchemical transformations
+<p>To use <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> on <code class="docutils literal notranslate"><span class="pre">linux-ppc64le</span></code> skip the above install of <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> and instead run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">ucl</span><span class="o">-</span><span class="n">ccs</span> <span class="n">ties_md</span>
+</pre></div>
+</div>
+<p>Then install OpenMM with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">openmm</span>
+</pre></div>
+</div>
+<p>And to use the OpenMM protocol a custom version of <code class="docutils literal notranslate"><span class="pre">OpenMMTools</span></code> is also needed to perform the alchemical transformations
 of the system and allow for thermodynamic integration calculations. In order to install the custom version of <code class="docutils literal notranslate"><span class="pre">OpenMMTools</span></code> run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">openmmtools_install</span>
 <span class="n">cd</span> <span class="n">openmmtools_install</span>

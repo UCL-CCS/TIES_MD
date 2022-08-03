@@ -4,7 +4,7 @@
 
 <img src="https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/doc/source/_static/images/TIES_logov2.png" width="384">
 
-Please see our [documentation](https://UCL-CCS.github.io/TIES_MD/) for more information on `TIES MD` or our main [TIES](http://www.ties-service.org/) page for information on all TIES packages.
+Please see our [documentation](https://UCL-CCS.github.io/TIES_MD/) for more information on `TIES MD` or our main [TIES](http://www.ties-service.org/) page for information on all `TIES` packages.
 
 To install `TIES_MD` run:
 
