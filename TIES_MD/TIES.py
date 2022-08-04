@@ -356,8 +356,9 @@ class TIES(object):
         if 'namd' in self._engine:
             self.namd_version = float(self._engine.split('namd')[1])
             self._engine = 'namd'
-            if self.namd_version != 2.14 or self.namd_version != 3:
-                raise ValueError('Supported NAMD versions are: namd2.14/namd3')
+            if self.namd_version != 2.14 and self.namd_version != 3:
+                raise ValueError('NAMD {} version is unsupported'
+                                 ' chose from: namd2.14/namd3'.format(self.namd_version))
             if self.input_type != 'AMBER':
                 raise ValueError('Only AMBER input supported in NAMD version of TIES MD')
 
