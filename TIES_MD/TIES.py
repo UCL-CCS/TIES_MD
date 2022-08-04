@@ -48,8 +48,8 @@ class TIES(object):
     Class to control TIES protocol, initializes variables and calls functions to start simulation or write input scripts
 
     :param cwd: str, for current working directory
-    :param run_type: str, flag to say if we should run dynamics or not
     :param exp_name: str, for the names of experiment i.e. complex -> complex.pdb/complex.prmtop
+    :param run_type: str, flag to say if we should run dynamics or not
     :param devices: list, list of ints for which cuda devices to use
     :param node_id: float, id denoting what replica of this simulation this execution of TIES_MD should run
     :param windows_mask: list containing ints for start and end range of windows to be run
@@ -403,7 +403,6 @@ class TIES(object):
         self.lam = Lambdas(self._elec_edges, self._ster_edges, self._global_lambdas, debug=False)
         self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self._split_run,
                                                                 self._global_lambdas, self._total_reps, self._exp_name)
-        self.setup()
 
     @split_run.setter
     def split_run(self, value):
@@ -462,7 +461,7 @@ class TIES(object):
 
     def update_cfg(self):
         '''
-        Write a TIES congig file this should be called after api changes are made.
+        Write a TIES config file this should be called after api changes are made.
 
         :return: None
         '''
@@ -511,6 +510,7 @@ class TIES(object):
             self.write_openmm_submission()
         TIES.build_results_dirs(self, folders)
         self.write_analysis_cfg()
+        self.update_cfg()
 
     def build_results_dirs(self, folders):
         '''
@@ -519,17 +519,40 @@ class TIES(object):
 
         :return: None
         '''
-        # If output folders do not exist make them.
-        rep_dirs = range(self.total_reps)
 
-        populated_results = list(glob.iglob(os.path.join(self.cwd, 'LAMBDA*', 'rep*', 'results', '*.npy')))
-        if len(populated_results) > 0:
-            raise ValueError('Results files found please check these are not needed then manually delete LAMBDA_X.XX dirs')
-
+        #What lambda dirs exsit
         exiting_lam_dirs = list(glob.iglob(os.path.join(self.cwd, 'LAMBDA*')))
-        for lam_dir in exiting_lam_dirs:
-            shutil.rmtree(lam_dir)
 
+        #do any contain results?
+        pop_lam_dirs = []
+        for lam_dir in exiting_lam_dirs:
+            found_results = list(glob.iglob(os.path.join(lam_dir, 'rep*', 'results', '*.npy')))
+            pop_lam_dirs.extend(found_results)
+
+        #Are the populated dirs in the schedule?
+        warn_overwrite = False
+        populated_lam = set()
+        for lam_dir in pop_lam_dirs:
+            lam_id = lam_dir.split('LAMBDA_')[1][0:4]
+            populated_lam.update(lam_id)
+            if lam_id not in self.lam.str_lams:
+                raise ValueError('Results files found please check these are not needed'
+                                 ' then manually delete LAMBDA_{} dirs'.format(lam_id))
+            else:
+                if lam_id in [self.lam.str_lams[i] for i in range(*self.windows_mask)]:
+                    warn_overwrite = True
+
+        if warn_overwrite:
+            print('Warning: you may be a about to run simulations which already have results')
+
+        for lam_dir in exiting_lam_dirs:
+            lam_id = lam_dir.split('LAMBDA_')[1][0:4]
+            if lam_id not in self.lam.str_lams:
+                print('Removing unpopulated LAMBDA_{} directory'.format(lam_id))
+                shutil.rmtree('./LAMBDA_{}'.format(lam_id))
+
+        #make all dirs needed for schedel (exist_ok=True)
+        rep_dirs = range(self.total_reps)
         for i in rep_dirs:
             for lam in self.lam.str_lams:
                 #print('Attempting to make eq, sim and results folders for LAMBDA_{}/rep{}'.format(lam, i))
@@ -544,7 +567,7 @@ class TIES(object):
 
         :return: None
         '''
-        for arg in self.all_args:
+        for arg in self.warn_overwrite:
             print('{}: {}'.format(arg, self.__getattribute__(arg)))
 
     def run(self):
@@ -1056,7 +1079,7 @@ nodes_per_namd=1
 cpus_per_namd={1}""".format(int(num_windows*reps), num_cpu)
 
                 sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                               ' --hint=nomultithread namd2 --tclmain sim$stage.conf $lambda $i &'
+                               ' --hint=nomultithread namd2 --tclmain run$stage.conf $lambda $i &'
 
             else:
                 sub_header = """#Example script for ARCHER2 NAMD2
@@ -1076,7 +1099,7 @@ nodes_per_namd={}
 cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cpu))
 
                 sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                               ' --hint=nomultithread namd2 +replicas {} --tclmain sim$stage-replicas.conf $lambda &'.format(reps)
+                               ' --hint=nomultithread namd2 +replicas {} --tclmain run$stage-replicas.conf $lambda &'.format(reps)
 
         else:
             #no NAMD3

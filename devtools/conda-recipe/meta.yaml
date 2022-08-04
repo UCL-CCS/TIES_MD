@@ -28,7 +28,7 @@ requirements:
     - scikit-learn
     - six
     - openmm # [not ppc64le]
-    - pymbar # [not ppc64le]
+    - pymbar >= 4.0.1 # [not ppc64le]
     - openmmtools # [not ppc64le]
 
 about:
