@@ -40,7 +40,7 @@ occasionally change. This file must be placed alongside the build directory. Her
     #                                                               #
     #################################################################
 
-    #Which molecular dynamics engine will be used, valid options are namd/openmm
+    #Which molecular dynamics engine will be used, valid options are openmm/namd2.14/namd3
     engine = openmm
 
     #Target temperature for the thermostat
@@ -93,10 +93,6 @@ occasionally change. This file must be placed alongside the build directory. Her
     #What input type is provided, only AMBER supported.
     input_type = AMBER
 
-    #NAMD specific options
-    #What version of NAMD to use <= 2.12 effects how analysis files are read >=3 uses NAMD3 alpha.
-    version = 2.12
-
 ``total_reps`` and ``reps_per_exec`` are options which can be used to achieve simple parallelism of the simulations.
 For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
 ``total_reps = 5`` and ``reps_per_exec = 1``. See the :ref:`Parallelization` section for more details of how to
@@ -118,7 +114,7 @@ energy functions of the system and for more information these settings please se
 Note the option ``constraint_column`` which determines if the constraint indexes will be read from the temperature factor
 or occupancy column of the constraints PDB. The alchemical indexes are always be read from the temperature factor column
 in the main PDB ``complex.pdb``. The ``edge_length`` option can be found in the ``leap.log`` file created during system
-preparation preformed by the users or TIES20. TIES20 will populate a TIES.cfg automatically with the correct box size.
+preparation preformed by the users or ``TIES20``. ``TIES20`` will populate a TIES.cfg automatically with the correct box size.
 
 Typically a constraint file may be used during preproduction of simulations involving proteins but possibly not a small
 drug like molecule in only solvent. It will be show later in the Binding Free Energy Calculations section when and
@@ -208,9 +204,9 @@ There are a lot of options for how these ``OpenMM`` calcualtions can be structur
 nodes each with 128 cores the run lines in the submission script might look like::
 
    cd $build/replica-confs
-   for stage in {{0..3}}; do
+   for stage in {0..3}; do
         for lambda in in 0.0 0.2 0.4 0.6 0.8 1.0; do
-            for i in {{0..0}}; do
+            for i in {0..0}; do
                 srun -N 1 -n 128 namd2 --tclmain sim$stage.conf $lambda $i &
                 sleep 1
             done
@@ -218,20 +214,18 @@ nodes each with 128 cores the run lines in the submission script might look like
         wait
     done
 
-Notice in the ``NAMD`` example reference is made to a directory ``$build/replica-confs` this is where the NAMD input scripts are writen
+Notice in the ``NAMD`` example reference is made to a directory ``$build/replica-confs`` this is where the NAMD input scripts are writen
 during the ``TIES_MD`` setup stage. Also notice in the ``NAMD`` examples there is a loop over the ``stages`` these are three
-pre-production stages ``eq0``, ``eq1`` and ``eq2`` and one production stage ``sim1`` these stages are performed automatically by ``TIES MD``
-when running with ``OpenMM`` but must be explicitly executed when using ``NAMD``. The exact submission script for a particular
+pre-production stages and one production stage. The preproduction stages are a minimization followed by an NVT equilibration
+and finishing with NPT equilibration. The production stage is NVT simulation, it is the production simulation which is
+analysed to calculate the results. These stages are performed automatically by ``TIES MD`` when running with
+``OpenMM`` but must be explicitly executed when using ``NAMD`` as shown above. The exact submission script for a particular
 HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
 solution to solve any issues we would suggest consulting user manuals of both HPC and MD engine, reading our example :ref:`HPC Submission
 scripts` or submitting an `issue <https://github.com/UCL-CCS/TIES_MD/issues>`_ on ``Github``.
 
 Analysis
 ---------
-
-.. note::
-    When using NAMD the version is specified in namd.cfg as ``namd_version = 2.14`` for example. This is critical to the result
-    as pre NAMD 2.12 different columns are used by NAMD to write the output potentials. Please take care the version is set correctly.
 
 The analysis of the files found in the output can be performed by ``TIES_analysis`` which is a submodule of ``TIES_MD``.
 ``TIES_MD`` will create the input needed to perform the analysis. Input configuration files for ``TIES_analysis`` will be filled
@@ -263,6 +257,7 @@ entry in that list is the calculated free energy change and the second entry is 
 that free energy change. So for example the ``results.dat`` output from the ethane to ethane transformation example
 would look something like::
 
+    #METHOD          SYSTEM     LIGAND
     {'OpenMM_FEP': {'ethane': {'zero_sum': [-0.023, 0.023]}},
       'OpenMM_TI': {'ethane': {'zero_sum': [0.003, 0.076]}}}
 

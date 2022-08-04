@@ -119,7 +119,7 @@ occasionally change. This file must be placed alongside the build directory. Her
 <span class="c1">#                                                               #</span>
 <span class="c1">#################################################################</span>
 
-<span class="c1">#Which molecular dynamics engine will be used, valid options are namd/openmm</span>
+<span class="c1">#Which molecular dynamics engine will be used, valid options are openmm/namd2.14/namd3</span>
 <span class="n">engine</span> <span class="o">=</span> <span class="n">openmm</span>
 
 <span class="c1">#Target temperature for the thermostat</span>
@@ -171,10 +171,6 @@ occasionally change. This file must be placed alongside the build directory. Her
 
 <span class="c1">#What input type is provided, only AMBER supported.</span>
 <span class="n">input_type</span> <span class="o">=</span> <span class="n">AMBER</span>
-
-<span class="c1">#NAMD specific options</span>
-<span class="c1">#What version of NAMD to use &lt;= 2.12 effects how analysis files are read &gt;=3 uses NAMD3 alpha.</span>
-<span class="n">version</span> <span class="o">=</span> <span class="mf">2.12</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">total_reps</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span></code> are options which can be used to achieve simple parallelism of the simulations.
@@ -191,7 +187,7 @@ energy functions of the system and for more information these settings please se
 <p>Note the option <code class="docutils literal notranslate"><span class="pre">constraint_column</span></code> which determines if the constraint indexes will be read from the temperature factor
 or occupancy column of the constraints PDB. The alchemical indexes are always be read from the temperature factor column
 in the main PDB <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code>. The <code class="docutils literal notranslate"><span class="pre">edge_length</span></code> option can be found in the <code class="docutils literal notranslate"><span class="pre">leap.log</span></code> file created during system
-preparation preformed by the users or TIES20. TIES20 will populate a TIES.cfg automatically with the correct box size.</p>
+preparation preformed by the users or <code class="docutils literal notranslate"><span class="pre">TIES20</span></code>. <code class="docutils literal notranslate"><span class="pre">TIES20</span></code> will populate a TIES.cfg automatically with the correct box size.</p>
 <p>Typically a constraint file may be used during preproduction of simulations involving proteins but possibly not a small
 drug like molecule in only solvent. It will be show later in the Binding Free Energy Calculations section when and
 why we use a constraints file.</p>
@@ -275,9 +271,9 @@ to <code class="docutils literal notranslate"><span class="pre">1</span></code>,
 <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> page for more information on this. For a <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> calculation if the submission script requested 6 CPU
 nodes each with 128 cores the run lines in the submission script might look like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $build/replica-confs
-for stage in {{0..3}}; do
+for stage in {0..3}; do
      for lambda in in 0.0 0.2 0.4 0.6 0.8 1.0; do
-         for i in {{0..0}}; do
+         for i in {0..0}; do
              srun -N 1 -n 128 namd2 --tclmain sim$stage.conf $lambda $i &amp;
              sleep 1
          done
@@ -286,20 +282,17 @@ for stage in {{0..3}}; do
  done
 </pre></div>
 </div>
-<p>Notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> example reference is made to a directory <code class="docutils literal notranslate"><span class="pre">$build/replica-confs`</span> <span class="pre">this</span> <span class="pre">is</span> <span class="pre">where</span> <span class="pre">the</span> <span class="pre">NAMD</span> <span class="pre">input</span> <span class="pre">scripts</span> <span class="pre">are</span> <span class="pre">writen</span>
-<span class="pre">during</span> <span class="pre">the</span> <span class="pre">``TIES_MD</span></code> setup stage. Also notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> examples there is a loop over the <code class="docutils literal notranslate"><span class="pre">stages</span></code> these are three
-pre-production stages <code class="docutils literal notranslate"><span class="pre">eq0</span></code>, <code class="docutils literal notranslate"><span class="pre">eq1</span></code> and <code class="docutils literal notranslate"><span class="pre">eq2</span></code> and one production stage <code class="docutils literal notranslate"><span class="pre">sim1</span></code> these stages are performed automatically by <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code>
-when running with <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> but must be explicitly executed when using <code class="docutils literal notranslate"><span class="pre">NAMD</span></code>. The exact submission script for a particular
+<p>Notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> example reference is made to a directory <code class="docutils literal notranslate"><span class="pre">$build/replica-confs</span></code> this is where the NAMD input scripts are writen
+during the <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> setup stage. Also notice in the <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> examples there is a loop over the <code class="docutils literal notranslate"><span class="pre">stages</span></code> these are three
+pre-production stages and one production stage. The preproduction stages are a minimization followed by an NVT equilibration
+and finishing with NPT equilibration. The production stage is NVT simulation, it is the production simulation which is
+analysed to calculate the results. These stages are performed automatically by <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> when running with
+<code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> but must be explicitly executed when using <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> as shown above. The exact submission script for a particular
 HPC and the settings with which each engine should be run to get good performance is a wide problem without a general
 solution to solve any issues we would suggest consulting user manuals of both HPC and MD engine, reading our example <a class="reference internal" href="HPC_submissions.html#hpc-submission-scripts"><span class="std std-ref">HPC Submission scripts</span></a> or submitting an <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/issues">issue</a> on <code class="docutils literal notranslate"><span class="pre">Github</span></code>.</p>
 </section>
 <section id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading"></a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>When using NAMD the version is specified in namd.cfg as <code class="docutils literal notranslate"><span class="pre">namd_version</span> <span class="pre">=</span> <span class="pre">2.14</span></code> for example. This is critical to the result
-as pre NAMD 2.12 different columns are used by NAMD to write the output potentials. Please take care the version is set correctly.</p>
-</div>
 <p>The analysis of the files found in the output can be performed by <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> which is a submodule of <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code>.
 <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> will create the input needed to perform the analysis. Input configuration files for <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> will be filled
 in with information such as the lambda schedule or which MD engine was used. If the directory structure
@@ -329,7 +322,8 @@ first by the methodology used, then the system name and then ligand name. Each v
 entry in that list is the calculated free energy change and the second entry is the standard deviation associated with
 that free energy change. So for example the <code class="docutils literal notranslate"><span class="pre">results.dat</span></code> output from the ethane to ethane transformation example
 would look something like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;OpenMM_FEP&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ethane&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;zero_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.023</span><span class="p">,</span> <span class="mf">0.023</span><span class="p">]}},</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#METHOD          SYSTEM     LIGAND</span>
+<span class="p">{</span><span class="s1">&#39;OpenMM_FEP&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ethane&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;zero_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.023</span><span class="p">,</span> <span class="mf">0.023</span><span class="p">]}},</span>
   <span class="s1">&#39;OpenMM_TI&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ethane&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;zero_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.076</span><span class="p">]}}}</span>
 </pre></div>
 </div>

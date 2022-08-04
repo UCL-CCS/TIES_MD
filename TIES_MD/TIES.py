@@ -356,6 +356,8 @@ class TIES(object):
         if 'namd' in self._engine:
             self.namd_version = float(self._engine.split('namd')[1])
             self._engine = 'namd'
+            if self.namd_version != 2.14 or self.namd_version != 3:
+                raise ValueError('Supported NAMD versions are: namd2.14/namd3')
             if self.input_type != 'AMBER':
                 raise ValueError('Only AMBER input supported in NAMD version of TIES MD')
 
@@ -610,10 +612,8 @@ class TIES(object):
         vdw_d = ','.join(str(x) for x in self.lam.lambda_sterics_disappear)
         ele_d = ','.join(str(x) for x in self.lam.lambda_electrostatics_disappear)
 
-        if self.engine == 'namd' and float(self.namd_version) < 3:
-            eng = 'NAMD2'
-        if self.engine == 'namd' and float(self.namd_version) >= 3:
-            eng = 'NAMD3'
+        if self.engine == 'namd':
+            eng = 'NAMD'
         if self.engine == 'openmm':
             eng = 'OpenMM'
 
@@ -623,7 +623,7 @@ temperature = {0}
 output_dir = ./analysis
 #Names of thermodynamic legs in simulation, corresponds to directory names in results.
 legs = {1}
-#Names of engines to make analysis for (NAMD2, NAMD3, OpenMM)
+#Names of engines to make analysis for (NAMD, OpenMM)
 engines = {2}
 #Directory where input data can be found, dir structure of results is fixed as standard TIES structure.
 data_root = {3}

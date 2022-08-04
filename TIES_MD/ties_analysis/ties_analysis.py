@@ -20,7 +20,7 @@ class Analysis():
         self.cfg = cfg
         # Process engines
         self.engines = []
-        if 'namd2' in cfg.engines_to_init or 'namd3' in cfg.engines_to_init:
+        if 'namd' in cfg.engines_to_init:
             for method in cfg.methods:
                 namd = NAMD(method.upper(), cfg.output_dir, cfg.windows_mask, cfg.distributions, cfg.rep_convg,
                             cfg.sampling_convg, cfg.vdw_a, cfg.vdw_d, cfg.ele_a, cfg.ele_d, cfg.namd_version)
@@ -39,7 +39,7 @@ class Analysis():
                 self.engines.append(numpy)
 
         if len(self.engines) == 0:
-            raise ValueError('No valid engine found. Select from namd2, namd3 or openmm')
+            raise ValueError('No valid engine found. Select from namd or openmm')
 
     def run(self):
         '''
