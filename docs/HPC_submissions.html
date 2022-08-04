@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Parallelization" href="parallelization.html" />
-    <link rel="prev" title="Binding Free Energy Tutorial" href="binding_free_energies.html" /> 
+    <link rel="next" title="Theory" href="theory.html" />
+    <link rel="prev" title="Parallelization" href="parallelization.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,14 +42,15 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HPC Submission scripts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#namd">NAMD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#openmm">OpenMM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#namd-3">NAMD 3</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/UCL-CCS/TIES_MD">🚀Github</a></li>
 </ul>
@@ -86,9 +87,9 @@
 <p>Here we provide some example submission scripts for various HPC systems. <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> will attempt to automatically write sensible submission
 scripts for <code class="docutils literal notranslate"><span class="pre">NAMD2</span></code> targeting <a class="reference external" href="https://www.archer2.ac.uk/">ARCHER 2</a> and for <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> targeting <a class="reference external" href="https://www.olcf.ornl.gov/summit/">Summit</a>.
 In general the user can make there own script for whichever HPC or cluster they prefer. To aid with writing general
-scripts <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> exposes 2 options <code class="docutils literal notranslate"><span class="pre">sub_header</span></code> and <code class="docutils literal notranslate"><span class="pre">sub_run_line</span></code>. The strings passed with these options will be
-injected into a genral template for a <code class="docutils literal notranslate"><span class="pre">NAMD2</span></code> or <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> submission. All generated submission scripts are written
-to the base <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> directory as sub.sh. An example of this is provided in here <a class="reference internal" href="binding_free_energies.html#running"><span class="std std-ref">Running</span></a>.</p>
+scripts <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> exposes 2 options in the <a class="reference internal" href="API.html#api"><span class="std std-ref">API</span></a> called <code class="docutils literal notranslate"><span class="pre">sub_header</span></code> and <code class="docutils literal notranslate"><span class="pre">sub_run_line</span></code>. The strings passed
+with these options will be injected into a general template for a <code class="docutils literal notranslate"><span class="pre">NAMD2</span></code> or <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> submission. All generated
+submission scripts are written to the base <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> directory as sub.sh. An example of this is provided in here <a class="reference internal" href="binding_free_energies.html#running"><span class="std std-ref">Running</span></a>.</p>
 <section id="namd">
 <h2>NAMD<a class="headerlink" href="#namd" title="Permalink to this heading"></a></h2>
 <p>Here is an example of a submission script for a large system (≈100k atoms) running on
@@ -169,12 +170,12 @@ export PATH=&quot;/gpfs/alpine/scratch/adw62/chm155/TIES_test/miniconda/bin:$PAT
 export ties_dir=&quot;/gpfs/alpine/scratch/adw62/chm155/TIES_test/TIES_MD/TIES_MD/examples/ethane/zero_sum/leg1&quot;
 module load cuda/10.1.168
 date
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=0,1 --node_id=&quot;0&quot; &gt; $ties_dir/0.out&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=1,2 --node_id=&quot;0&quot; &gt; $ties_dir/1.out&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=2,3 --node_id=&quot;0&quot; &gt; $ties_dir/2.out&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=3,4 --node_id=&quot;0&quot; &gt; $ties_dir/3.out&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=4,5 --node_id=&quot;0&quot; &gt; $ties_dir/4.out&amp;
-jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name=&#39;sys_solv&#39;  --windows_mask=5,6 --node_id=&quot;0&quot; &gt; $ties_dir/5.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=0,1 &gt; $ties_dir/0.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=1,2 &gt; $ties_dir/1.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=2,3 &gt; $ties_dir/2.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=3,4 &gt; $ties_dir/3.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=4,5 &gt; $ties_dir/4.out&amp;
+jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=5,6 &gt; $ties_dir/5.out&amp;
 wait
 </pre></div>
 </div>
@@ -233,7 +234,7 @@ script would allow us to scale up on ThetaGPU:</p>
     <span class="c1">#############</span>
 
     <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-    <span class="c1">#give com and lig simulations differnt wall times if needed</span>
+    <span class="c1">#give com and lig simulations different wall times if needed</span>
     <span class="k">if</span> <span class="n">leg</span> <span class="o">==</span> <span class="s1">&#39;com&#39;</span><span class="p">:</span>
         <span class="n">wall_time</span> <span class="o">=</span> <span class="mi">100</span>
     <span class="k">else</span><span class="p">:</span>
@@ -264,7 +265,7 @@ script would allow us to scale up on ThetaGPU:</p>
             <span class="n">node</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="c1">#iterate over alchemical windows</span>
             <span class="k">for</span> <span class="n">lam</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.40</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.60</span><span class="p">,</span> <span class="mf">0.70</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">]:</span>
-                <span class="c1">#iterate over replica siulations</span>
+                <span class="c1">#iterate over replica simulations</span>
                 <span class="k">for</span> <span class="n">rep</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
                     <span class="c1">#write the run line</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;$mpirun -host $node</span><span class="si">{}</span><span class="s1"> --cpu-set </span><span class="si">{}</span><span class="s1"> --bind-to core -np 1 $namd3 +devices </span><span class="si">{}</span><span class="s1"> --tclmain </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&amp;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">count</span><span class="o">%</span><span class="mi">8</span><span class="p">,</span> <span class="n">count</span><span class="o">%</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.conf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stage</span><span class="p">),</span> <span class="n">lam</span><span class="p">,</span> <span class="n">rep</span><span class="p">))</span>
@@ -283,8 +284,8 @@ script would allow us to scale up on ThetaGPU:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="binding_free_energies.html" class="btn btn-neutral float-left" title="Binding Free Energy Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="parallelization.html" class="btn btn-neutral float-right" title="Parallelization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="parallelization.html" class="btn btn-neutral float-left" title="Parallelization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="theory.html" class="btn btn-neutral float-right" title="Theory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

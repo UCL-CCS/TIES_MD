@@ -61,9 +61,6 @@ occasionally change. This file must be placed alongside the build directory. Her
     #How many total replicas of each window are run (we recommend at least 5).
     total_reps = 5
 
-    #How many replicas should this evocation of TIES_MD run, used for parallelisation
-    reps_per_exec = 5
-
     #Where in lambda schedule (0->1) should the electrostatic potentials begin, stop appearing.
     elec_edges = 0.5, 1.0
 
@@ -93,10 +90,6 @@ occasionally change. This file must be placed alongside the build directory. Her
     #What input type is provided, only AMBER supported.
     input_type = AMBER
 
-``total_reps`` and ``reps_per_exec`` are options which can be used to achieve simple parallelism of the simulations.
-For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
-``total_reps = 5`` and ``reps_per_exec = 1``. See the :ref:`Parallelization` section for more details of how to
-achieve this.
 
 The following image shows ``TIES_MD`` applied to one alchemical transformation.
 
@@ -140,22 +133,19 @@ values are as follows::
     `setup` will prep the output directories and `class` will halt the program after the construction of the TIES class,
      this can be used in testing or advanced analysis.
 
-    # Below are OpenMM specific options, these are silently ignored for NAMD runs.
-
-    [--devices=0]
-    A comma separated list of integers which tells TIES OpenMM which GPUs to run on. If multiple GPUs
-    are specified then TIES OpenMM will parallelize requested replicas over the available GPUs.
-
-    [--node_id=0]
-    An int which will be used to generate the names of output files. Should be used if many independent replicas of the
-    same simulation are run on different nodes to ensure output is writen to unique location.
+    [--replica_mask=None]
+    Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
+    run. By default all windows will be run.
 
     [--windows_mask=None]
     Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
     run. By default all windows will be run.
 
-    [--periodic=1]
-    A value of 1 sets the simulation box as periodic a value of 0 sets the simulation box as non-periodic.
+    # Below are OpenMM specific options, these are silently ignored for NAMD runs.
+
+    [--devices=0]
+    A comma separated list of integers which tells TIES OpenMM which GPUs to run on. If multiple GPUs
+    are specified then TIES OpenMM will parallelize requested replicas over the available GPUs.
 
 
 Simulation Preparation
@@ -206,7 +196,7 @@ nodes each with 128 cores the run lines in the submission script might look like
    cd $build/replica-confs
    for stage in {0..3}; do
         for lambda in in 0.0 0.2 0.4 0.6 0.8 1.0; do
-            for i in {0..0}; do
+            for i in 0; do
                 srun -N 1 -n 128 namd2 --tclmain run$stage.conf $lambda $i &
                 sleep 1
             done

@@ -104,7 +104,6 @@ follows::
         md = TIES.TIES(cwd=ties_dir, exp_name='complex', **args_dict)
 
         #change some settings in TIES.cfg
-        md.reps_per_exec = 1
         md.total_reps = 6
 
         #inspect all the options we can configure and change
@@ -129,7 +128,7 @@ follows::
         #must make sure the TIES.cfg on disk is updated with new settings.
         md.update_cfg()
 
-This changes the TIES.cfg options ``reps_per_exec`` to 1 and ``total_reps`` to 6. To see all configurable options the user
+This changes the TIES.cfg options ``total_reps`` to 6. To see all configurable options the user
 can run ``md.get_options()`` as shown above. To generate a general submission script we are modifying the
 ``sub_header`` and ``sub_run_line`` internal options and these set what ``TIES_MD`` writes into the submission script. The
 settings above yield the following script::
@@ -148,7 +147,7 @@ settings above yield the following script::
     cd $ties_dir
 
     for lambda in 0 1 2 3 4 5 6 7 8 9 10 11 12; do
-      for i in {0..5}; do
+      for i in 0 1 2 3 4; do
             jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i > $ties_dir/$lambda$i.out&
         done
         done

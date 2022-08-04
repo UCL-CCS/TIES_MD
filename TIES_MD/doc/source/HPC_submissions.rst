@@ -91,12 +91,12 @@ Here we provide an example of ``TIES MD`` running with ``OpenMM`` on `Summit <ht
     export ties_dir="/gpfs/alpine/scratch/adw62/chm155/TIES_test/TIES_MD/TIES_MD/examples/ethane/zero_sum/leg1"
     module load cuda/10.1.168
     date
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=0,1 --node_id="0" > $ties_dir/0.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=1,2 --node_id="0" > $ties_dir/1.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=2,3 --node_id="0" > $ties_dir/2.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=3,4 --node_id="0" > $ties_dir/3.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=4,5 --node_id="0" > $ties_dir/4.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=5,6 --node_id="0" > $ties_dir/5.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=0,1 > $ties_dir/0.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=1,2 > $ties_dir/1.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=2,3 > $ties_dir/2.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=3,4 > $ties_dir/3.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=4,5 > $ties_dir/4.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=5,6 > $ties_dir/5.out&
     wait
 
 NAMD 3
