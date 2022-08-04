@@ -207,7 +207,7 @@ nodes each with 128 cores the run lines in the submission script might look like
    for stage in {0..3}; do
         for lambda in in 0.0 0.2 0.4 0.6 0.8 1.0; do
             for i in {0..0}; do
-                srun -N 1 -n 128 namd2 --tclmain sim$stage.conf $lambda $i &
+                srun -N 1 -n 128 namd2 --tclmain run$stage.conf $lambda $i &
                 sleep 1
             done
         done

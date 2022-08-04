@@ -88,7 +88,7 @@ If in TIES.cfg ``total_reps==reps_per_exec`` the submission script that ``TIES_M
 
     for stage in {0..3}; do
     for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
-            srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda&
+            srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain run$stage-replicas.conf $lambda&
             sleep 1
     done
     wait
@@ -99,7 +99,7 @@ Alternatively if ``total_reps=!reps_per_exec`` with ``reps_per_exec=1`` the run 
     for stage in {0..3}; do
     for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
     for i in {{0..4}}; do
-        srun -N $nodes_per_namd -n $cpus_per_namd namd2 --tclmain sim$stage.conf $lambda $i &
+        srun -N $nodes_per_namd -n $cpus_per_namd namd2 --tclmain run$stage.conf $lambda $i &
         sleep 1
     done
     done

@@ -738,13 +738,13 @@ minimize 2000
                                                              temp=temp, ele_start=self.elec_edges[0],
                                                              ster_end=self.ster_edges[1], header=header, run=run,
                                                              root=self.cwd)
-        out_name = 'sim0.conf'
+        out_name = 'run0.conf'
         open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
         if not self.split_run:
             # populate and write replica script which controls replica submissions
             min_namd_uninitialised = pkg_resources.open_text(namd_sub, 'min-replicas.conf').read()
             min_namd_initialised = min_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
-            out_name = 'sim0-replicas.conf'
+            out_name = 'run0-replicas.conf'
             open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(min_namd_initialised)
 
     def write_namd_eq(self):
@@ -868,16 +868,16 @@ conskcol  {}
                                                                pressure=pressure, run=run, temp=temp,
                                                                ele_start=self.elec_edges[0], ster_end=self.ster_edges[1],
                                                                header=header, res_freq=res_freq, root=self.cwd)
-            out_name = "sim{}.conf".format(i)
+            out_name = "run{}.conf".format(i)
             open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(eq_namd_initialised)
 
             if not self.split_run:
                 #read and write eq replica to handle replica simulations
                 eq_namd_uninitialised = pkg_resources.open_text(namd_sub, 'eq-replicas.conf').read()
                 eq_namd_initialised = eq_namd_uninitialised.format(reps=self.total_reps,
-                                                                   prev=prev_output, current='eq{}'.format(i),
+                                                                   prev=prev_output, current=i,
                                                                    root=self.cwd)
-                open(os.path.join(self.cwd, './replica-confs', 'sim{}-replicas.conf'.format(i)), 'w').write(eq_namd_initialised)
+                open(os.path.join(self.cwd, './replica-confs', 'run{}-replicas.conf'.format(i)), 'w').write(eq_namd_initialised)
 
     def write_namd_prod(self):
         '''
@@ -929,14 +929,14 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         sim_namd_initialised = sim_namd_uninitialised.format(structure_name=self.exp_name, temp=temp, pressure=pressure,
                                                              ele_start=self.elec_edges[0], ster_end=self.ster_edges[1],
                                                              header=header, steps=steps, root=self.cwd)
-        out_name = "sim3.conf"
+        out_name = "run3.conf"
         open(os.path.join(self.cwd, './replica-confs', out_name), 'w').write(sim_namd_initialised)
 
         # read and write sim replica to handle replica simulations, only if we want to use +replicas option
         if not self.split_run:
             sim_namd_uninitialised = pkg_resources.open_text(namd_sub, 'sim1-replicas.conf').read()
             sim_namd_initialised = sim_namd_uninitialised.format(reps=self.total_reps, root=self.cwd)
-            open(os.path.join(self.cwd, './replica-confs', 'sim1-replicas.conf'), 'w').write(sim_namd_initialised)
+            open(os.path.join(self.cwd, './replica-confs', 'run3-replicas.conf'), 'w').write(sim_namd_initialised)
 
     def write_namd_submissions(self):
         '''

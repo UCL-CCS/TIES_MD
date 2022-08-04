@@ -43,7 +43,7 @@ Here is an example of a submission script for a large system (≈100k atoms) run
 
     for stage in {0..3}; do
     for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
-            srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda&
+            srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain run$stage-replicas.conf $lambda&
             sleep 1
     done
     wait
@@ -116,19 +116,19 @@ Here we provide an example of ``TIES MD`` running with ``NAMD3`` on `ThetaGPU <h
 
     cd /lus/theta-fs0/projects/CompBioAffin/awade/many_reps/mcl1/l18-l39/com/replica-confs
     for stage in {0..3}; do
-      $mpirun -host $node1 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain sim$stage.conf 0.00 0&
-      $mpirun -host $node1 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain sim$stage.conf 0.05 0&
-      $mpirun -host $node1 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain sim$stage.conf 0.10 0&
-      $mpirun -host $node1 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain sim$stage.conf 0.20 0&
-      $mpirun -host $node1 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain sim$stage.conf 0.30 0&
-      $mpirun -host $node1 --cpu-set 5 --bind-to core -np 1 $namd3 +devices 5 --tclmain sim$stage.conf 0.40 0&
-      $mpirun -host $node1 --cpu-set 6 --bind-to core -np 1 $namd3 +devices 6 --tclmain sim$stage.conf 0.50 0&
-      $mpirun -host $node1 --cpu-set 7 --bind-to core -np 1 $namd3 +devices 7 --tclmain sim$stage.conf 0.60 0&
-      $mpirun -host $node2 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain sim$stage.conf 0.70 0&
-      $mpirun -host $node2 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain sim$stage.conf 0.80 0&
-      $mpirun -host $node2 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain sim$stage.conf 0.90 0&
-      $mpirun -host $node2 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain sim$stage.conf 0.95 0&
-      $mpirun -host $node2 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain sim$stage.conf 1.00 0&
+      $mpirun -host $node1 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain run$stage.conf 0.00 0&
+      $mpirun -host $node1 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain run$stage.conf 0.05 0&
+      $mpirun -host $node1 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain run$stage.conf 0.10 0&
+      $mpirun -host $node1 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain run$stage.conf 0.20 0&
+      $mpirun -host $node1 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain run$stage.conf 0.30 0&
+      $mpirun -host $node1 --cpu-set 5 --bind-to core -np 1 $namd3 +devices 5 --tclmain run$stage.conf 0.40 0&
+      $mpirun -host $node1 --cpu-set 6 --bind-to core -np 1 $namd3 +devices 6 --tclmain run$stage.conf 0.50 0&
+      $mpirun -host $node1 --cpu-set 7 --bind-to core -np 1 $namd3 +devices 7 --tclmain run$stage.conf 0.60 0&
+      $mpirun -host $node2 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain run$stage.conf 0.70 0&
+      $mpirun -host $node2 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain run$stage.conf 0.80 0&
+      $mpirun -host $node2 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain run$stage.conf 0.90 0&
+      $mpirun -host $node2 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain run$stage.conf 0.95 0&
+      $mpirun -host $node2 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain run$stage.conf 1.00 0&
     wait
     done
 
@@ -181,7 +181,7 @@ script would allow us to scale up on ThetaGPU::
             f.write('cd {}\n'.format(os.path.join(cwd, 'replica-confs')))
 
             #iterate over minimization, NVT eq, NPT eq and production
-            for stage in ['sim0', 'sim1', 'sim2', 'sim3']:
+            for stage in ['run0', 'run1', 'run2', 'run3']:
                 count = 0
                 node = 1
                 #iterate over alchemical windows

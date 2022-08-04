@@ -122,7 +122,7 @@ cd $ties_dir/replica-confs
 
 for stage in {0..3}; do
 for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
-        srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain sim$stage-replicas.conf $lambda&amp;
+        srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain run$stage-replicas.conf $lambda&amp;
         sleep 1
 done
 wait
@@ -194,19 +194,19 @@ node2=$(sed &quot;2q;d&quot; $COBALT_NODEFILE)
 
 cd /lus/theta-fs0/projects/CompBioAffin/awade/many_reps/mcl1/l18-l39/com/replica-confs
 for stage in {0..3}; do
-  $mpirun -host $node1 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain sim$stage.conf 0.00 0&amp;
-  $mpirun -host $node1 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain sim$stage.conf 0.05 0&amp;
-  $mpirun -host $node1 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain sim$stage.conf 0.10 0&amp;
-  $mpirun -host $node1 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain sim$stage.conf 0.20 0&amp;
-  $mpirun -host $node1 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain sim$stage.conf 0.30 0&amp;
-  $mpirun -host $node1 --cpu-set 5 --bind-to core -np 1 $namd3 +devices 5 --tclmain sim$stage.conf 0.40 0&amp;
-  $mpirun -host $node1 --cpu-set 6 --bind-to core -np 1 $namd3 +devices 6 --tclmain sim$stage.conf 0.50 0&amp;
-  $mpirun -host $node1 --cpu-set 7 --bind-to core -np 1 $namd3 +devices 7 --tclmain sim$stage.conf 0.60 0&amp;
-  $mpirun -host $node2 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain sim$stage.conf 0.70 0&amp;
-  $mpirun -host $node2 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain sim$stage.conf 0.80 0&amp;
-  $mpirun -host $node2 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain sim$stage.conf 0.90 0&amp;
-  $mpirun -host $node2 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain sim$stage.conf 0.95 0&amp;
-  $mpirun -host $node2 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain sim$stage.conf 1.00 0&amp;
+  $mpirun -host $node1 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain run$stage.conf 0.00 0&amp;
+  $mpirun -host $node1 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain run$stage.conf 0.05 0&amp;
+  $mpirun -host $node1 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain run$stage.conf 0.10 0&amp;
+  $mpirun -host $node1 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain run$stage.conf 0.20 0&amp;
+  $mpirun -host $node1 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain run$stage.conf 0.30 0&amp;
+  $mpirun -host $node1 --cpu-set 5 --bind-to core -np 1 $namd3 +devices 5 --tclmain run$stage.conf 0.40 0&amp;
+  $mpirun -host $node1 --cpu-set 6 --bind-to core -np 1 $namd3 +devices 6 --tclmain run$stage.conf 0.50 0&amp;
+  $mpirun -host $node1 --cpu-set 7 --bind-to core -np 1 $namd3 +devices 7 --tclmain run$stage.conf 0.60 0&amp;
+  $mpirun -host $node2 --cpu-set 0 --bind-to core -np 1 $namd3 +devices 0 --tclmain run$stage.conf 0.70 0&amp;
+  $mpirun -host $node2 --cpu-set 1 --bind-to core -np 1 $namd3 +devices 1 --tclmain run$stage.conf 0.80 0&amp;
+  $mpirun -host $node2 --cpu-set 2 --bind-to core -np 1 $namd3 +devices 2 --tclmain run$stage.conf 0.90 0&amp;
+  $mpirun -host $node2 --cpu-set 3 --bind-to core -np 1 $namd3 +devices 3 --tclmain run$stage.conf 0.95 0&amp;
+  $mpirun -host $node2 --cpu-set 4 --bind-to core -np 1 $namd3 +devices 4 --tclmain run$stage.conf 1.00 0&amp;
 wait
 done
 </pre></div>
@@ -259,7 +259,7 @@ script would allow us to scale up on ThetaGPU:</p>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;cd </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s1">&#39;replica-confs&#39;</span><span class="p">)))</span>
 
         <span class="c1">#iterate over minimization, NVT eq, NPT eq and production</span>
-        <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;sim0&#39;</span><span class="p">,</span> <span class="s1">&#39;sim1&#39;</span><span class="p">,</span> <span class="s1">&#39;sim2&#39;</span><span class="p">,</span> <span class="s1">&#39;sim3&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;run0&#39;</span><span class="p">,</span> <span class="s1">&#39;run1&#39;</span><span class="p">,</span> <span class="s1">&#39;run2&#39;</span><span class="p">,</span> <span class="s1">&#39;run3&#39;</span><span class="p">]:</span>
             <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">node</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="c1">#iterate over alchemical windows</span>
