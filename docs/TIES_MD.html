@@ -43,8 +43,8 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/UCL-CCS/TIES_MD">🚀Github</a></li>
 </ul>
@@ -114,6 +114,10 @@
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.namd_sub_split.html#module-TIES_MD.eng_scripts.namd_sub_split">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.eng_scripts.openmm_sub.html">TIES_MD.eng_scripts.openmm_sub package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.openmm_sub.html#module-TIES_MD.eng_scripts.openmm_sub">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="TIES_MD.eng_scripts.openmm_sub_split.html">TIES_MD.eng_scripts.openmm_sub_split package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.openmm_sub_split.html#module-TIES_MD.eng_scripts.openmm_sub_split">Module contents</a></li>
 </ul>
@@ -170,8 +174,8 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cwd</strong> – str, for current working directory</p></li>
-<li><p><strong>run_type</strong> – str, flag to say if we should run dynamics or not</p></li>
 <li><p><strong>exp_name</strong> – str, for the names of experiment i.e. complex -&gt; complex.pdb/complex.prmtop</p></li>
+<li><p><strong>run_type</strong> – str, flag to say if we should run dynamics or not</p></li>
 <li><p><strong>devices</strong> – list, list of ints for which cuda devices to use</p></li>
 <li><p><strong>node_id</strong> – float, id denoting what replica of this simulation this execution of TIES_MD should run</p></li>
 <li><p><strong>windows_mask</strong> – list containing ints for start and end range of windows to be run</p></li>
@@ -228,17 +232,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="TIES_MD.TIES.TIES.exp_name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exp_name</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.exp_name" title="Permalink to this definition"></a></dt>
-<dd><p>What is the name of the experiment, this is the prefix expected on input files e.g. experiment_name.pdb</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>string for the experiment name.</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.get_options">
 <span class="sig-name descname"><span class="pre">get_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.get_options" title="Permalink to this definition"></a></dt>
@@ -257,17 +250,6 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list of floats for lambda schedule</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="TIES_MD.TIES.TIES.reps_per_exec">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reps_per_exec</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.reps_per_exec" title="Permalink to this definition"></a></dt>
-<dd><p>How many replicas will each run of the program execute.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>int for replicas per run.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -316,21 +298,10 @@
 </dl>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="TIES_MD.TIES.TIES.total_reps">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_reps</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.total_reps" title="Permalink to this definition"></a></dt>
-<dd><p>What is the total number of replicas we expect to run</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>int for total number of replicas.</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.update_cfg">
 <span class="sig-name descname"><span class="pre">update_cfg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.update_cfg" title="Permalink to this definition"></a></dt>
-<dd><p>Write a TIES congig file this should be called after api changes are made.</p>
+<dd><p>Write a TIES config file this should be called after api changes are made.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>None</p>
@@ -436,7 +407,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="TIES_MD.TIES.get_header_and_run">
-<span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">get_header_and_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namd_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_run</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_lambdas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.get_header_and_run" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">get_header_and_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namd_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_run</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.get_header_and_run" title="Permalink to this definition"></a></dt>
 <dd><p>Function to prep submission file. Number of windows and replicas are inspected to make best guess at
 number of nodes and CPUS/GPUS</p>
 <dl class="field-list simple">
@@ -445,9 +416,10 @@ number of nodes and CPUS/GPUS</p>
 <li><p><strong>engine</strong> – str, What engine are we using [namd, openmm]</p></li>
 <li><p><strong>namd_version</strong> – float, What version of namd are we using if any</p></li>
 <li><p><strong>split_run</strong> – bool, Should each run line run all or one replica</p></li>
-<li><p><strong>global_lambdas</strong> – list of floats for value of global lambda in eah window</p></li>
+<li><p><strong>num_windows</strong> – int for number of windows running</p></li>
 <li><p><strong>reps</strong> – int, number of replica simulations</p></li>
 <li><p><strong>exp_name</strong> – str, name of the experiment e.g. complex</p></li>
+<li><p><strong>devices</strong> – list of ints for which gpus to target</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -466,6 +438,14 @@ number of nodes and CPUS/GPUS</p>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIES_MD.TIES.read_config">
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">read_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.read_config" title="Permalink to this definition"></a></dt>
+<dd><p>Function to read config file from disk
+:param config_file: str pointing to TIES.cfg file
+:return: dict, containing all config file args</p>
 </dd></dl>
 
 </section>
@@ -876,20 +856,6 @@ to disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>argv</strong> – dict, containing command line arguments</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TIES_MD.cli.read_config">
-<span class="sig-prename descclassname"><span class="pre">TIES_MD.cli.</span></span><span class="sig-name descname"><span class="pre">read_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.cli.read_config" title="Permalink to this definition"></a></dt>
-<dd><p>Function to read config file from disk</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config_file</strong> – str pointing to TIES.cfg file</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict, containing all config file args</p>
 </dd>
 </dl>
 </dd></dl>

@@ -10,6 +10,7 @@ Subpackages
    TIES_MD.eng_scripts.cfg_scripts
    TIES_MD.eng_scripts.namd_sub
    TIES_MD.eng_scripts.namd_sub_split
+   TIES_MD.eng_scripts.openmm_sub
    TIES_MD.eng_scripts.openmm_sub_split
 
 Module contents

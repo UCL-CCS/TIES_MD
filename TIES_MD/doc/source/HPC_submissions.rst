@@ -189,7 +189,7 @@ script would allow us to scale up on ThetaGPU::
                     #iterate over replica simulations
                     for rep in [0, 1, 2, 3, 4]:
                         #write the run line
-                        f.write('$mpirun -host $node{} --cpu-set {} --bind-to core -np 1 $namd3 +devices {} --tclmain {} {} {}&\n'.format(node, count%8, count%8, '{}.conf'.format(stage), lam, rep))
+                        f.write('$mpirun -host $node{} --cpu-set {} --bind-to core -np 1 $namd3 +devices {} --tclmain {}.conf {:.2f} {}&\n'.format(node, count%8, count%8, stage, lam, rep))
                         # count the number of gpus move to next node when gpus all filled
                         count += 1
                         if count%8 == 0:

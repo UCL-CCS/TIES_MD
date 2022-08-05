@@ -18,7 +18,7 @@ __copyright__ = """
 
 __license__ = "LGPL"
 
-from .TIES import TIES
+from .TIES import TIES, read_config
 
 from docopt import docopt
 import os
@@ -31,7 +31,7 @@ usage = """
 TIES_MD
 Command line input should be used as follows...
 Usage:
-TIES_MD [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--periodic=BOOL] [--node_id=INT] [--windows_mask=LIST] [--exp_name=STR]...
+TIES_MD [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--node_id=INT] [--windows_mask=LIST] [--exp_name=STR]...
 """
 
 def main(argv=None):
@@ -106,35 +106,8 @@ def main(argv=None):
     else:
         mask = None
 
-    if args['--periodic']:
-        if not_openmm:
-            raise ValueError(not_openmm_msg.format('--periodic'))
-        periodic = bool(int(args['--periodic']))
-    else:
-        periodic = True
-        print(msg.format('spatial periodicity', periodic))
+    # removed this as an option there is no need to expose it for now
+    periodic=True
 
     TIES(input_folder, exp_name, run_type, devices, node_id, mask, periodic, **args_dict)
 
-def read_config(config_file):
-    '''
-    Function to read config file from disk
-
-    :param config_file: str pointing to TIES.cfg file
-
-    :return: dict, containing all config file args
-    '''
-
-    args_dict = {}
-    with open(config_file) as file:
-        for line in file:
-            if line[0] != '#' and line[0] != ' ' and line[0] != '\n':
-                data = line.rstrip('\n').split('=')
-                if len(data) > 2:
-                    raise ValueError('Failed to parse line: {}'.format(line))
-                # Remove spaces
-                data = [s.replace(" ", "") for s in data]
-                #remove tabs
-                data = [s.replace("\t", "") for s in data]
-                args_dict[data[0]] = data[1]
-    return args_dict

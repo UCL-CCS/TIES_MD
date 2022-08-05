@@ -40,8 +40,8 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/UCL-CCS/TIES_MD">🚀Github</a></li>
 </ul>
@@ -181,13 +181,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="TIES_MD.html#TIES_MD.TIES.TIES.elec_edges">elec_edges (TIES_MD.TIES.TIES property)</a>
 </li>
-      <li><a href="TIES_MD.html#TIES_MD.TIES.TIES.engine">engine (TIES_MD.TIES.TIES property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="TIES_MD.html#TIES_MD.alch.equilibriation">equilibriation() (in module TIES_MD.alch)</a>
+      <li><a href="TIES_MD.html#TIES_MD.TIES.TIES.engine">engine (TIES_MD.TIES.TIES property)</a>
 </li>
-      <li><a href="TIES_MD.html#TIES_MD.TIES.TIES.exp_name">exp_name (TIES_MD.TIES.TIES property)</a>
+      <li><a href="TIES_MD.html#TIES_MD.alch.equilibriation">equilibriation() (in module TIES_MD.alch)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -321,6 +319,8 @@
 </li>
         <li><a href="TIES_MD.eng_scripts.namd_sub_split.html#module-TIES_MD.eng_scripts.namd_sub_split">TIES_MD.eng_scripts.namd_sub_split</a>
 </li>
+        <li><a href="TIES_MD.eng_scripts.openmm_sub.html#module-TIES_MD.eng_scripts.openmm_sub">TIES_MD.eng_scripts.openmm_sub</a>
+</li>
         <li><a href="TIES_MD.eng_scripts.openmm_sub_split.html#module-TIES_MD.eng_scripts.openmm_sub_split">TIES_MD.eng_scripts.openmm_sub_split</a>
 </li>
         <li><a href="TIES_MD.html#module-TIES_MD.lambdas">TIES_MD.lambdas</a>
@@ -398,7 +398,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.namd.read_alch_file">read_alch_file() (in module TIES_MD.ties_analysis.engines.namd)</a>
 </li>
-      <li><a href="TIES_MD.html#TIES_MD.cli.read_config">read_config() (in module TIES_MD.cli)</a>
+      <li><a href="TIES_MD.html#TIES_MD.TIES.read_config">read_config() (in module TIES_MD.TIES)</a>
 
       <ul>
         <li><a href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.config.read_config">(in module TIES_MD.ties_analysis.config)</a>
@@ -411,8 +411,6 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.replica_analysis">replica_analysis() (TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis method)</a>
-</li>
-      <li><a href="TIES_MD.html#TIES_MD.TIES.TIES.reps_per_exec">reps_per_exec (TIES_MD.TIES.TIES property)</a>
 </li>
       <li><a href="TIES_MD.html#TIES_MD.TIES.TIES.run">run() (TIES_MD.TIES.TIES method)</a>
 
@@ -516,6 +514,13 @@
 </li>
       </ul></li>
       <li>
+    TIES_MD.eng_scripts.openmm_sub
+
+      <ul>
+        <li><a href="TIES_MD.eng_scripts.openmm_sub.html#module-TIES_MD.eng_scripts.openmm_sub">module</a>
+</li>
+      </ul></li>
+      <li>
     TIES_MD.eng_scripts.openmm_sub_split
 
       <ul>
@@ -529,6 +534,8 @@
         <li><a href="TIES_MD.html#module-TIES_MD.lambdas">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     TIES_MD.openmmtools
 
@@ -536,8 +543,6 @@
         <li><a href="TIES_MD.openmmtools.html#module-TIES_MD.openmmtools">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     TIES_MD.openmmtools.alchemy
 
@@ -615,8 +620,6 @@
         <li><a href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis.ties_analysis">module</a>
 </li>
       </ul></li>
-      <li><a href="TIES_MD.html#TIES_MD.TIES.TIES.total_reps">total_reps (TIES_MD.TIES.TIES property)</a>
-</li>
   </ul></td>
 </tr></table>
 
