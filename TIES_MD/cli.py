@@ -31,7 +31,7 @@ usage = """
 TIES_MD
 Command line input should be used as follows...
 Usage:
-TIES_MD [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--replica_mask=INT] [--windows_mask=INT] [--exp_name=STR]...
+TIES_MD [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--periodic=BOOL] [--node_id=INT] [--windows_mask=LIST] [--exp_name=STR]...
 """
 
 def main(argv=None):
@@ -69,20 +69,6 @@ def main(argv=None):
         exp_name = 'complex'
         print(msg.format('Experiment name', exp_name))
 
-    if args['--replica_mask']:
-        replica_mask = args['--replica_mask']
-        replica_mask = replica_mask.split(',')
-        replica_mask = [int(x) for x in replica_mask]
-    else:
-        replica_mask = None
-
-    if args['--windows_mask']:
-        window_masks = args['--windows_mask']
-        window_masks = window_masks.split(',')
-        window_masks = [int(x) for x in window_masks]
-    else:
-        window_masks = None
-
     # Read config file
     args_dict = read_config(config_file)
 
@@ -102,10 +88,33 @@ def main(argv=None):
     else:
         devices = None
 
-    #removed this as an option there is no need to expose it for now
-    periodic = True
+    if args['--node_id']:
+        if not_openmm:
+            raise ValueError(not_openmm_msg.format('--node_id'))
+        node_id = args['--node_id']
+        node_id = int(node_id)
+    else:
+        node_id = None
+        print(msg.format('node id string', 'None'))
 
-    TIES(input_folder, exp_name, run_type, devices, replica_mask, window_masks, **args_dict)
+    if args['--windows_mask']:
+        if not_openmm:
+            raise ValueError(not_openmm_msg.format('--windows_mask'))
+        mask = args['--windows_mask']
+        mask = mask.split(',')
+        mask = [int(x) for x in mask]
+    else:
+        mask = None
+
+    if args['--periodic']:
+        if not_openmm:
+            raise ValueError(not_openmm_msg.format('--periodic'))
+        periodic = bool(int(args['--periodic']))
+    else:
+        periodic = True
+        print(msg.format('spatial periodicity', periodic))
+
+    TIES(input_folder, exp_name, run_type, devices, node_id, mask, periodic, **args_dict)
 
 def read_config(config_file):
     '''

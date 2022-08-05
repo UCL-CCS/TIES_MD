@@ -8,7 +8,7 @@ cd $ties_dir/replica-confs
 # Looping over minimization, equilibration and production stages
 for stage in {{0..3}}; do
 for lambda in {lambs}; do
-for i in {reps}; do
+ for i in {{0..{reps}}}; do
         {run_line}
         sleep 1
 done

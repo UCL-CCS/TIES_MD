@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API" href="API.html" />
+    <link rel="next" title="Binding Free Energy Tutorial" href="binding_free_energies.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
@@ -50,10 +50,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="API.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/UCL-CCS/TIES_MD">🚀Github</a></li>
 </ul>
@@ -141,6 +140,9 @@ occasionally change. This file must be placed alongside the build directory. Her
 <span class="c1">#How many total replicas of each window are run (we recommend at least 5).</span>
 <span class="n">total_reps</span> <span class="o">=</span> <span class="mi">5</span>
 
+<span class="c1">#How many replicas should this evocation of TIES_MD run, used for parallelisation</span>
+<span class="n">reps_per_exec</span> <span class="o">=</span> <span class="mi">5</span>
+
 <span class="c1">#Where in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.</span>
 <span class="n">elec_edges</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span>
 
@@ -171,6 +173,10 @@ occasionally change. This file must be placed alongside the build directory. Her
 <span class="n">input_type</span> <span class="o">=</span> <span class="n">AMBER</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">total_reps</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span></code> are options which can be used to achieve simple parallelism of the simulations.
+For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
+<code class="docutils literal notranslate"><span class="pre">total_reps</span> <span class="pre">=</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span> <span class="pre">=</span> <span class="pre">1</span></code>. See the <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> section for more details of how to
+achieve this.</p>
 <p>The following image shows <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> applied to one alchemical transformation.</p>
 <a class="reference internal image-reference" href="_images/one_leg.png"><img alt="Alternative text" class="align-center" src="_images/one_leg.png" style="width: 600px;" /></a>
 <p>The setting <code class="docutils literal notranslate"><span class="pre">global_lambdas</span></code> defines the values the alchemical parameter <code class="docutils literal notranslate"><span class="pre">λ</span></code> will take in each alchemical
@@ -204,19 +210,22 @@ A string either `run`, `setup` or `class`. `run` will tell TIES OpenMM to execut
 `setup` will prep the output directories and `class` will halt the program after the construction of the TIES class,
  this can be used in testing or advanced analysis.
 
-[--replica_mask=None]
-Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
-run. By default all windows will be run.
-
-[--windows_mask=None]
-Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
-run. By default all windows will be run.
-
 # Below are OpenMM specific options, these are silently ignored for NAMD runs.
 
 [--devices=0]
 A comma separated list of integers which tells TIES OpenMM which GPUs to run on. If multiple GPUs
 are specified then TIES OpenMM will parallelize requested replicas over the available GPUs.
+
+[--node_id=0]
+An int which will be used to generate the names of output files. Should be used if many independent replicas of the
+same simulation are run on different nodes to ensure output is writen to unique location.
+
+[--windows_mask=None]
+Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
+run. By default all windows will be run.
+
+[--periodic=1]
+A value of 1 sets the simulation box as periodic a value of 0 sets the simulation box as non-periodic.
 </pre></div>
 </div>
 </section>
@@ -264,7 +273,7 @@ nodes each with 128 cores the run lines in the submission script might look like
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $build/replica-confs
 for stage in {0..3}; do
      for lambda in in 0.0 0.2 0.4 0.6 0.8 1.0; do
-         for i in 0; do
+         for i in {0..0}; do
              srun -N 1 -n 128 namd2 --tclmain run$stage.conf $lambda $i &amp;
              sleep 1
          done
@@ -326,7 +335,7 @@ would look something like:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="API.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="binding_free_energies.html" class="btn btn-neutral float-right" title="Binding Free Energy Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

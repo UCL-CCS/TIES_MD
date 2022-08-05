@@ -20,8 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Parallelization" href="parallelization.html" />
-    <link rel="prev" title="API" href="API.html" /> 
+    <link rel="next" title="HPC Submission scripts" href="HPC_submissions.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,7 +43,6 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="API.html">API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Binding Free Energy Tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#general-bfe-background">General BFE background</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
@@ -51,8 +50,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#bfe-analysis">BFE Analysis</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/UCL-CCS/TIES_MD">🚀Github</a></li>
 </ul>
@@ -178,6 +177,7 @@ follows:</p>
     <span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="o">.</span><span class="n">TIES</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">ties_dir</span><span class="p">,</span> <span class="n">exp_name</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">args_dict</span><span class="p">)</span>
 
     <span class="c1">#change some settings in TIES.cfg</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">reps_per_exec</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">md</span><span class="o">.</span><span class="n">total_reps</span> <span class="o">=</span> <span class="mi">6</span>
 
     <span class="c1">#inspect all the options we can configure and change</span>
@@ -203,7 +203,7 @@ follows:</p>
     <span class="n">md</span><span class="o">.</span><span class="n">update_cfg</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This changes the TIES.cfg options <code class="docutils literal notranslate"><span class="pre">total_reps</span></code> to 6. To see all configurable options the user
+<p>This changes the TIES.cfg options <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span></code> to 1 and <code class="docutils literal notranslate"><span class="pre">total_reps</span></code> to 6. To see all configurable options the user
 can run <code class="docutils literal notranslate"><span class="pre">md.get_options()</span></code> as shown above. To generate a general submission script we are modifying the
 <code class="docutils literal notranslate"><span class="pre">sub_header</span></code> and <code class="docutils literal notranslate"><span class="pre">sub_run_line</span></code> internal options and these set what <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> writes into the submission script. The
 settings above yield the following script:</p>
@@ -221,7 +221,7 @@ export ties_dir=&quot;ties/ties-ligandA-ligandB/lig&quot;
 cd $ties_dir
 
 for lambda in 0 1 2 3 4 5 6 7 8 9 10 11 12; do
-  for i in 0 1 2 3 4; do
+  for i in {0..5}; do
         jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;
     done
     done
@@ -255,8 +255,8 @@ the individual <span class="math notranslate nohighlight">\({Δ G}\)</span> resu
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="API.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="parallelization.html" class="btn btn-neutral float-right" title="Parallelization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HPC_submissions.html" class="btn btn-neutral float-right" title="HPC Submission scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

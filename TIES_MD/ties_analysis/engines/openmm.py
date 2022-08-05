@@ -105,15 +105,12 @@ class OpenMM(object):
         :return: list of floats, [dg, stdev(dg)]
         '''
 
+        data = self.collate_data(data_root, prot, lig, leg)
         analysis_dir = os.path.join(self.output, self.name, self.method, prot, lig, leg)
+
         if self.method == 'FEP':
-            try:
-                data = self.collate_data(data_root, prot, lig, leg)
-            except ValueError:
-                raise ValueError('If you are attempting to add extra windows to FEP(MBAR) this does not work try TI only.')
             method_run = MBAR_Analysis(data, temp, self.openmm_lambs, analysis_dir)
         elif self.method == 'TI':
-            data = self.collate_data(data_root, prot, lig, leg)
             method_run = TI_Analysis(data, self.openmm_lambs, analysis_dir)
         else:
             raise ValueError('Unknown method {}'.format(self.method))

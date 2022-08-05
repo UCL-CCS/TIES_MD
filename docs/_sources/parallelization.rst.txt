@@ -25,13 +25,17 @@ If we wanted to parallelize 3 repeats over 3 GPUs on one node we would run::
     ties_md --exp_name=sys_solv --devices=0,1,2
 
 Each ``CUDA`` device will then run 8 windows of the 1 replica. Equally ths could be spit into to separate runs of ``TIES MD``
-masked so each replica only sees one device. For this we use the command line option ``--replica_mask`` this option takes a
-``Python`` range (start inclusive and end exclusive) of the replicas which that instance of
-``TIES MD`` should run like so::
+masked to only see one device::
 
-    ties_md --exp_name=sys_solv --devices=0 --replica_mask=0,1
-    ties_md --exp_name=sys_solv --devices=1 --replica_mask=1,2
-    ties_md --exp_name=sys_solv --devices=3 --replica_mask=2,3
+    ties_md --exp_name=sys_solv --devices=0 --node_id=0
+    ties_md --exp_name=sys_solv --devices=1 --node_id=1
+    ties_md --exp_name=sys_solv --devices=3 --node_id=1
+
+To run in this configuration the options ``total_reps=3`` and ``reps_per_exec=1`` are set in TIES.cfg to tell ``TIES MD`` that
+there are a total of 3 replicas being run and that each execution of ``TIES MD`` should run only one. Also note we have set
+``--node_id`` to some different values for otherwise identical run lines and this ensures these parallel runs write output
+to unique locations. ``--node_id`` only needs to be set when identical replicas of a simulation are run in separate executions
+of ``TIES MD``.
 
 If we need further parallelization over alchemical windows we can use the command line option ``--windows_mask``
 this option takes a ``Python`` range (start inclusive and end exclusive) of the windows which that instance of
@@ -46,24 +50,27 @@ this option takes a ``Python`` range (start inclusive and end exclusive) of the 
     ties_md --exp_name=sys_solv --windows_mask=6,7 --devices=6&
     ties_md --exp_name=sys_solv --windows_mask=7,8 --devices=7&
 
+Again using the configuration options ``total_reps=3`` and ``reps_per_exec=1`` the above runs 1 replica of each alchemical
+window on a different GPU.
+
 For maximum parallelism we combine parallelizing over replicas and alchemical windows. For clarity we now consider the
 same example as above but now with 6 alchemical windows, 2 replica simulations and one simulation per GPU, so in
-TIES.cfg ``global_lambdas=0.0, 0.1, 0.4, 0.6, 0.9, 1.0`` and ``total_reps=2``. To scale over multiple node
+TIES.cfg ``global_lambdas=0.0, 0.1, 0.4, 0.6, 0.9, 1.0``, ``total_reps=2`` and ``reps_per_exec=1``. To scale over multiple node
 we could use the resource allocator of the HPC for example `jsrun <https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=SSWRJV_10.1.0/jsm/jsrun.html>`_
 on `Summit <https://www.olcf.ornl.gov/summit/>`_. would allow us to run with 2 replicas of 6 windows as follows::
 
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=0,1 --replica_mask=0,1&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=1,2 --replica_mask=0,1&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=2,3 --replica_mask=0,1&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=3,4 --replica_mask=0,1&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=4,5 --replica_mask=0,1&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=5,6 --replica_mask=0,1&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=0,1 --replica_mask=1,2&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=1,2 --replica_mask=1,2&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=2,3 --replica_mask=1,2&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=3,4 --replica_mask=1,2&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=4,5 --replica_mask=1,2&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --exp_name='sys_solv' --windows_mask=5,6 --replica_mask=1,2&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=0&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=0,1 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=1,2 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=2,3 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=3,4 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=4,5 --node_id=1&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv' --windows_mask=5,6 --node_id=1&
 
 Note here we do not set ``--devices`` as the masking of GPUs is handled by the resource allocator, this is not the general case.
 If a resource allocator is not available an alternative method to run multiple simulations across nodes is to use a message passing interface
@@ -76,24 +83,24 @@ TIES-NAMD
 
 The parallelization of TIES in ``NAMD2`` follows the same ideas as ``OpenMM`` above. We want to run independent simulations
 for all alchemical window and replica simulations. To achieve parallelization over replica simulations there are two options.
-If ``--replica_mask`` command line option is not used the submission script that ``TIES_MD`` writes will use the ``NAMD`` option
+If in TIES.cfg ``total_reps==reps_per_exec`` the submission script that ``TIES_MD`` writes will use the ``NAMD`` option
 ``+replicas X`` this makes each ``NAMD`` run ``X`` replicas and the run lines in sub.sh will look something like::
 
     for stage in {0..3}; do
-        for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
+    for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
             srun -N $nodes_per_namd -n $cpus_per_namd namd2 +replicas 5 --tclmain run$stage-replicas.conf $lambda&
             sleep 1
     done
     wait
     done
 
-Alternatively if ``--replica_mask`` is used the run lines will look like::
+Alternatively if ``total_reps=!reps_per_exec`` with ``reps_per_exec=1`` the run lines will look like::
 
     for stage in {0..3}; do
-        for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
-            for i in 0 1 2 3 4; do
-                srun -N $nodes_per_namd -n $cpus_per_namd namd2 --tclmain run$stage.conf $lambda $i &
-                sleep 1
+    for lambda in 0.00 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 1.0; do
+    for i in {{0..4}}; do
+        srun -N $nodes_per_namd -n $cpus_per_namd namd2 --tclmain run$stage.conf $lambda $i &
+        sleep 1
     done
     done
     wait

@@ -23,10 +23,9 @@ Contents
 
     install
     tutorial
-    API
     binding_free_energies
-    parallelization
     HPC_submissions
+    parallelization
     theory
     🚀Github <https://github.com/UCL-CCS/TIES_MD>
 
