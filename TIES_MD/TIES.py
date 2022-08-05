@@ -41,8 +41,7 @@ import shutil
 import importlib.resources as pkg_resources
 #split means we will explicitly deal with reps in the submission
 #for non split namd or TIES_MD will handle the parallisim of replicas
-from .eng_scripts import namd_sub, namd_sub_split,\
-    openmm_sub_split, openmm_sub, cfg_scripts
+from .eng_scripts import namd_sub, namd_sub_split, openmm_sub_split, cfg_scripts
 
 class TIES(object):
     '''
@@ -63,8 +62,6 @@ class TIES(object):
     def __init__(self, cwd, exp_name, run_type='class', devices=None, replica_mask=None, windows_mask=None, periodic=True,
                  lam=None, platform='CUDA', **kwargs):
         nice_print('TIES')
-        if run_type == 'class':
-            kwargs = read_config(os.path.join(cwd, 'TIES.cfg'))
         print('Wade, A.D., et al. 2022. Alchemical Free Energy Estimators and Molecular Dynamics Engines:'
               ' Accuracy, Precision, and Reproducibility. Journal of chemical theory and computation, 18(6), pp.3972-3987.\n')
 
@@ -75,8 +72,8 @@ class TIES(object):
 
         #check all the config file args we need are present
         args_list = ['engine', 'temperature', 'pressure', 'sampling_per_window', 'equili_per_window', 'methods',
-                     'total_reps', 'elec_edges', 'ster_edges', 'global_lambdas', 'constraint_file',
-                     'constraint_column', 'input_type', 'box_type']
+                       'total_reps', 'elec_edges', 'ster_edges', 'global_lambdas', 'constraint_file',
+                       'constraint_column', 'input_type', 'box_type']
 
         optional_args = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3', 'edge_length']
 
@@ -95,7 +92,7 @@ class TIES(object):
 
         # engine must be dealt with first to set namd_version which other options may need.
         api_sensitive = ['engine', 'total_reps', 'elec_edges', 'ster_edges', 'global_lambdas',
-                         'box_type', 'split_run']
+                         'box_type', 'windows_mask', 'replica_mask']
 
         #Iterate over our args_dict to set attributes of class to values in dict
         print('Read arguments from file:')
@@ -115,7 +112,7 @@ class TIES(object):
 
         #set any attr the api needs
         self.windows = len(self.global_lambdas)
-        self.exp_name = exp_name
+        self._exp_name = exp_name
 
         self._elec_edges = self._elec_edges.split(',')
         self._elec_edges = [float(x) for x in self._elec_edges]
@@ -148,15 +145,15 @@ class TIES(object):
             self.constraint_column = None
 
         #Deal with command line input.
-        self.windows_mask = windows_mask
-        if self.windows_mask is not None:
-            self.num_windows = len(range(*self.windows_mask))
+        self._windows_mask = windows_mask
+        if self._windows_mask is not None:
+            self.num_windows = len(range(*self._windows_mask))
         else:
             self.num_windows = len(self.global_lambdas)
 
-        self.replica_mask = replica_mask
-        if self.replica_mask is not None:
-            self.num_reps = len(range(*self.replica_mask))
+        self._replica_mask = replica_mask
+        if self._replica_mask is not None:
+            self.num_reps = len(range(*self._replica_mask))
             self._split_run = True
         else:
             self.num_reps = int(self._total_reps)
@@ -175,7 +172,9 @@ class TIES(object):
         for prop in api_sensitive:
             setattr(self, prop, self.__getattribute__('_'+prop))
 
-        self.sub_header, self.sub_run_line = None, None
+        #make sub file now all args populated
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
+                                                                self.num_windows, self.num_reps, self.exp_name)
 
         # build schedule for lambdas do this last so passed lam can overwrite if desired
         print('Lambda schedule:')
@@ -193,8 +192,8 @@ class TIES(object):
                 raise ValueError('Can only run TIES NAMD with option --run_type=setup. After initial setup jobs should'
                                  ' be submitted via the HPC scheduler. Please see example submission scripts here:'
                                  ' https://UCL-CCS.github.io/TIES_MD/HPC_submissions.html')
-            TIES.setup(self)
             TIES.run(self)
+            TIES.write_analysis_cfg(self)
 
         elif self.run_type == 'setup':
             TIES.setup(self)
@@ -216,6 +215,87 @@ class TIES(object):
         :return: string for box type.
         """
         return self._box_type
+
+    @property
+    def exp_name(self):
+        '''
+        What is the name of the experiment, this is the prefix expected on input files e.g. experiment_name.pdb
+
+        :return: string for the experiment name.
+        '''
+        return self._exp_name
+
+    @property
+    def engine(self):
+        '''
+        What molecular dynamics engine is going to be used (openmm/namd2.14/namd3)
+
+        :return: string for molecular dynamics engine.
+        '''
+        return self._engine
+
+    @property
+    def global_lambdas(self):
+        '''
+        The global values of lambda in the lambda schedule.
+
+        :return: list of floats for lambda schedule
+        '''
+        return self._global_lambdas
+
+    @property
+    def elec_edges(self):
+        '''
+        here in lambda schedule (0->1) should the electrostatic potentials begin, stop appearing.
+
+        :return: list of floats for when the electrostatic potentials begin, stop appearing.
+        '''
+        return self._elec_edges
+
+    @property
+    def ster_edges(self):
+        '''
+        Where in lambda schedule (0->1) should the Lennard_Jones potentials begin, stop appearing.
+
+        :return: list of floats for when the Lennard_Jones potentials begin, stop appearing.
+        '''
+        return self._ster_edges
+
+    @property
+    def split_run(self):
+        '''
+        boolean that sets if each execution of TIESMD or NAMD runs all replicas or a subset.
+
+        :return: bool for if run is split
+        '''
+        return self._split_run
+
+    @property
+    def total_reps(self):
+        '''
+        What is the total number of replicas we expect to run
+
+        :return: int for total number of replicas.
+        '''
+        return self._total_reps
+
+    @property
+    def replica_mask(self):
+        '''
+        What replica will this run of the program execute.
+
+        :return: List of two ints for start and stop range of what replicas to run
+        '''
+        return self._replica_mask
+
+    @property
+    def windows_mask(self):
+        '''
+        What replica will this run of the program execute.
+
+        :return: List of two ints for start and stop range of what windows to run
+        '''
+        return self._windows_mask
 
     @box_type.setter
     def box_type(self, value):
@@ -255,14 +335,17 @@ class TIES(object):
             self.cell_basis_vec2 = [float(x) for x in self.basis_vectors[1] / unit.angstrom]
             self.cell_basis_vec3 = [float(x) for x in self.basis_vectors[2] / unit.angstrom]
 
-    @property
-    def engine(self):
+    @exp_name.setter
+    def exp_name(self, value):
         '''
-        What molecular dynamics engine is going to be used (openmm/namd2.14/namd3)
+        Setter for exp_name, will rebuild the submission file to reflect updated name.
+        :param value: str, for the exp_name
 
-        :return: string for molecular dynamics engine.
+        :return: None
         '''
-        return self._engine
+        self._exp_name = value
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
+                                                                self.num_windows, self.num_reps, self._exp_name)
 
     @engine.setter
     def engine(self, value):
@@ -295,14 +378,8 @@ class TIES(object):
         if self._engine not in supported_engines:
             raise ValueError('Engine {} not supported please select from {}'.format(self._engine, supported_engines))
 
-    @property
-    def ster_edges(self):
-        '''
-        Where in lambda schedule (0->1) should the Lennard_Jones potentials begin, stop appearing.
-
-        :return: list of floats for when the Lennard_Jones potentials begin, stop appearing.
-        '''
-        return self._ster_edges
+        self.sub_header, self.sub_run_line = get_header_and_run(self._engine, self.namd_version, self.split_run,
+                                                                self.num_windows, self.num_reps, self.exp_name)
 
     @ster_edges.setter
     def ster_edges(self, value):
@@ -315,15 +392,6 @@ class TIES(object):
         self._ster_edges = value
         self.lam = Lambdas(self.elec_edges, self._ster_edges, self.global_lambdas, debug=False)
 
-    @property
-    def elec_edges(self):
-        '''
-        here in lambda schedule (0->1) should the electrostatic potentials begin, stop appearing.
-
-        :return: list of floats for when the electrostatic potentials begin, stop appearing.
-        '''
-        return self._elec_edges
-
     @elec_edges.setter
     def elec_edges(self, value):
         '''
@@ -334,15 +402,6 @@ class TIES(object):
         '''
         self._elec_edges = value
         self.lam = Lambdas(self._elec_edges, self.ster_edges, self.global_lambdas, debug=False)
-
-    @property
-    def global_lambdas(self):
-        '''
-        The global values of lambda in the lambda schedule.
-
-        :return: list of floats for lambda schedule
-        '''
-        return self._global_lambdas
 
     @global_lambdas.setter
     def global_lambdas(self, value):
@@ -361,44 +420,13 @@ class TIES(object):
                 check_mask = [self._global_lambdas[i] for i in range(*self.windows_mask)]
                 self.num_windows = len(range(*self.windows_mask))
             except IndexError:
-                print('Warning: windows mask range({}, {}) does not match {} windows. Change windows or'
-                      ' mask.\n'.format(self.windows_mask[0], self.windows_mask[1], len(self._global_lambdas)))
+                print('Windows mask range({}, {}) does not match {} windows. Change windows or'
+                      ' mask.'.format(self.windows_mask[0], self.windows_mask[1], len(self._global_lambdas)))
         else:
             self.num_windows = len(self._global_lambdas)
 
-        @property
-        def total_reps(self):
-            '''
-            What is the total number of replicas we expect to run
-
-            :return: int for total number of replicas.
-            '''
-            return self._total_reps
-
-        @total_reps.setter
-        def total_reps(self, value):
-            '''
-            Setter for total_reps
-            :param value: int for the total number of replicas.
-
-            :return: None
-            '''
-            self._total_reps = value
-
-            if self.replica_mask is not None:
-                if self._total_reps < self.replica_mask[1]:
-                    print('Warning: replica mask range({}, {}) extends beyond reps {}.'
-                          ' Change total_reps or replica mask.\n'.format(self.replica_mask[0], self.replica_mask[1],
-                                                                         self._total_reps))
-
-    @property
-    def split_run(self):
-        '''
-        boolean that sets if each execution of TIESMD or NAMD runs all replicas or a subset.
-
-        :return: bool for if run is split
-        '''
-        return self._split_run
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
+                                                                self.num_windows, self.num_reps, self.exp_name)
 
     @split_run.setter
     def split_run(self, value):
@@ -414,11 +442,73 @@ class TIES(object):
             num_gpus = len(self.devices)
             if self.num_reps/num_gpus != self.num_reps//num_gpus:
                 print('Warning: number of replicas ({}) not evenly divisible by GPUs'
-                      ' ({}) causing uneven load balance and inefficiencies\n'.format(self.num_reps, num_gpus))
+                      ' ({}) uneven load balance and inefficiencies'.format(self.num_reps, num_gpus))
+
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self._split_run,
+                                                                self.num_windows, self.num_reps, self.exp_name)
+
+    @total_reps.setter
+    def total_reps(self, value):
+        '''
+        Setter for total_reps
+        :param value: int for the total number of replicas.
+
+        :return: None
+        '''
+        self._total_reps = value
+
+        if self.replica_mask is not None:
+            if self._total_reps < self.replica_mask[1]:
+                print('Replica mask range({}, {}) extends beyond reps {}.'
+                      ' Change replica mask.'.format(self.replica_mask[0], self.replica_mask[1], self._total_reps))
+
+    @replica_mask.setter
+    def replica_mask(self, value):
+        '''
+        Setter for replica_mask
+        What replica will this run of the program execute.
+
+        :return: List of two ints for start and stop range of what replicas to run
+        '''
+        self._replica_mask = value
+        if self._replica_mask is not None:
+            self.num_reps = len(range(*self._replica_mask))
+            self.split_run = True
+            if self.total_reps < self._replica_mask[1]:
+                print('Replica mask range({}, {}) extends beyond reps {}.'
+                      ' Change replicas or mask.'.format(self._replica_mask[0], self._replica_mask[1], self.total_reps))
+        else:
+            self.num_reps = self.total_reps
+            self.split_run = False
+
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self._split_run,
+                                                                self.num_windows, self.num_reps, self.exp_name)
+
+    @windows_mask.setter
+    def windows_mask(self, value):
+        '''
+        Setter for windows_mask
+        What replica will this run of the program execute.
+
+        :return: List of two ints for start and stop range of what replicas to run
+        '''
+        self._windows_mask = value
+        if self.windows_mask is not None:
+            self.num_windows = len(range(*self._windows_mask))
+            try:
+                check_mask = [self.global_lambdas[i] for i in range(*self._windows_mask)]
+            except IndexError:
+                print('Windows mask range({}, {}) does not match {} windows. Change windows or'
+                      ' mask.'.format(self._windows_mask[0], self._windows_mask[1], self._global_lambdas))
+        else:
+            self.num_windows = len(self.global_lambdas)
+
+        self.sub_header, self.sub_run_line = get_header_and_run(self.engine, self.namd_version, self._split_run,
+                                                                self.num_windows, self.num_reps, self.exp_name)
 
     def update_cfg(self):
         '''
-        Write a TIES config file this should be called after api changes are made. Called as part of TIES.setup()
+        Write a TIES config file this should be called after api changes are made.
 
         :return: None
         '''
@@ -456,15 +546,6 @@ class TIES(object):
 
         :return: None
         '''
-
-        sub_header, sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
-                                                      self.num_windows, self.num_reps, self.exp_name,
-                                                      self.devices)
-        if self.sub_header is None:
-            self.sub_header = sub_header
-        if self.sub_run_line is None:
-            self.sub_run_line = sub_run_line
-
         if self.engine == 'namd':
             folders = ['equilibration', 'simulation']
             path = os.path.join(self.cwd, 'replica-confs')
@@ -493,8 +574,6 @@ class TIES(object):
         for lam_dir in exiting_lam_dirs:
             found_results = list(glob.iglob(os.path.join(lam_dir, 'rep*', 'results', '*.npy')))
             pop_lam_dirs.extend(found_results)
-            found_results = list(glob.iglob(os.path.join(lam_dir, 'rep*', 'simulation', '*.alch')))
-            pop_lam_dirs.extend(found_results)
 
         #Are the populated dirs in the schedule?
         warn_overwrite = False
@@ -506,16 +585,15 @@ class TIES(object):
                 raise ValueError('Results files found please check these are not needed'
                                  ' then manually delete LAMBDA_{} dirs'.format(lam_id))
             else:
-                if self.windows_mask is not None:
+                if self.windows_mask is None:
                     if lam_id in [self.lam.str_lams[i] for i in range(*self.windows_mask)]:
                         warn_overwrite = True
                 else:
                     if lam_id in [self.lam.str_lams[i] for i in range(self.windows)]:
                         warn_overwrite = True
         if warn_overwrite:
-            print('Warning: you may be a about to re-run simulations which already have results')
+            print('Warning: you may be a about to run simulations which already have results')
 
-        #now delete anything outside of schedule assuming they are unpopulated dirs
         for lam_dir in exiting_lam_dirs:
             lam_id = lam_dir.split('LAMBDA_')[1][0:4]
             if lam_id not in self.lam.str_lams:
@@ -534,12 +612,11 @@ class TIES(object):
 
     def get_options(self):
         '''
-        Prints out the options and their current values.
+        Prints out the options the user can change and their current values.
 
         :return: None
         '''
-        other_user_options = ['sub_header', 'sub_run_line']
-        for arg in self.all_args+other_user_options:
+        for arg in self.all_args:
             print('{}: {}'.format(arg, self.__getattribute__(arg)))
 
     def run(self):
@@ -548,6 +625,8 @@ class TIES(object):
 
         :return: None
         '''
+        folders = ['equilibration', 'simulation', 'results']
+        TIES.build_results_dirs(self, folders)
 
         system = AlchSys(self.cwd, self.exp_name, self.temperature, self.pressure, self.constraint_file,
                          self.constraint_column, self.methods, self.basis_vectors, self.input_type, self.absolute,
@@ -565,11 +644,9 @@ class TIES(object):
                 path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(rep.node_id))
                 if not os.path.exists(path):
                     raise ValueError('Expected output dir {} missing.'.format(path))
-
         #make mask so all windows are run if user does not pass mask.
         if self.windows_mask is None:
             self.windows_mask = [0, self.windows]
-
         func = partial(simulate_system, alch_sys=system, Lam=self.lam, mask=self.windows_mask,
                        cwd=self.cwd, niter=int(self.sampling_per_window/(2.0*unit.picosecond)),
                        equili_steps=int(self.equili_per_window/(2.0*unit.femtoseconds)))
@@ -975,9 +1052,9 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
         :return: None
         '''
         if self.windows_mask is not None:
-            lambs = [str(i) for i in range(*self.windows_mask)]
+            lambs = [self.lam.str_lams[i] for i in range(*self.windows_mask)]
         else:
-            lambs = [str(i) for i in range(self.windows)]
+            lambs = self.lam.str_lams
         lambs = ' '.join(lambs)
 
         if self.split_run:
@@ -990,10 +1067,8 @@ langevinPistonDecay   100.0            # oscillation decay time. smaller value c
                                                          header=self.sub_header, root=self.cwd, py_bin=sys.path[0])
             open(os.path.join(self.cwd, 'sub.sh'), 'w').write(openmm_initialised)
         else:
-            openmm_uninitialised = pkg_resources.open_text(openmm_sub, 'sub.sh').read()
-            openmm_initialised = openmm_uninitialised.format(lambs=lambs, run_line=self.sub_run_line,
-                                                             header=self.sub_header, root=self.cwd, py_bin=sys.path[0])
-            open(os.path.join(self.cwd, 'sub.sh'), 'w').write(openmm_initialised)
+            # no OpenMM unified job configured for HPC
+            pass
 
 
 def get_box_vectors(box_type, d):
@@ -1031,7 +1106,7 @@ def nice_print(string):
     print(string)
 
 
-def get_header_and_run(engine, namd_version, split_run, num_windows, reps, exp_name, devices):
+def get_header_and_run(engine, namd_version, split_run, num_windows, reps, exp_name):
     '''
     Function to prep submission file. Number of windows and replicas are inspected to make best guess at
     number of nodes and CPUS/GPUS
@@ -1042,7 +1117,6 @@ def get_header_and_run(engine, namd_version, split_run, num_windows, reps, exp_n
     :param num_windows: int for the number of windows to be run
     :param reps: int, number of replica simulations to be run
     :param exp_name: str, name of the experiment e.g. complex
-    :param devices: list of ints for which gpus to target
 
     :return: str, str for header and run line of HPC sub script
     '''
@@ -1112,46 +1186,12 @@ cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cp
 #BSUB -e eLIGPAIR.%J""".format(int(np.ceil(num_jobs/gpus_per_node)))
             sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
                            ' --exp_name={} --window_masks=$lambda,$(expr $lambda + 1)' \
-                           ' --replica_mask=i,$(expr i + 1) > $ties_dir/$lambda_$i.out&'.format(exp_name)
+                           ' --replica_mask=i,$(expr i + 1) > $ties_dir/$lambda$i.out&'.format(exp_name)
         else:
-            # summit specific
-            gpus_per_node = 6
-            num_jobs = reps * num_windows
-
-            sub_header = """#Example script for Summit OpenMM
-#BSUB -P XXX
-#BSUB -W 240
-#BSUB -nnodes {}
-#BSUB -alloc_flags "gpudefault smt1"
-#BSUB -J LIGPAIR
-#BSUB -o oLIGPAIR.%J
-#BSUB -e eLIGPAIR.%J""".format(int(np.ceil(num_jobs / gpus_per_node)))
-            sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g {} -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
-                           ' --exp_name={} --window_masks=$lambda,$(expr $lambda + 1)' \
-                           ' --devices={} > $ties_dir/$lambda.out&'.format(len(devices), exp_name, ','.join([str(x) for x in devices]))
+            # no OpenMM unified job configured for HPC
+            sub_header = None
+            sub_run_line = None
 
     return sub_header, sub_run_line
 
-def read_config(config_file):
-    '''
-    Function to read config file from disk
-
-    :param config_file: str pointing to TIES.cfg file
-
-    :return: dict, containing all config file args
-    '''
-
-    args_dict = {}
-    with open(config_file) as file:
-        for line in file:
-            if line[0] != '#' and line[0] != ' ' and line[0] != '\n':
-                data = line.rstrip('\n').split('=')
-                if len(data) > 2:
-                    raise ValueError('Failed to parse line: {}'.format(line))
-                # Remove spaces
-                data = [s.replace(" ", "") for s in data]
-                #remove tabs
-                data = [s.replace("\t", "") for s in data]
-                args_dict[data[0]] = data[1]
-    return args_dict
 

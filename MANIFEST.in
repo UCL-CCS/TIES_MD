@@ -2,5 +2,4 @@ include TIES_MD/eng_scripts/*
 include TIES_MD/eng_scripts/namd_sub_split/*
 include TIES_MD/eng_scripts/namd_sub/*
 include TIES_MD/eng_scripts/openmm_sub_split/*
-include TIES_MD/eng_scripts/openmm_sub/*
 include TIES_MD/eng_scripts/cfg_scripts/*

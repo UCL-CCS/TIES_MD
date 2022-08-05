@@ -120,7 +120,7 @@ follows::
     #BSUB -e eLIGPAIR.%J"""
 
         #run line in submission scripts can also be changed
-        md.sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --replica_mask=$i,$(expr i + 1)  > $ties_dir/$lambda_$i.out&'
+        md.sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i > $ties_dir/$lambda$i.out&'
 
         #setup the new simulation with changed options (also writes submission script)
         md.setup()
@@ -148,7 +148,7 @@ settings above yield the following script::
 
     for lambda in 0 1 2 3 4 5 6 7 8 9 10 11 12; do
       for i in 0 1 2 3 4; do
-            jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --replica_mask=$i,$(expr i + 1)  > $ties_dir/$lambda_$i.out&
+            jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i > $ties_dir/$lambda$i.out&
         done
         done
     wait

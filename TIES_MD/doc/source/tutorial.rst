@@ -43,9 +43,6 @@ occasionally change. This file must be placed alongside the build directory. Her
     #Which molecular dynamics engine will be used, valid options are openmm/namd2.14/namd3
     engine = openmm
 
-    #What input type is provided, only AMBER supported.
-    input_type = AMBER
-
     #Target temperature for the thermostat
     temperature = 300*unit.kelvin
 
@@ -58,7 +55,7 @@ occasionally change. This file must be placed alongside the build directory. Her
     #How much equilibration to run per alchemical window (2ns recommended)
     equili_per_window = 2*unit.nanoseconds
 
-    #Which estimators to use. Valid options are: TI or FEP
+    #Which estimators to use. Valid options are: TI, FEP
     methods = FEP, TI
 
     #How many total replicas of each window are run (we recommend at least 5).
@@ -89,6 +86,10 @@ occasionally change. This file must be placed alongside the build directory. Her
     cell_basis_vec1 = 50, 0.0, 0.0
     cell_basis_vec2 = 0.0, 50, 0.0
     cell_basis_vec3 = 0.0, 0.0, 50
+
+    #What input type is provided, only AMBER supported.
+    input_type = AMBER
+
 
 The following image shows ``TIES_MD`` applied to one alchemical transformation.
 
