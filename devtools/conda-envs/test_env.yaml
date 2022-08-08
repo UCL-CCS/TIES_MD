@@ -9,7 +9,7 @@ dependencies:
   - multiprocess
   - numpy
   - openmm
-  - pymbar
+  - pymbar=4.0.1
   - scipy
   - openmmtools
   - scikit-learn
