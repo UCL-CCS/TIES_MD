@@ -136,6 +136,10 @@ values are as follows::
     `setup` will prep the output directories and `class` will halt the program after the construction of the TIES class,
      this can be used in testing or advanced analysis.
 
+    [--windows_mask=None]
+    Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
+    run. By default all windows will be run.
+
     # Below are OpenMM specific options, these are silently ignored for NAMD runs.
 
     [--devices=0]
@@ -145,11 +149,6 @@ values are as follows::
     [--rep_id=0]
     An int which will be used to generate the names of output files. Should be used if many independent replicas of the
     same simulation are run on different nodes to ensure output is writen to unique location.
-
-    [--windows_mask=None]
-    Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
-    run. By default all windows will be run.
-
 
 Simulation Preparation
 ----------------------

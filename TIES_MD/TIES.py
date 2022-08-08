@@ -586,8 +586,8 @@ class TIES(object):
         pool.join()
         pool.terminate()
 
-        total_sampling = (((self.sampling_per_window +
-                            self.equili_per_window) * self.num_windows * self.reps_per_exec) / len(self.devices)) / unit.nanosecond
+        total_sampling = (((self.sampling_per_window + self.equili_per_window)
+                           * self.num_windows * self.reps_per_exec) / len(self.devices)) / unit.nanosecond
 
         speed = total_sampling / total_simulation_time
         speed *= 86400  # seconds in a day

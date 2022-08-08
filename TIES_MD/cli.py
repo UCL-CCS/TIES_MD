@@ -69,6 +69,13 @@ def main(argv=None):
         exp_name = 'complex'
         print(msg.format('Experiment name', exp_name))
 
+    if args['--windows_mask']:
+        mask = args['--windows_mask']
+        mask = mask.split(',')
+        mask = [int(x) for x in mask]
+    else:
+        mask = None
+
     # Read config file
     args_dict = read_config(config_file)
 
@@ -97,17 +104,8 @@ def main(argv=None):
         rep_id = None
         print(msg.format('node id string', 'None'))
 
-    if args['--windows_mask']:
-        if not_openmm:
-            raise ValueError(not_openmm_msg.format('--windows_mask'))
-        mask = args['--windows_mask']
-        mask = mask.split(',')
-        mask = [int(x) for x in mask]
-    else:
-        mask = None
-
     # removed this as an option there is no need to expose it for now
-    periodic=True
+    periodic = True
 
     TIES(input_folder, exp_name, run_type, devices, rep_id, mask, periodic, **args_dict)
 
