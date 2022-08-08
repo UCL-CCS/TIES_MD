@@ -42,6 +42,7 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">TIES MD API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
@@ -167,7 +168,7 @@
 <span id="ties-md-ties-module"></span><h2>TIES_MD.TIES module<a class="headerlink" href="#module-TIES_MD.TIES" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">TIES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'class'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">windows_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CUDA'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">TIES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'complex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'class'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">windows_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CUDA'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to control TIES protocol, initializes variables and calls functions to start simulation or write input scripts</p>
 <dl class="field-list simple">
@@ -177,7 +178,7 @@
 <li><p><strong>exp_name</strong> – str, for the names of experiment i.e. complex -&gt; complex.pdb/complex.prmtop</p></li>
 <li><p><strong>run_type</strong> – str, flag to say if we should run dynamics or not</p></li>
 <li><p><strong>devices</strong> – list, list of ints for which cuda devices to use</p></li>
-<li><p><strong>node_id</strong> – float, id denoting what replica of this simulation this execution of TIES_MD should run</p></li>
+<li><p><strong>rep_id</strong> – float, id denoting what replica of this simulation this execution of TIES_MD should run</p></li>
 <li><p><strong>windows_mask</strong> – list containing ints for start and end range of windows to be run</p></li>
 <li><p><strong>periodic</strong> – boolean determines if the simulation will be periodic</p></li>
 <li><p><strong>lam</strong> – Lambda class, allow passing of custom lambda schedule</p></li>
@@ -187,17 +188,6 @@
 </ul>
 </dd>
 </dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="TIES_MD.TIES.TIES.box_type">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">box_type</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.box_type" title="Permalink to this definition"></a></dt>
-<dd><p>What type of simulation box is being used (cube, truncatedOctahedron, rhombicDodecahedron or na for manual)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>string for box type.</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES.build_results_dirs">
 <span class="sig-name descname"><span class="pre">build_results_dirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folders</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES.build_results_dirs" title="Permalink to this definition"></a></dt>
@@ -206,6 +196,39 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="TIES_MD.TIES.TIES.cell_basis_vec1">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cell_basis_vec1</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.cell_basis_vec1" title="Permalink to this definition"></a></dt>
+<dd><p>What is the 1st basis vector of the simulation cell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of floats for x, y, z components of vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="TIES_MD.TIES.TIES.cell_basis_vec2">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cell_basis_vec2</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.cell_basis_vec2" title="Permalink to this definition"></a></dt>
+<dd><p>What is the 2nd basis vector of the simulation cell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of floats for x, y, z components of vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="TIES_MD.TIES.TIES.cell_basis_vec3">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cell_basis_vec3</span></span><a class="headerlink" href="#TIES_MD.TIES.TIES.cell_basis_vec3" title="Permalink to this definition"></a></dt>
+<dd><p>What is the 3rd basis vector of the simulation cell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of floats for x, y, z components of vector</p>
 </dd>
 </dl>
 </dd></dl>
@@ -685,7 +708,7 @@ This can help to resolve any nans caused by overlapping atoms.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="TIES_MD.alch.System_ID">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.alch.</span></span><span class="sig-name descname"><span class="pre">System_ID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.alch.System_ID" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.alch.</span></span><span class="sig-name descname"><span class="pre">System_ID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.alch.System_ID" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class as a ID for a simulation providing information for what GPU this simulation should run on and
 what number repeat this simulation is out of some total number of repeats.</p>
@@ -693,7 +716,7 @@ what number repeat this simulation is out of some total number of repeats.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>device_id</strong> – int, for OpenMM GPU device id</p></li>
-<li><p><strong>node_id</strong> – str, id number denoting which replica this is</p></li>
+<li><p><strong>rep_id</strong> – str, id number denoting which replica this is</p></li>
 </ul>
 </dd>
 </dl>

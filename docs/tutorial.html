@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Binding Free Energy Tutorial" href="binding_free_energies.html" />
+    <link rel="next" title="TIES MD API" href="API.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
@@ -50,6 +50,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">TIES MD API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
@@ -88,7 +89,7 @@
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
 <section id="getting-started">
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a package which is intended to be used on the command line and submitted to a HPC system. In this document
+<p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a package for the preparation, running and analysis of binding free energy calculations. In this document
 we will outline what commands should be run to calculate binding free energies. To start with any free energy calculations
 we must first outline what are the expected input files to the <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> program.</p>
 <p>In this tutorial we will refer to example systems which can be found in the
@@ -96,21 +97,23 @@ we must first outline what are the expected input files to the <code class="docu
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">UCL</span><span class="o">-</span><span class="n">CCS</span><span class="o">/</span><span class="n">TIES_MD</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>and navigating to <code class="docutils literal notranslate"><span class="pre">TIES_MD/TIES_MD/examples/</span></code></p>
+<p>and found by navigating to <code class="docutils literal notranslate"><span class="pre">TIES_MD/TIES_MD/examples/</span></code></p>
 </section>
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> expects a number of input files, these are two essential files, e.g. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> and <code class="docutils literal notranslate"><span class="pre">complex.prmtop</span></code>.
 These files contain information about the position, topology and parameters for the system. Currently we only support
-the <code class="docutils literal notranslate"><span class="pre">AMBER</span></code> based format <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> but provide a utility to <a class="reference external" href="https://ccs-ties.org/ties/">build</a> them online. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> also
-contains the alchemical indexes denoting which atoms will appear and disappear during the simulation. There is also
-an optional input file, <code class="docutils literal notranslate"><span class="pre">constraints.pdb</span></code>, and this contains indexes denoting which atoms, if any, are constrained
-during the pre-production simulation. This input should all be placed in a directory named build located
-where the user wishes to run the simulation. Examples of these files can be found <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples">here</a>.
-Please use a directory structure like <code class="docutils literal notranslate"><span class="pre">study/system/ligand/thermodynamic_leg/build</span></code> this will allow the analysis scripts to
+the <code class="docutils literal notranslate"><span class="pre">AMBER</span></code> based format <code class="docutils literal notranslate"><span class="pre">prmtop</span></code>. <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code> also contains the alchemical indexes denoting which atoms will
+appear and disappear during the simulation. There is also an optional input file, <code class="docutils literal notranslate"><span class="pre">constraints.pdb</span></code>, and this
+contains indexes denoting which atoms, if any, are constrained during the pre-production simulation. This input should
+all be placed in a directory named build located where the user wishes to run the simulation. Examples of these files
+can be found <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples">here</a>.</p>
+<p>Please use a directory structure like <code class="docutils literal notranslate"><span class="pre">study/system/ligand/thermodynamic_leg/build</span></code> this will allow the analysis scripts to
 understand the structure and perform analysis automatically. <code class="docutils literal notranslate"><span class="pre">study</span></code>, <code class="docutils literal notranslate"><span class="pre">system</span></code>, <code class="docutils literal notranslate"><span class="pre">ligand</span></code> and <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code>
 can be renamed to anything but the name of the <code class="docutils literal notranslate"><span class="pre">build</span></code> directory is fixed. If input for novel ligand transformations is desired the
-<a class="reference external" href="https://github.com/UCL-CCS/TIES20">TIES20</a> program can be used to generate all required inputs.</p>
+<a class="reference external" href="https://github.com/UCL-CCS/TIES20">TIES20</a> program can be used to generate all required inputs. <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">20</span></code> can be
+used via our online <a class="reference external" href="https://ccs-ties.org/ties/">service</a> or locally and details of how to use this will be provided
+later in these documents.</p>
 <p>The only non standard input to <code class="docutils literal notranslate"><span class="pre">TIES</span> <span class="pre">MD</span></code> is a configuration file (<code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>) which specifies options which the user my wish to
 occasionally change. This file must be placed alongside the build directory. Here we provide an example of such a file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#################################################################</span>
@@ -140,8 +143,8 @@ occasionally change. This file must be placed alongside the build directory. Her
 <span class="c1">#How many total replicas of each window are run (we recommend at least 5).</span>
 <span class="n">total_reps</span> <span class="o">=</span> <span class="mi">5</span>
 
-<span class="c1">#How many replicas should this evocation of TIES_MD run, used for parallelisation</span>
-<span class="n">reps_per_exec</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1">#Boolean for if we will split all replicas into separate runs. (1 for maximum parallelism)</span>
+<span class="n">split_run</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="c1">#Where in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.</span>
 <span class="n">elec_edges</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span>
@@ -158,13 +161,7 @@ occasionally change. This file must be placed alongside the build directory. Her
 <span class="c1">#Which column in pdb are constraints provided valid options are occupancy/beta_factor. (beta_factor is standard)</span>
 <span class="n">constraint_column</span> <span class="o">=</span> <span class="n">beta_factor</span>
 
-<span class="c1">#What type of simulation cell is used valid options are cube, truncatedOctahedron, rhombicDodecahedron or na for manual.</span>
-<span class="n">box_type</span> <span class="o">=</span> <span class="n">na</span>
-
-<span class="c1">#The edge length used to compute the cube or truncatedOctahedron or rhombicDodecahedron box vectors</span>
-<span class="n">edge_length</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">unit</span><span class="o">.</span><span class="n">nanometer</span>
-
-<span class="c1">#If box_type is na the manually specify box vectors of this simulation, unit Angstrom.</span>
+<span class="c1">#Manually specify box vectors of this simulation, unit Angstrom.</span>
 <span class="n">cell_basis_vec1</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
 <span class="n">cell_basis_vec2</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.0</span>
 <span class="n">cell_basis_vec3</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">50</span>
@@ -173,9 +170,9 @@ occasionally change. This file must be placed alongside the build directory. Her
 <span class="n">input_type</span> <span class="o">=</span> <span class="n">AMBER</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">total_reps</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span></code> are options which can be used to achieve simple parallelism of the simulations.
+<p><code class="docutils literal notranslate"><span class="pre">total_reps</span></code> and <code class="docutils literal notranslate"><span class="pre">split_run</span></code> are options which can be used to achieve simple parallelism of the simulations.
 For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
-<code class="docutils literal notranslate"><span class="pre">total_reps</span> <span class="pre">=</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span> <span class="pre">=</span> <span class="pre">1</span></code>. See the <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> section for more details of how to
+<code class="docutils literal notranslate"><span class="pre">total_reps</span> <span class="pre">=</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">split_run</span> <span class="pre">=</span> <span class="pre">1</span></code>. See the <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> section for more details of how to
 achieve this.</p>
 <p>The following image shows <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> applied to one alchemical transformation.</p>
 <a class="reference internal image-reference" href="_images/one_leg.png"><img alt="Alternative text" class="align-center" src="_images/one_leg.png" style="width: 600px;" /></a>
@@ -186,10 +183,9 @@ The values given to <code class="docutils literal notranslate"><span class="pre"
 energy functions of the system and for more information these settings please see the <a class="reference internal" href="theory.html#alchemical-pathways"><span class="std std-ref">Alchemical Pathways</span></a> section.</p>
 <p>Note the option <code class="docutils literal notranslate"><span class="pre">constraint_column</span></code> which determines if the constraint indexes will be read from the temperature factor
 or occupancy column of the constraints PDB. The alchemical indexes are always be read from the temperature factor column
-in the main PDB <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code>. The <code class="docutils literal notranslate"><span class="pre">edge_length</span></code> option can be found in the <code class="docutils literal notranslate"><span class="pre">leap.log</span></code> file created during system
-preparation preformed by the users or <code class="docutils literal notranslate"><span class="pre">TIES20</span></code>. <code class="docutils literal notranslate"><span class="pre">TIES20</span></code> will populate a TIES.cfg automatically with the correct box size.</p>
+in the main PDB <code class="docutils literal notranslate"><span class="pre">complex.pdb</span></code>. <code class="docutils literal notranslate"><span class="pre">TIES20</span></code> will populate a TIES.cfg automatically with the correct box size.</p>
 <p>Typically a constraint file may be used during preproduction of simulations involving proteins but possibly not a small
-drug like molecule in only solvent. It will be show later in the Binding Free Energy Calculations section when and
+drug like molecule in only solvent. It will be shown later in the <a class="reference internal" href="binding_free_energies.html#binding-free-energy-tutorial"><span class="std std-ref">Binding Free Energy Tutorial</span></a> section when and
 why we use a constraints file.</p>
 </section>
 <section id="command-line">
@@ -216,16 +212,13 @@ A string either `run`, `setup` or `class`. `run` will tell TIES OpenMM to execut
 A comma separated list of integers which tells TIES OpenMM which GPUs to run on. If multiple GPUs
 are specified then TIES OpenMM will parallelize requested replicas over the available GPUs.
 
-[--node_id=0]
+[--rep_id=0]
 An int which will be used to generate the names of output files. Should be used if many independent replicas of the
 same simulation are run on different nodes to ensure output is writen to unique location.
 
 [--windows_mask=None]
 Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
 run. By default all windows will be run.
-
-[--periodic=1]
-A value of 1 sets the simulation box as periodic a value of 0 sets the simulation box as non-periodic.
 </pre></div>
 </div>
 </section>
@@ -267,7 +260,7 @@ to <code class="docutils literal notranslate"><span class="pre">1</span></code>,
 <span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">windows_mask</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span> <span class="o">--</span><span class="n">devices</span><span class="o">=</span><span class="mi">5</span><span class="o">&amp;</span>
 </pre></div>
 </div>
-<p>There are a lot of options for how these <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calcualtions can be structured and parallelized with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> see our
+<p>There are a lot of options for how these <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calculations can be structured and parallelized with <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> see our
 <a class="reference internal" href="parallelization.html#parallelization"><span class="std std-ref">Parallelization</span></a> page for more information on this. For a <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> calculation if the submission script requested 6 CPU
 nodes each with 128 cores the run lines in the submission script might look like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $build/replica-confs
@@ -335,7 +328,7 @@ would look something like:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="binding_free_energies.html" class="btn btn-neutral float-right" title="Binding Free Energy Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="API.html" class="btn btn-neutral float-right" title="TIES MD API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

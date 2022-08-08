@@ -608,12 +608,12 @@ class System_ID(object):
     what number repeat this simulation is out of some total number of repeats.
 
     :param device_id: int, for OpenMM GPU device id
-    :param node_id: str, id number denoting which replica this is
+    :param rep_id: str, id number denoting which replica this is
 
     '''
-    def __init__(self, device_id, node_id):
+    def __init__(self, device_id, rep_id):
         self.device_id = str(device_id)
-        self.node_id = str(node_id)
+        self.rep_id = str(rep_id)
 
 
 def minimization(NVT, constraint):
@@ -787,7 +787,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
     beta = 1.0 / (unit.BOLTZMANN_CONSTANT_kB * alch_sys.temp)
 
     print('Running simulation on device {}'.format(ids.device_id))
-    print('Running replica {} of windows {}'.format(ids.node_id, list(range(mask[0], mask[1]))))
+    print('Running replica {} of windows {}'.format(ids.rep_id, list(range(mask[0], mask[1]))))
 
     nlambda = len(Lam.schedule[0])
     nstates = len(Lam.schedule[mask[0]:mask[1]])
@@ -850,7 +850,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
             #If velocities are randmozied is this still equilibriated?
             NPT['sim'].context.setVelocitiesToTemperature(alch_sys.temp)
         else:
-            equili_file = os.path.join(cwd, 'LAMBDA_{}'.format(Lam.str_lams[i+mask[0]]), 'rep{}'.format(ids.node_id),
+            equili_file = os.path.join(cwd, 'LAMBDA_{}'.format(Lam.str_lams[i+mask[0]]), 'rep{}'.format(ids.rep_id),
                                        'equilibration', 'state')
             equili_state_f = equili_file+'_NPT.xml'
 
@@ -867,7 +867,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
             NPT['sim'].loadState(equili_state_f)
 
         #add reporter to simulation
-        log = os.path.join(cwd, 'LAMBDA_{}'.format(Lam.str_lams[i+mask[0]]), 'rep{}'.format(ids.node_id), 'simulation',
+        log = os.path.join(cwd, 'LAMBDA_{}'.format(Lam.str_lams[i+mask[0]]), 'rep{}'.format(ids.rep_id), 'simulation',
                            'log')
         add_simulation_reporters(NPT['sim'], total_sim_NPT, save=log)
 
@@ -875,7 +875,7 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
         for iteration in range(niter):
             print('Propagating iteration {}/{} in window {}/{} for replica {}'.format(iteration + 1,
                                                                                         niter, i+mask[0]+1,
-                                                                                        all_states, ids.node_id))
+                                                                                        all_states, ids.rep_id))
 
             # propogate system in current state
             NPT['sim'].step(steps_per_iter)
@@ -904,13 +904,13 @@ def simulate_system(ids, alch_sys, Lam, mask, cwd, niter, equili_steps, steps_pe
     print('Saving results')
     for i, j in enumerate(Lam.str_lams[mask[0]: mask[1]]):
         if 'TI' in alch_sys.methods:
-            file = os.path.join(cwd, 'LAMBDA_{}'.format(j), 'rep{}'.format(ids.node_id), 'results',
+            file = os.path.join(cwd, 'LAMBDA_{}'.format(j), 'rep{}'.format(ids.rep_id), 'results',
                                 'TI.npy')
             #print('Saving {} result to disk'.format(file))
             np.save(file, grads[i, :, :])
 
         if 'FEP' in alch_sys.methods:
-            file = os.path.join(cwd, 'LAMBDA_{}'.format(j), 'rep{}'.format(ids.node_id), 'results',
+            file = os.path.join(cwd, 'LAMBDA_{}'.format(j), 'rep{}'.format(ids.rep_id), 'results',
                                 'FEP.npy')
             #print('Saving {} result to disk'.format(file))
             np.save(file, u_kln[i, :, :])

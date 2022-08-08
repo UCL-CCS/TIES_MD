@@ -250,8 +250,8 @@ class Test_Alch(unittest.TestCase):
             system = AlchSys(cwd, exp_name, temp, pressure, None, args_dict['constraint_column'], args_dict['methods'],
                              basis_vec, input_type='AMBER', absolute=False, periodic=True, platform=GLOBAL_PALT)
 
-            node_id = 0
-            ids = System_ID(device_id='0', node_id=node_id)
+            rep_id = 0
+            ids = System_ID(device_id='0', rep_id=rep_id)
 
             Lam = Lambdas([0.5, 1], [0.0, 0.5], [x/5 for x in range(0, 6)])
             mask = [0, 2]
@@ -262,7 +262,7 @@ class Test_Alch(unittest.TestCase):
             #build some output dirs
             for d in ['results', 'simulation', 'equilibration']:
                 for l in ['0.00', '0.20']:
-                    path = os.path.join(cwd, 'LAMBDA_{}/rep{}/{}'.format(l, node_id, d))
+                    path = os.path.join(cwd, 'LAMBDA_{}/rep{}/{}'.format(l, rep_id, d))
                     Path(path).mkdir(parents=True, exist_ok=True)
 
             simulate_system(ids, system, Lam, mask, cwd, niter, equili_steps, steps_per_iter)
@@ -273,7 +273,7 @@ class Test_Alch(unittest.TestCase):
             #look for output
             for l in ['0.00', '0.20']:
                 for ans, method in zip(expected_shapes, ['TI', 'FEP']):
-                    path = os.path.join(cwd, 'LAMBDA_{}/rep{}/results/{}.npy'.format(l, node_id, method))
+                    path = os.path.join(cwd, 'LAMBDA_{}/rep{}/results/{}.npy'.format(l, rep_id, method))
                     array = np.load(path)
                     self.assertEqual(array.shape, ans, 'Failed to generate results of expected shape')
 

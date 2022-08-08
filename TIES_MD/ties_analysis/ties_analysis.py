@@ -108,6 +108,7 @@ class Analysis():
 
         with open('./result.dat', 'w') as f:
             print(result, file=f)
+        nice_print('END')
 
 
 def nice_print(string):
@@ -152,7 +153,6 @@ def make_exp(verbose=True):
 
     with open('exp.dat', 'w') as fp:
         json.dump(exp_dat, fp)
-    nice_print('END')
 
 def main():
     '''

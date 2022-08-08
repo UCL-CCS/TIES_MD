@@ -35,9 +35,7 @@ hybrid ligands but also setup binding free energy calculations for the TIES prot
 simulations as follows::
 
     #ties20 imports
-    from ties import Pair, Ligand
-    from ties import Config
-    from ties.protein import Protein
+    from ties import Pair, Config, Ligand, Protein
 
     #Setting for system building
     config = Config()
@@ -68,7 +66,7 @@ simulations as follows::
     #now declare protein
     config.protein = 'receptor.pdb'
     config.protein_ff = 'leaprc.protein.ff14SB'
-    protein = Protein(config.protein, config)
+    protein = Protein(config)
 
     #re-prepare simulation input, now protein is declared and passed as argument com simulation is built
     hybrid.prepare_inputs(protein=protein)
@@ -86,12 +84,12 @@ At this point we have prepped a simulation of one thermodynamic cycle with two l
 set these legs up in the directories ``ties/ties-ligandA-ligandB/(lig/com)`` and these map to the
 ``system/ligand/thermodynamic_leg/`` directory structure that was discussed in the :ref:`Tutorial` section.
 In ``ties/ties-ligandA-ligandB/(lig/com)`` there will be the ``build`` directory and  ``TIES.cfg`` files as also seen in
-the :ref:`Tutorial`. The settings in ``TIES.cfg`` will be good for a default simulation but in general we may wish to
+the :ref:`Tutorial`. The automatic settings in ``TIES.cfg`` will be good for a default simulation but in general we may wish to
 change these quickly and or write submission scripts for these simulations. To do this we can use the ``TIES_MD`` API as
 follows::
 
     #tiesMD imports
-    from TIES_MD import TIES, cli
+    from TIES_MD import TIES
     import os
 
     #iterate over both legs of BFE calculation
@@ -100,11 +98,10 @@ follows::
         ties_dir = os.path.join(os.getcwd(), 'ties', 'ties-ligandA-ligandB', thermo_leg)
 
         #read the default TIES.cfg to initialize
-        args_dict = cli.read_config(os.path.join(ties_dir, 'TIES.cfg'))
-        md = TIES.TIES(cwd=ties_dir, exp_name='complex', **args_dict)
+        md = TIES(ties_dir)
 
         #change some settings in TIES.cfg
-        md.reps_per_exec = 1
+        md.split_run = 1
         md.total_reps = 6
 
         #inspect all the options we can configure and change
@@ -120,41 +117,20 @@ follows::
     #BSUB -o oLIGPAIR.%J
     #BSUB -e eLIGPAIR.%J"""
 
-        #run line in submission scripts can also be changed
-        md.sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i > $ties_dir/$lambda$i.out&'
+        #Setting HPC specific elements of run line (example here is Summit)
+        md.pre_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 '
+
+        #Setting ties_md part of run line
+        md.run_line = 'ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i'
 
         #setup the new simulation with changed options (also writes submission script)
         md.setup()
 
-        #must make sure the TIES.cfg on disk is updated with new settings.
-        md.update_cfg()
-
-This changes the TIES.cfg options ``reps_per_exec`` to 1 and ``total_reps`` to 6. To see all configurable options the user
+This changes the TIES.cfg options ``split_run`` to 1 (True) and ``total_reps`` to 6. To see all configurable options the user
 can run ``md.get_options()`` as shown above. To generate a general submission script we are modifying the
-``sub_header`` and ``sub_run_line`` internal options and these set what ``TIES_MD`` writes into the submission script. The
-settings above yield the following script::
-
-    #!/bin/bash
-    #Example script for Summit OpenMM
-    #BSUB -P CHM155_001
-    #BSUB -W 120
-    #BSUB -nnodes 13
-    #BSUB -alloc_flags "gpudefault smt1"
-    #BSUB -J LIGPAIR
-    #BSUB -o oLIGPAIR.%J
-    #BSUB -e eLIGPAIR.%J
-
-    export ties_dir="ties/ties-ligandA-ligandB/lig"
-    cd $ties_dir
-
-    for lambda in 0 1 2 3 4 5 6 7 8 9 10 11 12; do
-      for i in {0..5}; do
-            jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i > $ties_dir/$lambda$i.out&
-        done
-        done
-    wait
-
-These scripts can be summited to the HPC scheduler, once they finish the last step to get a :math:`{ΔΔ G}` is analysis.
+``sub_header``, ``pre_run_line`` and ``run_line`` internal options and these set what ``TIES_MD`` writes into the
+submission script, for more details see :ref:`API`. These scripts can be summited to the HPC scheduler, once they
+finish the last step to get a :math:`{ΔΔ G}` is analysis.
 
 BFE Analysis
 ------------

@@ -4,7 +4,7 @@ HPC Submission scripts
 Here we provide some example submission scripts for various HPC systems. ``TIES MD`` will attempt to automatically write sensible submission
 scripts for ``NAMD2`` targeting `ARCHER 2 <https://www.archer2.ac.uk/>`_ and for ``OpenMM`` targeting `Summit <https://www.olcf.ornl.gov/summit/>`_.
 In general the user can make there own script for whichever HPC or cluster they prefer. To aid with writing general
-scripts ``TIES MD`` exposes 2 options in the :ref:`API` called ``sub_header`` and ``sub_run_line``. The strings passed
+scripts ``TIES MD`` exposes 3 options in the :ref:`API` called ``sub_header``, ``pre_run_line`` and ``run_line``. The strings passed
 with these options will be injected into a general template for a ``NAMD2`` or ``OpenMM`` submission. All generated
 submission scripts are written to the base ``TIES MD`` directory as sub.sh. An example of this is provided in here :ref:`Running`.
 
@@ -91,12 +91,12 @@ Here we provide an example of ``TIES MD`` running with ``OpenMM`` on `Summit <ht
     export ties_dir="/gpfs/alpine/scratch/adw62/chm155/TIES_test/TIES_MD/TIES_MD/examples/ethane/zero_sum/leg1"
     module load cuda/10.1.168
     date
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=0,1 --node_id="0" > $ties_dir/0.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=1,2 --node_id="0" > $ties_dir/1.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=2,3 --node_id="0" > $ties_dir/2.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=3,4 --node_id="0" > $ties_dir/3.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=4,5 --node_id="0" > $ties_dir/4.out&
-    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=5,6 --node_id="0" > $ties_dir/5.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=0,1 --rep_id=0 > $ties_dir/0.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=1,2 --rep_id=0 > $ties_dir/1.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=2,3 --rep_id=0 > $ties_dir/2.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=3,4 --rep_id=0 > $ties_dir/3.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=4,5 --rep_id=0 > $ties_dir/4.out&
+    jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --exp_name='sys_solv'  --windows_mask=5,6 --rep_id=0 > $ties_dir/5.out&
     wait
 
 NAMD 3

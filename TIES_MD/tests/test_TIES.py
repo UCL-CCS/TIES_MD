@@ -23,7 +23,6 @@ class Test_TIES(unittest.TestCase):
                      'global_lambdas': '0.0,0.5,1.0',
                      'constraint_file': 'cons.pdb',
                      'constraint_column': 'beta_factor',
-                     'box_type': 'na',
                      'input_type': 'AMBER',
                      'cell_basis_vec1': '46.644591,0.0,0.0',
                      'cell_basis_vec2': '0.0,46.888166,0.0',
@@ -31,8 +30,8 @@ class Test_TIES(unittest.TestCase):
 
         test_msg = '{} was not initialized correctly.'
 
-        test_init = TIES(cwd='./', run_type='class', exp_name='sol', devices=[0], node_id='test',
-             windows_mask=[0,2], periodic=True, lam=None, **args_dict)
+        test_init = TIES(cwd='./', run_type='class', exp_name='sol', devices=[0], rep_id=None,
+                         windows_mask=[0, 2], periodic=True, lam=None, **args_dict)
 
         self.assertEqual(test_init.sampling_per_window, unit.Quantity(2, unit.picoseconds),
                          test_msg.format('Sampling per window'))

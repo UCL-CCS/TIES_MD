@@ -4,7 +4,7 @@ Tutorial
 Getting started
 ---------------
 
-``TIES MD`` is a package which is intended to be used on the command line and submitted to a HPC system. In this document
+``TIES MD`` is a package for the preparation, running and analysis of binding free energy calculations. In this document
 we will outline what commands should be run to calculate binding free energies. To start with any free energy calculations
 we must first outline what are the expected input files to the ``TIES MD`` program.
 
@@ -13,22 +13,25 @@ In this tutorial we will refer to example systems which can be found in the
 
         git clone https://github.com/UCL-CCS/TIES_MD.git
 
-and navigating to ``TIES_MD/TIES_MD/examples/``
+and found by navigating to ``TIES_MD/TIES_MD/examples/``
 
 Input
 ------
 
 ``TIES MD`` expects a number of input files, these are two essential files, e.g. ``complex.pdb`` and ``complex.prmtop``.
 These files contain information about the position, topology and parameters for the system. Currently we only support
-the ``AMBER`` based format ``prmtop`` but provide a utility to `build <https://ccs-ties.org/ties/>`_ them online. ``complex.pdb`` also
-contains the alchemical indexes denoting which atoms will appear and disappear during the simulation. There is also
-an optional input file, ``constraints.pdb``, and this contains indexes denoting which atoms, if any, are constrained
-during the pre-production simulation. This input should all be placed in a directory named build located
-where the user wishes to run the simulation. Examples of these files can be found `here <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples>`_.
+the ``AMBER`` based format ``prmtop``. ``complex.pdb`` also contains the alchemical indexes denoting which atoms will
+appear and disappear during the simulation. There is also an optional input file, ``constraints.pdb``, and this
+contains indexes denoting which atoms, if any, are constrained during the pre-production simulation. This input should
+all be placed in a directory named build located where the user wishes to run the simulation. Examples of these files
+can be found `here <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples>`_.
+
 Please use a directory structure like ``study/system/ligand/thermodynamic_leg/build`` this will allow the analysis scripts to
 understand the structure and perform analysis automatically. ``study``, ``system``, ``ligand`` and ``thermodynamic_leg``
 can be renamed to anything but the name of the ``build`` directory is fixed. If input for novel ligand transformations is desired the
-`TIES20 <https://github.com/UCL-CCS/TIES20>`_ program can be used to generate all required inputs.
+`TIES20 <https://github.com/UCL-CCS/TIES20>`_ program can be used to generate all required inputs. ``TIES 20`` can be
+used via our online `service <https://ccs-ties.org/ties/>`_ or locally and details of how to use this will be provided
+later in these documents.
 
 The only non standard input to ``TIES MD`` is a configuration file (``TIES.cfg``) which specifies options which the user my wish to
 occasionally change. This file must be placed alongside the build directory. Here we provide an example of such a file::
@@ -61,8 +64,8 @@ occasionally change. This file must be placed alongside the build directory. Her
     #How many total replicas of each window are run (we recommend at least 5).
     total_reps = 5
 
-    #How many replicas should this evocation of TIES_MD run, used for parallelisation
-    reps_per_exec = 5
+    #Boolean for if we will split all replicas into separate runs. (1 for maximum parallelism)
+    split_run = 0
 
     #Where in lambda schedule (0->1) should the electrostatic potentials begin, stop appearing.
     elec_edges = 0.5, 1.0
@@ -79,13 +82,7 @@ occasionally change. This file must be placed alongside the build directory. Her
     #Which column in pdb are constraints provided valid options are occupancy/beta_factor. (beta_factor is standard)
     constraint_column = beta_factor
 
-    #What type of simulation cell is used valid options are cube, truncatedOctahedron, rhombicDodecahedron or na for manual.
-    box_type = na
-
-    #The edge length used to compute the cube or truncatedOctahedron or rhombicDodecahedron box vectors
-    edge_length = 10*unit.nanometer
-
-    #If box_type is na the manually specify box vectors of this simulation, unit Angstrom.
+    #Manually specify box vectors of this simulation, unit Angstrom.
     cell_basis_vec1 = 50, 0.0, 0.0
     cell_basis_vec2 = 0.0, 50, 0.0
     cell_basis_vec3 = 0.0, 0.0, 50
@@ -93,9 +90,9 @@ occasionally change. This file must be placed alongside the build directory. Her
     #What input type is provided, only AMBER supported.
     input_type = AMBER
 
-``total_reps`` and ``reps_per_exec`` are options which can be used to achieve simple parallelism of the simulations.
+``total_reps`` and ``split_run`` are options which can be used to achieve simple parallelism of the simulations.
 For example if you wished to run a total of 5 simulations on 5 GPUs in parallel one could use the settings
-``total_reps = 5`` and ``reps_per_exec = 1``. See the :ref:`Parallelization` section for more details of how to
+``total_reps = 5`` and ``split_run = 1``. See the :ref:`Parallelization` section for more details of how to
 achieve this.
 
 The following image shows ``TIES_MD`` applied to one alchemical transformation.
@@ -113,11 +110,10 @@ energy functions of the system and for more information these settings please se
 
 Note the option ``constraint_column`` which determines if the constraint indexes will be read from the temperature factor
 or occupancy column of the constraints PDB. The alchemical indexes are always be read from the temperature factor column
-in the main PDB ``complex.pdb``. The ``edge_length`` option can be found in the ``leap.log`` file created during system
-preparation preformed by the users or ``TIES20``. ``TIES20`` will populate a TIES.cfg automatically with the correct box size.
+in the main PDB ``complex.pdb``. ``TIES20`` will populate a TIES.cfg automatically with the correct box size.
 
 Typically a constraint file may be used during preproduction of simulations involving proteins but possibly not a small
-drug like molecule in only solvent. It will be show later in the Binding Free Energy Calculations section when and
+drug like molecule in only solvent. It will be shown later in the :ref:`Binding Free Energy Tutorial` section when and
 why we use a constraints file.
 
 Command Line
@@ -146,16 +142,13 @@ values are as follows::
     A comma separated list of integers which tells TIES OpenMM which GPUs to run on. If multiple GPUs
     are specified then TIES OpenMM will parallelize requested replicas over the available GPUs.
 
-    [--node_id=0]
+    [--rep_id=0]
     An int which will be used to generate the names of output files. Should be used if many independent replicas of the
     same simulation are run on different nodes to ensure output is writen to unique location.
 
     [--windows_mask=None]
     Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
     run. By default all windows will be run.
-
-    [--periodic=1]
-    A value of 1 sets the simulation box as periodic a value of 0 sets the simulation box as non-periodic.
 
 
 Simulation Preparation
@@ -199,7 +192,7 @@ to ``1``, there is therefore 6x1 = 6 total simulations to perform. If a HPC subm
     ties_md --exp_name=sys_solv --windows_mask=4,5 --devices=4&
     ties_md --exp_name=sys_solv --windows_mask=5,6 --devices=5&
 
-There are a lot of options for how these ``OpenMM`` calcualtions can be structured and parallelized with ``TIES_MD`` see our
+There are a lot of options for how these ``OpenMM`` calculations can be structured and parallelized with ``TIES_MD`` see our
 :ref:`Parallelization` page for more information on this. For a ``NAMD`` calculation if the submission script requested 6 CPU
 nodes each with 128 cores the run lines in the submission script might look like::
 

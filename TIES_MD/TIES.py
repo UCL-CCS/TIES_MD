@@ -52,7 +52,7 @@ class TIES(object):
     :param exp_name: str, for the names of experiment i.e. complex -> complex.pdb/complex.prmtop
     :param run_type: str, flag to say if we should run dynamics or not
     :param devices: list, list of ints for which cuda devices to use
-    :param node_id: float, id denoting what replica of this simulation this execution of TIES_MD should run
+    :param rep_id: float, id denoting what replica of this simulation this execution of TIES_MD should run
     :param windows_mask: list containing ints for start and end range of windows to be run
     :param periodic: boolean determines if the simulation will be periodic
     :param lam: Lambda class, allow passing of custom lambda schedule
@@ -60,10 +60,11 @@ class TIES(object):
     :param **kwargs: dict, containing setting from config file
 
     '''
-    def __init__(self, cwd, exp_name, run_type='class', devices=None, node_id=None, windows_mask=None, periodic=True,
-                 lam=None, platform='CUDA', **kwargs):
+    def __init__(self, cwd, exp_name='complex', run_type='class', devices=None, rep_id=None, windows_mask=None,
+                 periodic=True, lam=None, platform='CUDA', **kwargs):
         nice_print('TIES')
-        if run_type == 'class' and kwargs is None:
+
+        if run_type == 'class' and kwargs == {}:
             kwargs = read_config(os.path.join(cwd, 'TIES.cfg'))
         print('If you use this software please cite:')
         print('Wade, A.D., et al. 2022. Alchemical Free Energy Estimators and Molecular Dynamics Engines:'
@@ -77,9 +78,7 @@ class TIES(object):
         #check all the config file args we need are present
         args_list = ['engine', 'temperature', 'pressure', 'sampling_per_window', 'equili_per_window', 'methods',
                      'total_reps', 'split_run', 'elec_edges', 'ster_edges', 'global_lambdas', 'constraint_file',
-                     'constraint_column', 'input_type', 'box_type']
-
-        optional_args = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3', 'edge_length']
+                     'constraint_column', 'input_type', 'cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3']
 
         # check we have all required arguments
         for argument in args_list:
@@ -88,14 +87,14 @@ class TIES(object):
 
         # check we have no unexpected arguments
         for argument in kwargs.keys():
-            if argument not in args_list+optional_args:
+            if argument not in args_list:
                 raise ValueError('Argument {} not supported for this engine or at all.'
                                  ' Please remove from the TIES.cfg.'.format(argument))
 
-        self.all_args = args_list+optional_args
-
+        self.all_args = args_list
         #engine must be delt with first to set namd_version which other options may need.
-        api_sensitive = ['engine', 'split_run', 'elec_edges', 'ster_edges', 'global_lambdas', 'box_type']
+        api_sensitive = ['engine', 'split_run', 'elec_edges', 'ster_edges', 'global_lambdas',
+                         'cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3']
 
         #Iterate over our args_dict to set attributes of class to values in dict
         print('Read arguments from file:')
@@ -107,11 +106,6 @@ class TIES(object):
             print('{} = {}'.format(k, v))
             setattr(self, full_k, v)
         print('')
-
-        #set any nonexistant optional args to None
-        for option in optional_args:
-            if option not in kwargs.keys():
-                setattr(self, option, None)
 
         #set any attr the api needs
         self._split_run = bool(int(self._split_run))
@@ -144,6 +138,7 @@ class TIES(object):
 
         self.run_type = run_type
         self.methods = self.methods.split(',')
+        self.basis_vectors = [[], [], []]
 
         self.total_reps = int(self.total_reps)
         self.reps_per_exec = int(self.reps_per_exec)
@@ -168,14 +163,15 @@ class TIES(object):
 
         self.platform = platform
         self.cwd = cwd
-        self.node_id = node_id
+        self.rep_id = rep_id
         self.periodic = periodic
 
         #run through api logic
         for prop in api_sensitive:
             setattr(self, prop, self.__getattribute__('_'+prop))
 
-        self.sub_header, self.sub_run_line = None, None
+        self.pre_run_line, self.run_line = None, None
+        self.sub_run_line, self.sub_header = None, None
 
         # build schedule for lambdas do this last so passed lam can overwrite if desired
         print('Lambda schedule:')
@@ -209,51 +205,76 @@ class TIES(object):
             nice_print('END')
 
     @property
-    def box_type(self):
+    def cell_basis_vec1(self):
         """
-        What type of simulation box is being used (cube, truncatedOctahedron, rhombicDodecahedron or na for manual)
+        What is the 1st basis vector of the simulation cell
 
-        :return: string for box type.
+        :return: list of floats for x, y, z components of vector
         """
-        return self._box_type
+        return self._cell_basis_vec1
 
-    @box_type.setter
-    def box_type(self, value):
+    @cell_basis_vec1.setter
+    def cell_basis_vec1(self, value):
         '''
-        Setting function for box type, will build manual box from cell basis vectors if user passes box type na
-        :param value: str, for what box type we want
+        Setter for cell_basis_vec1
+        :param value: list for x, y, z of box, updates basis_vectors
 
         :return: None
         '''
-        self._box_type = value
-        if self._box_type == 'na':
-            vecs = ['cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3']
-            for vec in vecs:
-                if self.__getattribute__(vec) is None:
-                    raise ValueError(
-                        'If box type is unspecified as na in TIES.cfg the box vectors must be manually specified.'
-                        ' Please add options {} {} {} to TIES.cfg'.format(*vecs))
-            self.cell_basis_vec1 = [float(x) for x in self.cell_basis_vec1.split(',')]
-            self.cell_basis_vec2 = [float(x) for x in self.cell_basis_vec2.split(',')]
-            self.cell_basis_vec3 = [float(x) for x in self.cell_basis_vec3.split(',')]
-
-            self.basis_vectors = [Vec3(*self.cell_basis_vec1) * unit.angstrom,
-                                  Vec3(*self.cell_basis_vec2) * unit.angstrom,
-                                  Vec3(*self.cell_basis_vec3) * unit.angstrom]
-
+        if isinstance(value, str):
+            self._cell_basis_vec1 = [float(x) for x in value.split(',')]
         else:
-            print('Getting box vectors for {} box. Ignoring cell basis vectors'.format(self.box_type))
-            if self.edge_length is None:
-                raise ValueError('Must provide edge_length option in TIES.cfg to compute box vectors. If custom box vectors'
-                                 ' are desired set box_type = na in TIES.cfg.')
-            self.edge_length = self.edge_length.split('*unit.')
-            self.edge_length = unit.Quantity(float(self.edge_length[0]), getattr(unit, self.edge_length[1]))
-            self.edge_length = self.edge_length.in_units_of(unit.angstrom) / unit.angstrom
-            self.basis_vectors = get_box_vectors(self.box_type, self.edge_length)
+            assert len(value) == 3
+            self._cell_basis_vec1 = [x for x in value]
+        self.basis_vectors[0] = Vec3(*self._cell_basis_vec1) * unit.angstrom
 
-            self.cell_basis_vec1 = [float(x) for x in self.basis_vectors[0] / unit.angstrom]
-            self.cell_basis_vec2 = [float(x) for x in self.basis_vectors[1] / unit.angstrom]
-            self.cell_basis_vec3 = [float(x) for x in self.basis_vectors[2] / unit.angstrom]
+    @property
+    def cell_basis_vec2(self):
+        """
+        What is the 2nd basis vector of the simulation cell
+
+        :return: list of floats for x, y, z components of vector
+        """
+        return self._cell_basis_vec2
+
+    @cell_basis_vec2.setter
+    def cell_basis_vec2(self, value):
+        '''
+        Setter for cell_basis_vec2
+        :param value: list for x, y, z of box, updates basis_vectors
+
+        :return: None
+        '''
+        if isinstance(value, str):
+            self._cell_basis_vec2 = [float(x) for x in value.split(',')]
+        else:
+            assert len(value) == 3
+            self._cell_basis_vec2 = [x for x in value]
+        self.basis_vectors[1] = Vec3(*self._cell_basis_vec2) * unit.angstrom
+
+    @property
+    def cell_basis_vec3(self):
+        """
+        What is the 3rd basis vector of the simulation cell
+
+        :return: list of floats for x, y, z components of vector
+        """
+        return self._cell_basis_vec3
+
+    @cell_basis_vec3.setter
+    def cell_basis_vec3(self, value):
+        '''
+        Setter for cell_basis_vec3
+        :param value: list for x, y, z of box, updates basis_vectors
+
+        :return: None
+        '''
+        if isinstance(value, str):
+            self._cell_basis_vec3 = [float(x) for x in value.split(',')]
+        else:
+            assert len(value) == 3
+            self._cell_basis_vec3 = [x for x in value]
+        self.basis_vectors[2] = Vec3(*self._cell_basis_vec3) * unit.angstrom
 
     @property
     def engine(self):
@@ -386,6 +407,8 @@ class TIES(object):
         if self._split_run:
             self.reps_per_exec = 1
         else:
+            if self.rep_id is not None:
+                raise ValueError('Split run is off but rep_id has a set value of {}. Unset rep_id'.format(self.rep_id))
             self.reps_per_exec = self.total_reps
 
     def update_cfg(self):
@@ -417,8 +440,6 @@ class TIES(object):
                                          cons_file='na' if self.constraint_file is None else self.constraint_file,
                                          constraint_column='na' if self.constraint_column is None else self.constraint_column,
                                          input_type=self.input_type,
-                                         box_type='na' if self.box_type is None else self.box_type,
-                                         edge_length='na' if self.edge_length is None else self.edge_length,
                                          **solv_oct_box)
         with open(os.path.join(self.cwd, 'TIES.cfg'), 'w') as f:
             f.write(ties_script)
@@ -430,12 +451,14 @@ class TIES(object):
         :return: None
         '''
 
-        sub_header, sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,
-                                                      self.num_windows, self.total_reps, self.exp_name, self.devices)
+        sub_header, sub_run_line = get_header_and_run(self.engine, self.namd_version, self.split_run,self.num_windows,
+                                                      self.total_reps, self.exp_name, self.devices)
         if self.sub_header is None:
             self.sub_header = sub_header
-        if self.sub_run_line is None:
+        if self.run_line is None and self.pre_run_line is None:
             self.sub_run_line = sub_run_line
+        else:
+            self.sub_run_line = str(self.pre_run_line) + str(self.run_line)
 
         if self.engine == 'namd':
             folders = ['equilibration', 'simulation']
@@ -511,7 +534,7 @@ class TIES(object):
 
         :return: None
         '''
-        other_user_options = ['sub_header', 'sub_run_line']
+        other_user_options = ['sub_header', 'pre_run_line', 'run_line']
         for arg in self.all_args+other_user_options:
             print('{}: {}'.format(arg, self.__getattribute__(arg)))
 
@@ -522,8 +545,8 @@ class TIES(object):
         :return: None
         '''
         if self.split_run:
-            if self.node_id is None:
-                raise ValueError('For a split run set --node_id on the command line, or pass node_id as an '
+            if self.rep_id is None:
+                raise ValueError('For a split run set --rep_id on the command line, or pass rep_id as an '
                                  'argument to the TIES() class.')
 
         system = AlchSys(self.cwd, self.exp_name, self.temperature, self.pressure, self.constraint_file,
@@ -531,7 +554,7 @@ class TIES(object):
                          self.periodic, self.platform)
 
         if self.split_run:
-            system_ids = [System_ID(self.devices[0], self.node_id)]
+            system_ids = [System_ID(self.devices[0], self.rep_id)]
         else:
             system_ids = [System_ID(self.devices[i % len(self.devices)], i) for i in range(self.total_reps)]
             
@@ -539,7 +562,7 @@ class TIES(object):
         for rep in system_ids:
             for lam in self.lam.str_lams:
                 lam_dir = 'LAMBDA_{}'.format(lam)
-                path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(rep.node_id))
+                path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(rep.rep_id))
                 if not os.path.exists(path):
                     raise ValueError('Output dir {} missing.'.format(path))
 
@@ -1073,7 +1096,7 @@ cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cp
 #BSUB -e eLIGPAIR.%J""".format(int(np.ceil(num_jobs/gpus_per_node)))
             sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
                            ' --exp_name={} --windows_mask=$lambda,$(expr $lambda + 1)' \
-                           ' --node_id=$i > $ties_dir/$lambda_$i.out&'.format(exp_name)
+                           ' --rep_id=$i > $ties_dir/$lambda_$i.out&'.format(exp_name)
         else:
             #summit specific
             gpus_per_node = 6

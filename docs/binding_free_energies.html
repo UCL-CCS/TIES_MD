@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Parallelization" href="parallelization.html" />
-    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
+    <link rel="prev" title="TIES MD API" href="API.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,6 +43,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">TIES MD API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Binding Free Energy Tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#general-bfe-background">General BFE background</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
@@ -110,9 +111,7 @@ hybrid ligands but also setup binding free energy calculations for the TIES prot
 <code class="docutils literal notranslate"><span class="pre">TIES20</span></code> can be used in <a class="reference external" href="https://ccs-ties.org/ties/">browser</a>. Alternatively one can use the <code class="docutils literal notranslate"><span class="pre">TIES20</span></code> API to set up
 simulations as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#ties20 imports</span>
-<span class="kn">from</span> <span class="nn">ties</span> <span class="kn">import</span> <span class="n">Pair</span><span class="p">,</span> <span class="n">Ligand</span>
-<span class="kn">from</span> <span class="nn">ties</span> <span class="kn">import</span> <span class="n">Config</span>
-<span class="kn">from</span> <span class="nn">ties.protein</span> <span class="kn">import</span> <span class="n">Protein</span>
+<span class="kn">from</span> <span class="nn">ties</span> <span class="kn">import</span> <span class="n">Pair</span><span class="p">,</span> <span class="n">Config</span><span class="p">,</span> <span class="n">Ligand</span><span class="p">,</span> <span class="n">Protein</span>
 
 <span class="c1">#Setting for system building</span>
 <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
@@ -143,7 +142,7 @@ simulations as follows:</p>
 <span class="c1">#now declare protein</span>
 <span class="n">config</span><span class="o">.</span><span class="n">protein</span> <span class="o">=</span> <span class="s1">&#39;receptor.pdb&#39;</span>
 <span class="n">config</span><span class="o">.</span><span class="n">protein_ff</span> <span class="o">=</span> <span class="s1">&#39;leaprc.protein.ff14SB&#39;</span>
-<span class="n">protein</span> <span class="o">=</span> <span class="n">Protein</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">protein</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">protein</span> <span class="o">=</span> <span class="n">Protein</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
 <span class="c1">#re-prepare simulation input, now protein is declared and passed as argument com simulation is built</span>
 <span class="n">hybrid</span><span class="o">.</span><span class="n">prepare_inputs</span><span class="p">(</span><span class="n">protein</span><span class="o">=</span><span class="n">protein</span><span class="p">)</span>
@@ -160,11 +159,11 @@ as detailed in the next section.</p>
 set these legs up in the directories <code class="docutils literal notranslate"><span class="pre">ties/ties-ligandA-ligandB/(lig/com)</span></code> and these map to the
 <code class="docutils literal notranslate"><span class="pre">system/ligand/thermodynamic_leg/</span></code> directory structure that was discussed in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> section.
 In <code class="docutils literal notranslate"><span class="pre">ties/ties-ligandA-ligandB/(lig/com)</span></code> there will be the <code class="docutils literal notranslate"><span class="pre">build</span></code> directory and  <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code> files as also seen in
-the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a>. The settings in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code> will be good for a default simulation but in general we may wish to
+the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a>. The automatic settings in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code> will be good for a default simulation but in general we may wish to
 change these quickly and or write submission scripts for these simulations. To do this we can use the <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> API as
 follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#tiesMD imports</span>
-<span class="kn">from</span> <span class="nn">TIES_MD</span> <span class="kn">import</span> <span class="n">TIES</span><span class="p">,</span> <span class="n">cli</span>
+<span class="kn">from</span> <span class="nn">TIES_MD</span> <span class="kn">import</span> <span class="n">TIES</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="c1">#iterate over both legs of BFE calculation</span>
@@ -173,11 +172,10 @@ follows:</p>
     <span class="n">ties_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;ties&#39;</span><span class="p">,</span> <span class="s1">&#39;ties-ligandA-ligandB&#39;</span><span class="p">,</span> <span class="n">thermo_leg</span><span class="p">)</span>
 
     <span class="c1">#read the default TIES.cfg to initialize</span>
-    <span class="n">args_dict</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="n">read_config</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ties_dir</span><span class="p">,</span> <span class="s1">&#39;TIES.cfg&#39;</span><span class="p">))</span>
-    <span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="o">.</span><span class="n">TIES</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">ties_dir</span><span class="p">,</span> <span class="n">exp_name</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">args_dict</span><span class="p">)</span>
+    <span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="p">(</span><span class="n">ties_dir</span><span class="p">)</span>
 
     <span class="c1">#change some settings in TIES.cfg</span>
-    <span class="n">md</span><span class="o">.</span><span class="n">reps_per_exec</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">split_run</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">md</span><span class="o">.</span><span class="n">total_reps</span> <span class="o">=</span> <span class="mi">6</span>
 
     <span class="c1">#inspect all the options we can configure and change</span>
@@ -193,42 +191,21 @@ follows:</p>
 <span class="s2">#BSUB -o oLIGPAIR.%J</span>
 <span class="s2">#BSUB -e eLIGPAIR.%J&quot;&quot;&quot;</span>
 
-    <span class="c1">#run line in submission scripts can also be changed</span>
-    <span class="n">md</span><span class="o">.</span><span class="n">sub_run_line</span> <span class="o">=</span> <span class="s1">&#39;jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;&#39;</span>
+    <span class="c1">#Setting HPC specific elements of run line (example here is Summit)</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">pre_run_line</span> <span class="o">=</span> <span class="s1">&#39;jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 &#39;</span>
+
+    <span class="c1">#Setting ties_md part of run line</span>
+    <span class="n">md</span><span class="o">.</span><span class="n">run_line</span> <span class="o">=</span> <span class="s1">&#39;ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i&#39;</span>
 
     <span class="c1">#setup the new simulation with changed options (also writes submission script)</span>
     <span class="n">md</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
-
-    <span class="c1">#must make sure the TIES.cfg on disk is updated with new settings.</span>
-    <span class="n">md</span><span class="o">.</span><span class="n">update_cfg</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This changes the TIES.cfg options <code class="docutils literal notranslate"><span class="pre">reps_per_exec</span></code> to 1 and <code class="docutils literal notranslate"><span class="pre">total_reps</span></code> to 6. To see all configurable options the user
+<p>This changes the TIES.cfg options <code class="docutils literal notranslate"><span class="pre">split_run</span></code> to 1 (True) and <code class="docutils literal notranslate"><span class="pre">total_reps</span></code> to 6. To see all configurable options the user
 can run <code class="docutils literal notranslate"><span class="pre">md.get_options()</span></code> as shown above. To generate a general submission script we are modifying the
-<code class="docutils literal notranslate"><span class="pre">sub_header</span></code> and <code class="docutils literal notranslate"><span class="pre">sub_run_line</span></code> internal options and these set what <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> writes into the submission script. The
-settings above yield the following script:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
-#Example script for Summit OpenMM
-#BSUB -P CHM155_001
-#BSUB -W 120
-#BSUB -nnodes 13
-#BSUB -alloc_flags &quot;gpudefault smt1&quot;
-#BSUB -J LIGPAIR
-#BSUB -o oLIGPAIR.%J
-#BSUB -e eLIGPAIR.%J
-
-export ties_dir=&quot;ties/ties-ligandA-ligandB/lig&quot;
-cd $ties_dir
-
-for lambda in 0 1 2 3 4 5 6 7 8 9 10 11 12; do
-  for i in {0..5}; do
-        jsrun --smpiargs=&quot;off&quot; -n 1 -a 1 -c 1 -g 1 -b packed:1 ties_md --config_file=$ties_dir/TIES.cfg --windows_mask=$lambda,$(expr $lambda + 1) --node_id=$i &gt; $ties_dir/$lambda$i.out&amp;
-    done
-    done
-wait
-</pre></div>
-</div>
-<p>These scripts can be summited to the HPC scheduler, once they finish the last step to get a <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> is analysis.</p>
+<code class="docutils literal notranslate"><span class="pre">sub_header</span></code>, <code class="docutils literal notranslate"><span class="pre">pre_run_line</span></code> and <code class="docutils literal notranslate"><span class="pre">run_line</span></code> internal options and these set what <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> writes into the
+submission script, for more details see <a class="reference internal" href="API.html#api"><span class="std std-ref">API</span></a>. These scripts can be summited to the HPC scheduler, once they
+finish the last step to get a <span class="math notranslate nohighlight">\({ΔΔ G}\)</span> is analysis.</p>
 </section>
 <section id="bfe-analysis">
 <h2>BFE Analysis<a class="headerlink" href="#bfe-analysis" title="Permalink to this heading"></a></h2>
@@ -255,7 +232,7 @@ the individual <span class="math notranslate nohighlight">\({Δ G}\)</span> resu
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="API.html" class="btn btn-neutral float-left" title="TIES MD API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="parallelization.html" class="btn btn-neutral float-right" title="Parallelization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
