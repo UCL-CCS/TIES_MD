@@ -63,7 +63,7 @@ class TIES(object):
     def __init__(self, cwd, exp_name, run_type='class', devices=None, node_id=None, windows_mask=None, periodic=True,
                  lam=None, platform='CUDA', **kwargs):
         nice_print('TIES')
-        if run_type == 'class':
+        if run_type == 'class' and kwargs is None:
             kwargs = read_config(os.path.join(cwd, 'TIES.cfg'))
         print('If you use this software please cite:')
         print('Wade, A.D., et al. 2022. Alchemical Free Energy Estimators and Molecular Dynamics Engines:'

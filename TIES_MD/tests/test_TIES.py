@@ -17,7 +17,7 @@ class Test_TIES(unittest.TestCase):
                      'equili_per_window': '2*unit.picoseconds',
                      'methods': 'FEP,TI',
                      'total_reps': '2',
-                     'reps_per_exec': '2',
+                     'split_run': '0',
                      'elec_edges': '0.5,1.0',
                      'ster_edges': '0.0,0.5',
                      'global_lambdas': '0.0,0.5,1.0',
@@ -48,8 +48,8 @@ class Test_TIES(unittest.TestCase):
                          test_msg.format('Methods'))
         self.assertEqual(test_init.total_reps, 2,
                          test_msg.format('Total number of repeats'))
-        self.assertEqual(test_init.reps_per_exec, 2,
-                         test_msg.format('Number of replicas per TIES MD execution'))
+        self.assertEqual(test_init.split_run, 0,
+                         test_msg.format('Split run flag'))
         self.assertEqual(test_init.windows, 3,
                          test_msg.format('Number of windows'))
 
@@ -69,11 +69,6 @@ class Test_TIES(unittest.TestCase):
         self.assertEqual(test_init.devices, [0], test_msg.format('Number of GPUs'))
         self.assertEqual(test_init.exp_name, 'sol', test_msg.format('Experiment name'))
         self.assertEqual(test_init.periodic, True, test_msg.format('Spacial periodicity flag'))
-
-        # delete output
-        for l in ['0.00', '0.50', '1.00']:
-            path = os.path.join('./', 'LAMBDA_{}'.format(l))
-            shutil.rmtree(path)
 
 if __name__ == '__main__':
     unittest.main()
