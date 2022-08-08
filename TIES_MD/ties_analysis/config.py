@@ -18,6 +18,8 @@ __copyright__ = """
 
 __license__ = "LGPL"
 
+import json
+
 class Config():
     '''
     Class that reads the config file and set options.
@@ -85,7 +87,11 @@ class Config():
 
         #process exp data
         # EXP data specifies what proteins and ligands to look at
-        self.exp_data = eval(open(general_args['exp_data'][0]).read())
+        with open(general_args['exp_data'][0]) as f:
+            data = f.read()
+
+        exp_js = json.loads(data)
+        self.exp_data = exp_js
 
     def get_options(self):
         '''

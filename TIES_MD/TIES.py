@@ -65,6 +65,7 @@ class TIES(object):
         nice_print('TIES')
         if run_type == 'class':
             kwargs = read_config(os.path.join(cwd, 'TIES.cfg'))
+        print('If you use this software please cite:')
         print('Wade, A.D., et al. 2022. Alchemical Free Energy Estimators and Molecular Dynamics Engines:'
               ' Accuracy, Precision, and Reproducibility. Journal of chemical theory and computation, 18(6), pp.3972-3987.\n')
 
@@ -485,7 +486,7 @@ class TIES(object):
                         warn_overwrite = True
 
         if warn_overwrite:
-            print('Warning: you may be a about to re-run simulations which already have results')
+            print('Warning: you may be a about to re-run simulations which already have results.\n')
 
         # now delete anything outside of schedule assuming they are unpopulated dirs
         for lam_dir in exiting_lam_dirs:
@@ -540,19 +541,19 @@ class TIES(object):
                 lam_dir = 'LAMBDA_{}'.format(lam)
                 path = os.path.join(self.cwd, lam_dir, 'rep{}'.format(rep.node_id))
                 if not os.path.exists(path):
-                    raise ValueError('Output dir {} missing. Command line option --node_id may be set incorrectly'.format(path))
+                    raise ValueError('Output dir {} missing.'.format(path))
 
         #make mask so all windows are run if user does not pass mask.
         if self.windows_mask is None:
             self.windows_mask = [0, self.windows]
 
+        nice_print('Beginning simulations')
         func = partial(simulate_system, alch_sys=system, Lam=self.lam, mask=self.windows_mask,
                        cwd=self.cwd, niter=int(self.sampling_per_window/(2.0*unit.picosecond)),
                        equili_steps=int(self.equili_per_window/(2.0*unit.femtoseconds)))
         pool = Pool(processes=len(self.devices))
 
         tic = time.perf_counter()
-        nice_print('Beginning simulations')
         simulated = pool.map(func, system_ids) ### MAIN MD
         toc = time.perf_counter()
         total_simulation_time = (toc - tic)
@@ -620,17 +621,10 @@ ele_d = {9}
         '''.format(self.temperature.in_units_of(unit.kelvin)/unit.kelvin, 'EDIT ME', eng, './', ','.join(self.methods),
                    self.namd_version, vdw_a, ele_a, vdw_d, ele_d)
 
-        dummy_exp = '{\'SYSTEM NAME\': {\'LIGAND NAME\': [0.0, 0.0]}}'
-
         file_path = os.path.join(self.cwd, '../../../analysis.cfg')
         #aggresivly write analysis.cfg to ensure lambdas are up to date
         with open(file_path, 'w') as f:
             f.write(common_cfg)
-
-        file_path = os.path.join(self.cwd, '../../../exp.dat')
-        if not os.path.exists(file_path):
-            with open(file_path, 'w') as f:
-                f.write(dummy_exp)
 
     def write_namd_scripts(self):
         '''
@@ -1055,8 +1049,8 @@ module load namd/2.14-nosmp
 nodes_per_namd={}
 cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cpu))
 
-                sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block' \
-                               ' --hint=nomultithread namd2 +replicas {} --tclmain run$stage-replicas.conf $lambda &'.format(reps)
+                sub_run_line = 'srun -N $nodes_per_namd -n $cpus_per_namd --distribution=block:block --hint=nomultithread' \
+                               ' namd2 +replicas {} --tclmain run$stage-replicas.conf $lambda &'.format(reps)
 
         else:
             #no NAMD3
@@ -1093,9 +1087,9 @@ cpus_per_namd={}""".format(int(num_windows*reps), num_cpu, reps, int(reps*num_cp
 #BSUB -J LIGPAIR
 #BSUB -o oLIGPAIR.%J
 #BSUB -e eLIGPAIR.%J""".format(int(np.ceil(num_jobs / gpus_per_node)))
-            sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g {} -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
-                           ' --exp_name={} --windows_mask=$lambda,$(expr $lambda + 1)' \
-                           ' --devices={} > $ties_dir/$lambda_$i.out&'.format(len(devices), exp_name, ','.join([str(x) for x in devices]))
+            sub_run_line = 'jsrun --smpiargs="off" -n 1 -a 1 -c {} -g {} -b packed:1 TIES_MD --config_file=$ties_dir/TIES.cfg' \
+                           ' --exp_name={} --windows_mask=$lambda,$(expr $lambda + 1) --devices={}' \
+                           ' > $ties_dir/$lambda_$i.out&'.format(len(devices), len(devices), exp_name, ','.join([str(x) for x in devices]))
 
     return sub_header, sub_run_line
 

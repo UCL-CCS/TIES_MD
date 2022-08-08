@@ -3,6 +3,7 @@
 import os
 import argparse
 import glob
+import json
 
 from .config import Config
 import numpy as np
@@ -47,6 +48,7 @@ class Analysis():
 
         :return: None
         '''
+        nice_print('TIES Analysis')
         result = {}
         for engine in self.engines:
             engine_id = engine.name+'_'+engine.method
@@ -120,13 +122,44 @@ def nice_print(string):
     print(string)
 
 
+def make_exp(verbose=True):
+    if verbose:
+        print('Generating dummy exp data...')
+        print('If legs have been set in analysis.cfg you can now run TIES_ana to get results.')
+    #looking for results files
+    populated_openmm_results = list(glob.iglob(os.path.join('*', '*', '*', 'LAMBDA*', 'rep*', 'results', '*.npy')))
+    populated_namd_results = list(glob.iglob(os.path.join('*', '*', '*', 'LAMBDA*', 'rep*', 'simulation', '*.alch')))
+    populated_openmm_results = list(set([x.split('LAMBDA')[0] for x in populated_openmm_results]))
+    populated_namd_results = list(set([x.split('LAMBDA')[0] for x in populated_namd_results]))
+    if len(populated_namd_results) > 0 and len(populated_openmm_results) > 0:
+        raise ValueError('Mixed OpenMM and NAMD results found please conduct analysis separately for each engine')
+    pop_results = populated_openmm_results+populated_namd_results
+    exp_dat = {}
+    for x in pop_results:
+        _data = x.split(os.sep)
+        ligand = {_data[1]: [0.00, 0.00]}
+
+        if _data[0] in exp_dat:
+            if _data[1] in exp_dat[_data[0]]:
+                #ignore if we have this included already
+                continue
+            else:
+                #if we have seen this system befor just add the new ligand
+                exp_dat[_data[0]].update(ligand)
+        else:
+            #if we have never see this in any form add all info
+            exp_dat.update({_data[0]: ligand})
+
+    with open('exp.dat', 'w') as fp:
+        json.dump(exp_dat, fp)
+    nice_print('END')
+
 def main():
     '''
     Main function where we chose to setup or run analysis.
 
     :return: None
     '''
-    nice_print('TIES Analysis')
 
     parser = argparse.ArgumentParser(description='Program for the analysis of TIES_MD outputs.')
     parser.add_argument("--run_type", type=str, help="What actions to perform [setup/run]", required=False)
@@ -138,37 +171,9 @@ def main():
         cfg.get_options()
         ana = Analysis(cfg)
         ana.run()
-        nice_print('END')
     elif args.run_type == 'setup':
-        print('Generating dummy exp data...')
-        print('If legs have been set in analysis.cfg you can now run TIES_ana to get results.')
-        #looking for results files
-        populated_openmm_results = list(glob.iglob(os.path.join('*', '*', '*', 'LAMBDA*', 'rep*', 'results', '*.npy')))
-        populated_namd_results = list(glob.iglob(os.path.join('*', '*', '*', 'LAMBDA*', 'rep*', 'simulation', '*.alch')))
-        populated_openmm_results = list(set([x.split('LAMBDA')[0] for x in populated_openmm_results]))
-        populated_namd_results = list(set([x.split('LAMBDA')[0] for x in populated_namd_results]))
-        if len(populated_namd_results) > 0 and len(populated_openmm_results) > 0:
-            raise ValueError('Mixed OpenMM and NAMD results found please conduct analysis separately for each engine')
-        pop_results = populated_openmm_results+populated_namd_results
-        exp_dat = {}
-        for x in pop_results:
-            _data = x.split(os.sep)
-            ligand = {_data[1]: [0.00, 0.00]}
-
-            if _data[0] in exp_dat:
-                if _data[1] in exp_dat[_data[0]]:
-                    #ignore if we have this included already
-                    continue
-                else:
-                    #if we have seen this system befor just add the new ligand
-                    exp_dat[_data[0]].update(ligand)
-            else:
-                #if we have never see this in any form add all info
-                exp_dat.update({_data[0]: ligand})
-
-        with open('exp.dat', 'w') as f:
-            print(exp_dat, file=f)
-
+        nice_print('TIES Analysis')
+        make_exp()
         nice_print('END')
     else:
         raise ValueError('Unknown value for arg run_type. Select from [setup/run]')
