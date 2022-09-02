@@ -20,7 +20,6 @@ class Test_CLI(unittest.TestCase):
                     'constraint_file': 'na',
                     'constraint_column': 'beta_factor',
                     'input_type': 'AMBER',
-                    'box_type': 'na',
                     'cell_basis_vec1': '41.5453,0.0,0.0',
                     'cell_basis_vec2': '0.0,45.082572999999995,0.0',
                     'cell_basis_vec3': '0.0,0.0,42.04022'}

@@ -125,7 +125,7 @@ settings and the settings found in ``TIES.cfg``. The setting which can be taken 
 values are as follows::
 
     [--config_file=./TIES.cfg]
-    A string pointing to where the TIES OpenMM configuration file is located.
+    A string for the absolute path pointing to where the TIES.cfg file is located. #THIS PATH MUST BE ABSOLUTE.
 
     [--exp_name=complex]
     This is the name of the experiment and the prefix that TIES OpenMM will expect on the input pdb and prmtop file.
