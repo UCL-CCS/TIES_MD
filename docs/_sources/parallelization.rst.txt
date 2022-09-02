@@ -14,7 +14,7 @@ using ``OpenMM`` and ``NAMD`` with ``TIES``.
 TIES-OpenMM
 -----------
 
-For `reference <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ we will consider
+For `reference <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/OpenMM/ethane/zero_sum/leg1>`_ we will consider
 running an example system from our ``TIES MD`` ``Github`` page. This example can be run without parallelization using this line::
 
     ties_md --exp_name=sys_solv

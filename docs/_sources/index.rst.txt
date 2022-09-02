@@ -28,6 +28,7 @@ Contents
     parallelization
     HPC_submissions
     theory
+    TIES20
     🚀Github <https://github.com/UCL-CCS/TIES_MD>
 
 Code Documentation

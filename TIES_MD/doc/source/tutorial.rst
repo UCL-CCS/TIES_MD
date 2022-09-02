@@ -162,13 +162,13 @@ Within ``LAMBDA_X`` there are directories named ``repY`` where ``Y`` is an integ
 ``simulation`` directory will contain all the output for the pre-production and production stages of the simulation
 respectively. The ``results`` directory will contain the files with potentials and gradients output by ``TIES_MD`` or ``NAMD``.
 The files in the ``results`` directories will be analysed to calculate binding free energies. Considering the application of
-this setup stage to `this <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ example
+this setup stage to `this <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/OpenMM/ethane/zero_sum/leg1>`_ example
 for the zero sum transformation of ethane to ethane the setup command would be::
 
     ties_md --exp_name=sys_solv --run_type=setup
 
 The above sets up an ``OpenMM`` calculation. Alternatively to use ``NAMD`` some options must be changed please see this
-`modified <https://github.com/UCL-CCS/TIES_MD/blob/master/TIES_MD/examples/ethane_namd/zero_sum/leg1/TIES.cfg>`_ config file
+`modified <https://github.com/UCL-CCS/TIES_MD/blob/master/TIES_MD/examples/NAMD/ethane_namd/zero_sum/leg1/TIES.cfg>`_ config file
 as an example of what to change.
 
 Running Simulations
@@ -178,7 +178,7 @@ The second stage of running ``TIES_MD``, after setup, involves the running of th
 and can only be run on a HPC for all but the smallest systems. The execution of ``TIES_MD`` branches at this point dependant
 on what MD engine is being used. HPC submission scripts should be prepared with the target MD engine in mind.
 
-Consider the same `example, <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1>`_ used in the
+Consider the same `example, <https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/OpenMM/ethane/zero_sum/leg1>`_ used in the
 setup stage, for the transformation of ethane to ethane. If in TIES.cfg the option ``global_lambdas`` is set
 equal to ``0.0, 0.2, 0.4, 0.6, 0.8, 1.0`` there are 6 alchemical windows and the option ``total_reps`` is set equal
 to ``1``, there is therefore 6x1 = 6 total simulations to perform. If a HPC submission script was to request one node with
@@ -225,8 +225,8 @@ in with information such as the lambda schedule or which MD engine was used. If 
 ``study/system/ligand/thermodynamic_leg/build`` was used then these config files are written to the ``study`` directory.
 Some information is missing from these config files which must be filled out. The missing information is for the names
 of the ``thermodynamic_leg`` directories. Add the names of the ``thermodynamic_leg`` to the
-config file ``analysis.cfg`` under the option ``legs`` as an example see the option `legs <https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/analysis.cfg>`_
-in this example script. This example analysis input also has an ``exp.dat`` `file <https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/exp.dat>`_
+config file ``analysis.cfg`` under the option ``legs`` as an example see the option `legs <https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/OpenMM/analysis.cfg>`_
+in this example script. This example analysis input also has an ``exp.dat`` `file <https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/OpenMM/exp.dat>`_
 populated for the system named ``ethane`` and a ligand transformation in that system called ``zero_sum``, this transformation
 has an theoretical ΔG of 0.0 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
 values in ``exp.dat`` which need to be populated can be left as 0.0. The theoretical ΔG of this ethane zero sum system is zero

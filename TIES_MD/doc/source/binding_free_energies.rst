@@ -32,7 +32,8 @@ Setup
 To set up these calculation we recommend the use of ``TIES20``. This is a program designed to both build and parameterize
 hybrid ligands but also setup binding free energy calculations for the TIES protocol that can be run with ``TIES_MD``.
 ``TIES20`` can be used in `browser <https://ccs-ties.org/ties/>`_. Alternatively one can use the ``TIES20`` API to set up
-simulations as follows::
+simulations. In order to use the API ``TIES20`` must be installed locally please see the :ref:`TIES20` section
+for how to do this. With ``TIES20`` installed you can use the API as follows to build inputs::
 
     #ties20 imports
     from ties import Pair, Config, Ligand, Protein

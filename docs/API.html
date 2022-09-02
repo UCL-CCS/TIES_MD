@@ -89,7 +89,8 @@ may be routinely changed during setup.</p>
 <p>Here we detail all the options in the API and what should be passed. The options that were previously on the command line
 can be passed into the TIES class like so:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">TIES_MD</span> <span class="kn">import</span> <span class="n">TIES</span>
-<span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="p">,</span> <span class="n">windows_mask</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">rep_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exp_name</span><span class="o">=</span><span class="s1">&#39;sys_solv&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./my_ties_sims&#39;</span><span class="p">),</span> <span class="n">windows_mask</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">rep_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exp_name</span><span class="o">=</span><span class="s1">&#39;sys_solv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Once the TIES class is constructed the options that were previously in TIES.cfg can now be set as attributes of the TIES
@@ -145,7 +146,8 @@ class like so:</p>
 <span class="n">md</span><span class="o">.</span><span class="n">cell_basis_vec3</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">11.516722937414105</span><span class="p">,</span> <span class="o">-</span><span class="mf">16.287105279373797</span><span class="p">,</span> <span class="mf">28.21009840448772</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Finally there are three additional options that don’t appear in TIES.cfg which are:</p>
+<p>Finally there are three additional options that don’t appear in TIES.cfg which are <code class="docutils literal notranslate"><span class="pre">sub_header</span></code>,
+<code class="docutils literal notranslate"><span class="pre">pre_run_line</span></code> and <code class="docutils literal notranslate"><span class="pre">run_line</span></code>. These three option can be used as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#A header to a the submission script that will be written for this job.</span>
 <span class="n">md</span><span class="o">.</span><span class="n">sub_header</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;#Example script for Summit OpenMM</span>
 <span class="s2">#BSUB -P CHM155_001</span>
@@ -188,7 +190,7 @@ wait
 <p>If <code class="docutils literal notranslate"><span class="pre">sub_header</span></code>, <code class="docutils literal notranslate"><span class="pre">pre_run_line</span></code> and <code class="docutils literal notranslate"><span class="pre">run_line</span></code> are not set <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> will make a best guess for a submission script.
 Ideally only small modification should be need to run using the best guess scripts. Any tweaks that are applied to get the
 scripts working can then be passed into <code class="docutils literal notranslate"><span class="pre">sub_header</span></code>, <code class="docutils literal notranslate"><span class="pre">pre_run_line</span></code> and <code class="docutils literal notranslate"><span class="pre">run_line</span></code> for future system setups. For
-general idea on how to make submission scripts see <a class="reference internal" href="HPC_submissions.html#hpc-submission-scripts"><span class="std std-ref">HPC Submission scripts</span></a>.</p>
+general ideas on how to make submission scripts see <a class="reference internal" href="HPC_submissions.html#hpc-submission-scripts"><span class="std std-ref">HPC Submission scripts</span></a>.</p>
 </section>
 </section>
 

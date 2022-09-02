@@ -195,7 +195,7 @@ free energies. <code class="docutils literal notranslate"><span class="pre">TIES
 settings and the settings found in <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code>. The setting which can be taken on the command line and their default
 values are as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[--config_file=./TIES.cfg]
-A string pointing to where the TIES OpenMM configuration file is located.
+A string for the absolute path pointing to where the TIES.cfg file is located. #THIS PATH MUST BE ABSOLUTE.
 
 [--exp_name=complex]
 This is the name of the experiment and the prefix that TIES OpenMM will expect on the input pdb and prmtop file.
@@ -206,6 +206,10 @@ A string either `run`, `setup` or `class`. `run` will tell TIES OpenMM to execut
 `setup` will prep the output directories and `class` will halt the program after the construction of the TIES class,
  this can be used in testing or advanced analysis.
 
+[--windows_mask=None]
+Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
+run. By default all windows will be run.
+
 # Below are OpenMM specific options, these are silently ignored for NAMD runs.
 
 [--devices=0]
@@ -215,10 +219,6 @@ are specified then TIES OpenMM will parallelize requested replicas over the avai
 [--rep_id=0]
 An int which will be used to generate the names of output files. Should be used if many independent replicas of the
 same simulation are run on different nodes to ensure output is writen to unique location.
-
-[--windows_mask=None]
-Comma separated list of integers. These specify what alchemical windows the current instance of TIES OpenMM should
-run. By default all windows will be run.
 </pre></div>
 </div>
 </section>
@@ -233,13 +233,13 @@ Within <code class="docutils literal notranslate"><span class="pre">LAMBDA_X</sp
 <code class="docutils literal notranslate"><span class="pre">simulation</span></code> directory will contain all the output for the pre-production and production stages of the simulation
 respectively. The <code class="docutils literal notranslate"><span class="pre">results</span></code> directory will contain the files with potentials and gradients output by <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> or <code class="docutils literal notranslate"><span class="pre">NAMD</span></code>.
 The files in the <code class="docutils literal notranslate"><span class="pre">results</span></code> directories will be analysed to calculate binding free energies. Considering the application of
-this setup stage to <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1">this</a> example
+this setup stage to <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/OpenMM/ethane/zero_sum/leg1">this</a> example
 for the zero sum transformation of ethane to ethane the setup command would be:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ties_md</span> <span class="o">--</span><span class="n">exp_name</span><span class="o">=</span><span class="n">sys_solv</span> <span class="o">--</span><span class="n">run_type</span><span class="o">=</span><span class="n">setup</span>
 </pre></div>
 </div>
 <p>The above sets up an <code class="docutils literal notranslate"><span class="pre">OpenMM</span></code> calculation. Alternatively to use <code class="docutils literal notranslate"><span class="pre">NAMD</span></code> some options must be changed please see this
-<a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/blob/master/TIES_MD/examples/ethane_namd/zero_sum/leg1/TIES.cfg">modified</a> config file
+<a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/blob/master/TIES_MD/examples/NAMD/ethane_namd/zero_sum/leg1/TIES.cfg">modified</a> config file
 as an example of what to change.</p>
 </section>
 <section id="running-simulations">
@@ -247,7 +247,7 @@ as an example of what to change.</p>
 <p>The second stage of running <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code>, after setup, involves the running of the MD simulations, this is compute intensive
 and can only be run on a HPC for all but the smallest systems. The execution of <code class="docutils literal notranslate"><span class="pre">TIES_MD</span></code> branches at this point dependant
 on what MD engine is being used. HPC submission scripts should be prepared with the target MD engine in mind.</p>
-<p>Consider the same <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/ethane/zero_sum/leg1">example,</a> used in the
+<p>Consider the same <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/tree/master/TIES_MD/examples/OpenMM/ethane/zero_sum/leg1">example,</a> used in the
 setup stage, for the transformation of ethane to ethane. If in TIES.cfg the option <code class="docutils literal notranslate"><span class="pre">global_lambdas</span></code> is set
 equal to <code class="docutils literal notranslate"><span class="pre">0.0,</span> <span class="pre">0.2,</span> <span class="pre">0.4,</span> <span class="pre">0.6,</span> <span class="pre">0.8,</span> <span class="pre">1.0</span></code> there are 6 alchemical windows and the option <code class="docutils literal notranslate"><span class="pre">total_reps</span></code> is set equal
 to <code class="docutils literal notranslate"><span class="pre">1</span></code>, there is therefore 6x1 = 6 total simulations to perform. If a HPC submission script was to request one node with
@@ -292,8 +292,8 @@ in with information such as the lambda schedule or which MD engine was used. If 
 <code class="docutils literal notranslate"><span class="pre">study/system/ligand/thermodynamic_leg/build</span></code> was used then these config files are written to the <code class="docutils literal notranslate"><span class="pre">study</span></code> directory.
 Some information is missing from these config files which must be filled out. The missing information is for the names
 of the <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code> directories. Add the names of the <code class="docutils literal notranslate"><span class="pre">thermodynamic_leg</span></code> to the
-config file <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> under the option <code class="docutils literal notranslate"><span class="pre">legs</span></code> as an example see the option <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/analysis.cfg">legs</a>
-in this example script. This example analysis input also has an <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/exp.dat">file</a>
+config file <code class="docutils literal notranslate"><span class="pre">analysis.cfg</span></code> under the option <code class="docutils literal notranslate"><span class="pre">legs</span></code> as an example see the option <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/OpenMM/analysis.cfg">legs</a>
+in this example script. This example analysis input also has an <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> <a class="reference external" href="https://github.com/UCL-CCS/TIES_MD/blob/main/TIES_MD/examples/OpenMM/exp.dat">file</a>
 populated for the system named <code class="docutils literal notranslate"><span class="pre">ethane</span></code> and a ligand transformation in that system called <code class="docutils literal notranslate"><span class="pre">zero_sum</span></code>, this transformation
 has an theoretical ΔG of 0.0 kcal/mol and an unknown standard deviation associated with that measurement. Any unknown
 values in <code class="docutils literal notranslate"><span class="pre">exp.dat</span></code> which need to be populated can be left as 0.0. The theoretical ΔG of this ethane zero sum system is zero

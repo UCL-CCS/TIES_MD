@@ -1,0 +1,7 @@
+#TITITLE:    TS          BOND1       AVGBOND1         ELECT1      AVGELECT1                VDW1        AVGVDW1          BOND2       AVGBOND2         ELECT2           AVGELECT2           VDW2        AVGVDW2
+#NEW TI WINDOW: LAMBDA 0
+#PARTITION 1 SCALING: BOND 1 VDW 0 ELEC 0
+#PARTITION 2 SCALING: BOND 1 VDW 1 ELEC 1
+#CONSTANT TEMPERATURE: 300 K
+TI:           0         0.0890         0.0890         1.0853         1.0853             -0.9970        -0.9970         0.1324         0.1324         1.0932              1.0932        -1.1191        -1.1191
+TI:        1000         2.2446         1.1668         1.0336         1.0594             -2.3891        -1.6930         1.8460         0.9892         1.1628              1.1280         4.9786         1.9297

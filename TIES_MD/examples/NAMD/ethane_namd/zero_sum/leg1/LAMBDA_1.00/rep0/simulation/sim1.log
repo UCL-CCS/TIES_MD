@@ -1,0 +1,1132 @@
+TCL: Suspending until startup complete.
+Warning: The following variables were set in the
+Warning: configuration file but will be ignored:
+Warning:    paraTypeCharmm (parameters)
+Info: EXTENDED SYSTEM FILE   /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.xsc
+Info: SIMULATION PARAMETERS:
+Info: TIMESTEP               2
+Info: NUMBER OF STEPS        0
+Info: STEPS PER CYCLE        10
+Info: PERIODIC CELL BASIS 1  33.1832 0 0
+Info: PERIODIC CELL BASIS 2  -11.0611 31.2856 0
+Info: PERIODIC CELL BASIS 3  -11.0611 -15.6428 27.0941
+Info: PERIODIC CELL CENTER   0 0 0
+Info: WRAPPING WATERS AROUND PERIODIC BOUNDARIES ON OUTPUT.
+Info: WRAPPING ALL CLUSTERS AROUND PERIODIC BOUNDARIES ON OUTPUT.
+Info: LOAD BALANCER  Centralized
+Info: LOAD BALANCING STRATEGY  New Load Balancers -- DEFAULT
+Info: LDB PERIOD             2000 steps
+Info: FIRST LDB TIMESTEP     50
+Info: LAST LDB TIMESTEP     -1
+Info: LDB BACKGROUND SCALING 1
+Info: HOM BACKGROUND SCALING 1
+Info: PME BACKGROUND SCALING 1
+Info: MIN ATOMS PER PATCH    40
+Info: VELOCITY FILE          /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.vel
+Info: CENTER OF MASS MOVING INITIALLY? NO
+Info: DIELECTRIC             1
+Info: EXCLUDE                SCALED ONE-FOUR
+Info: 1-4 ELECTROSTATICS SCALED BY 0.833333
+Info: MODIFIED 1-4 VDW PARAMETERS WILL BE USED
+Info: DCD FILENAME           /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd
+Info: DCD FREQUENCY          5000
+Info: DCD FIRST STEP         5000
+Info: DCD FILE WILL CONTAIN UNIT CELL DATA
+Info: XST FILENAME           /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.xst
+Info: XST FREQUENCY          5000
+Info: NO VELOCITY DCD OUTPUT
+Info: NO FORCE DCD OUTPUT
+Info: OUTPUT FILENAME        /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1
+Info: BINARY OUTPUT FILES WILL BE USED
+Info: RESTART FILENAME       /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1
+Info: RESTART FREQUENCY      500000
+Info: BINARY RESTART FILES WILL BE USED
+Info: SWITCHING ACTIVE
+Info: SWITCHING ON           10
+Info: SWITCHING OFF          12
+Info: PAIRLIST DISTANCE      13.5
+Info: PAIRLIST SHRINK RATE   0.01
+Info: PAIRLIST GROW RATE     0.01
+Info: PAIRLIST TRIGGER       0.3
+Info: PAIRLISTS PER CYCLE    2
+Info: PAIRLISTS ENABLED
+Info: MARGIN                 0.48
+Info: HYDROGEN GROUP CUTOFF  2.5
+Info: PATCH DIMENSION        16.48
+Info: ENERGY OUTPUT STEPS    1000
+Info: CROSSTERM ENERGY INCLUDED IN DIHEDRAL
+Info: TIMING OUTPUT STEPS    10000
+Info: PRESSURE OUTPUT STEPS  5000
+Info: THERMODYNAMIC INTEGRATION (TI) ON
+Info: TI LAMBDA VALUE     1
+Info: TI INTRA-ALCHEMICAL NON-BONDED INTERACTIONS WILL BE RETAINED
+Info: TI INTRA-ALCHEMICAL BONDED INTERACTIONS WILL BE RETAINED
+Info: TI VDW SHIFTING COEFFICIENT 5
+Info: TI ELEC. ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 0.55
+Info: TI ELEC. ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0.45 AND LAMBDA = 1
+Info: TI VDW ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 1
+Info: TI VDW ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 1
+Info: TI BOND ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 1 AND LAMBDA = 1
+Info: TI BOND ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 0
+Info: LANGEVIN DYNAMICS ACTIVE
+Info: LANGEVIN TEMPERATURE   300
+Info: LANGEVIN USING BBK INTEGRATOR
+Info: LANGEVIN DAMPING COEFFICIENT IS 5 INVERSE PS
+Info: LANGEVIN DYNAMICS NOT APPLIED TO HYDROGENS
+Warning: Option useGroupPressure is being enabled due to pressure control with rigidBonds.
+Info: BERENDSEN PRESSURE COUPLING ACTIVE
+Info:     TARGET PRESSURE IS 1.01325 BAR
+Info:     COMPRESSIBILITY ESTIMATE IS 4.57e-05 BAR^(-1)
+Info:     RELAXATION TIME IS 100 FS
+Info:     APPLIED EVERY 2 STEPS
+Info:     PRESSURE CONTROL IS GROUP-BASED
+Info:       CELL FLUCTUATION IS ISOTROPIC
+Info: PARTICLE MESH EWALD (PME) ACTIVE
+Info: PME TOLERANCE               1e-06
+Info: PME EWALD COEFFICIENT       0.257952
+Info: PME INTERPOLATION ORDER     4
+Info: PME GRID DIMENSIONS         36 36 36
+Info: PME MAXIMUM GRID SPACING    1
+Info: Attempting to read FFTW data from FFTW_NAMD_2.14_Linux-x86_64-multicore.txt
+Info: Optimizing 6 FFT steps.  1... 2... 3... 4... 5... 6...   Done.
+Info: Writing FFTW data to FFTW_NAMD_2.14_Linux-x86_64-multicore.txt
+Info: FULL ELECTROSTATIC EVALUATION FREQUENCY      2
+Info: USING VERLET I (r-RESPA) MTS SCHEME.
+Info: C1 SPLITTING OF LONG RANGE ELECTROSTATICS
+Info: PLACING ATOMS IN PATCHES BY HYDROGEN GROUPS
+Info: RIGID BONDS TO HYDROGEN : ALL
+Info:         ERROR TOLERANCE : 1e-05
+Info:          MAX ITERATIONS : 100
+Info: RIGID WATER USING SETTLE ALGORITHM
+Info: RANDOM NUMBER SEED     1660223076
+Info: USE HYDROGEN BONDS?    NO
+Info: Using AMBER format force field!
+Info: AMBER PARM FILE        /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.prmtop
+Info: COORDINATE PDB         /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: Exclusions in PARM file will be ignored!
+Info: SCNB (VDW SCALING)     2
+Info: USING ARITHMETIC MEAN TO COMBINE L-J SIGMA PARAMETERS
+Info: BINARY COORDINATES     /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.coor
+Reading parm file (/home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.prmtop) ...
+PARM file in AMBER 7 format
+Warning: Skipping ATOMIC_NUMBER in parm file while seeking MASS.
+Warning: Skipping SCEE_SCALE_FACTOR in parm file while seeking SOLTY.
+Warning: Skipping SCNB_SCALE_FACTOR in parm file while seeking SOLTY.
+Warning: Encounter 10-12 H-bond term
+Warning: Found 886 H-H bonds.
+Info: SUMMARY OF PARAMETERS:
+Info: 4 BONDS
+Info: 3 ANGLES
+Info:   3 HARMONIC
+Info:   0 COSINE-BASED
+Info: 2 DIHEDRAL
+Info: 0 IMPROPER
+Info: 0 CROSSTERM
+Info: 0 VDW
+Info: 10 VDW_PAIRS
+Info: 0 NBTHOLE_PAIRS
+Info: Reading pdb file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: TIME FOR READING PDB FILE: 0.00420167
+Info: 
+Info: To read alchdata from file: /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: To read alchflag data from column: 5
+Info: ****************************
+Info: STRUCTURE SUMMARY:
+Info: 2670 ATOMS
+Info: 2669 BONDS
+Info: 21 ANGLES
+Info: 18 DIHEDRALS
+Info: 0 IMPROPERS
+Info: 0 CROSSTERMS
+Info: 0 EXCLUSIONS
+Info: 2667 RIGID BONDS
+Info: ALCH: 4 ATOMS TO DISAPPEAR IN FINAL STATE
+Info: ALCH: 4 ATOMS TO APPEAR IN FINAL STATE
+Info: ALCH: 1 ANGLES LINKING INITIAL AND FINAL ATOMS DELETED
+Info: ALCH: 6 DIHEDRALS LINKING INITIAL AND FINAL ATOMS DELETED
+Info: 5343 DEGREES OF FREEDOM
+Info: 889 HYDROGEN GROUPS
+Info: 4 ATOMS IN LARGEST HYDROGEN GROUP
+Info: 889 MIGRATION GROUPS
+Info: 4 ATOMS IN LARGEST MIGRATION GROUP
+Info: TOTAL MASS = 16007.3 amu
+Info: TOTAL CHARGE = 0.00300001 e
+Info: MASS DENSITY = 0.945017 g/cm^3
+Info: ATOM DENSITY = 0.0949236 atoms/A^3
+Info: *****************************
+Info: Reading from binary file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.coor
+Info: 
+Info: Entering startup at 0.0229091 s, 45.8516 MB of memory in use
+Info: Startup phase 0 took 6.767e-05 s, 45.8516 MB of memory in use
+Info: ADDED 2708 IMPLICIT EXCLUSIONS
+Info: Startup phase 1 took 0.000682386 s, 46.1328 MB of memory in use
+Info: NONBONDED TABLE R-SQUARED SPACING: 0.0625
+Info: NONBONDED TABLE SIZE: 769 POINTS
+Info: ABSOLUTE IMPRECISION IN FAST TABLE FORCE: 2.64698e-23 AT 11.9138
+Info: RELATIVE IMPRECISION IN FAST TABLE FORCE: 1.40436e-16 AT 11.9138
+Info: INCONSISTENCY IN FAST TABLE ENERGY VS FORCE: 0.000325096 AT 11.9556
+Info: ABSOLUTE IMPRECISION IN SCOR TABLE FORCE: 4.10282e-22 AT 11.9138
+Info: RELATIVE IMPRECISION IN SCOR TABLE FORCE: 3.56912e-15 AT 11.9138
+Info: INCONSISTENCY IN SCOR TABLE ENERGY VS FORCE: 0.000324844 AT 11.9556
+Info: ABSOLUTE IMPRECISION IN VDWA TABLE ENERGY: 9.86076e-32 AT 11.8295
+Info: RELATIVE IMPRECISION IN VDWA TABLE ENERGY: 6.75473e-14 AT 11.9138
+Info: ABSOLUTE IMPRECISION IN VDWA TABLE FORCE: 4.62223e-32 AT 11.9138
+Info: RELATIVE IMPRECISION IN VDWA TABLE FORCE: 2.12237e-15 AT 11.9138
+Info: INCONSISTENCY IN VDWA TABLE ENERGY VS FORCE: 0.0040507 AT 0.251946
+Info: ABSOLUTE IMPRECISION IN VDWB TABLE ENERGY: 4.1359e-25 AT 11.8295
+Info: RELATIVE IMPRECISION IN VDWB TABLE ENERGY: 7.56853e-15 AT 11.9138
+Info: ABSOLUTE IMPRECISION IN VDWB TABLE FORCE: 3.87741e-26 AT 11.9138
+Info: RELATIVE IMPRECISION IN VDWB TABLE FORCE: 5.97409e-16 AT 11.9138
+Info: INCONSISTENCY IN VDWB TABLE ENERGY VS FORCE: 0.00150189 AT 0.251946
+Info: Startup phase 2 took 0.000549821 s, 46.4883 MB of memory in use
+Info: Startup phase 3 took 2.8003e-05 s, 46.4883 MB of memory in use
+Info: Startup phase 4 took 4.9025e-05 s, 46.4883 MB of memory in use
+Info: Startup phase 5 took 1.9811e-05 s, 46.4883 MB of memory in use
+Info: PATCH GRID IS 1 (PERIODIC) BY 1 (PERIODIC) BY 1 (PERIODIC)
+Info: PATCH GRID IS 1-AWAY BY 1-AWAY BY 1-AWAY
+Info: Reading from binary file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.vel
+Info: REMOVING COM VELOCITY 9.77054e-05 -0.0348115 0.116868
+Info: LARGEST PATCH (0) HAS 2670 ATOMS
+Info: TORUS A SIZE 1 USING 0
+Info: TORUS B SIZE 1 USING 0
+Info: TORUS C SIZE 1 USING 0
+Info: TORUS MINIMAL MESH SIZE IS 1 BY 1 BY 1
+Info: Placed 100% of base nodes on same physical node as patch
+Info: Startup phase 6 took 0.000680513 s, 47.5117 MB of memory in use
+Info: PME using 1 and 1 processors for FFT and reciprocal sum.
+Info: PME GRID LOCATIONS: 0
+Info: PME TRANS LOCATIONS: 0
+Info: PME USING 1 GRID NODES AND 1 TRANS NODES
+Info: Optimizing 4 FFT steps.  1... 2... 3... 4...   Done.
+Info: Startup phase 7 took 0.00050199 s, 48.4492 MB of memory in use
+Info: Startup phase 8 took 3.971e-05 s, 48.4492 MB of memory in use
+Info: Startup phase 9 took 2.0577e-05 s, 48.4492 MB of memory in use
+Info: Startup phase 10 took 1.8631e-05 s, 48.4492 MB of memory in use
+Info: Startup phase 11 took 2.0257e-05 s, 48.4492 MB of memory in use
+LDB: Central LB being created...
+Info: Startup phase 12 took 3.3208e-05 s, 48.4492 MB of memory in use
+Info: CREATING 25 COMPUTE OBJECTS
+Info: Startup phase 13 took 0.000138698 s, 48.4492 MB of memory in use
+Info: Startup phase 14 took 2.6393e-05 s, 48.4492 MB of memory in use
+Info: Startup phase 15 took 1.7619e-05 s, 48.4492 MB of memory in use
+Info: Finished startup at 0.0258035 s, 48.4492 MB of memory in use
+
+TCL: Running for 20000 steps
+TI: RESETTING FOR NEW WINDOW LAMBDA SET TO 1
+TI: WINDOW TO HAVE 0 STEPS OF EQUILIBRATION PRIOR TO TI DATA COLLECTION.
+PRESSURE: 0 181.412 243.29 -73.611 243.29 66.1528 -262.788 -73.611 -262.788 -181.109
+GPRESSURE: 0 330.568 453.91 157.409 317.67 132.349 -122.23 -104.962 -296.909 -322.138
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:       0         0.1138         3.4370         0.2307         0.0000         -10157.0624      1460.8667         0.0000         0.0000      1409.7711          -7282.6431       265.5546     -8692.4142     -7279.6382       265.5546             22.1518        46.9263     28127.8789        22.1518        46.9263
+TI:           0         1.4536         0.9267        -1.9040         1.2283              0.8960        -1.5612
+
+OPENING TI ENERGY OUTPUT FILE
+OPENING EXTENDED SYSTEM TRAJECTORY FILE
+LDB: ============= START OF LOAD BALANCING ============== 0.32393
+LDB: ============== END OF LOAD BALANCING =============== 0.323995
+LDB: =============== DONE WITH MIGRATION ================ 0.324018
+LDB: ============= START OF LOAD BALANCING ============== 1.68253
+LDB: ============== END OF LOAD BALANCING =============== 1.68261
+LDB: =============== DONE WITH MIGRATION ================ 1.68268
+Info: Initial time: 1 CPUs 0.0333193 s/step 0.19282 days/ns 56.2969 MB memory
+LDB: ============= START OF LOAD BALANCING ============== 2.05563
+LDB: ============== END OF LOAD BALANCING =============== 2.05641
+LDB: =============== DONE WITH MIGRATION ================ 2.05645
+LDB: ============= START OF LOAD BALANCING ============== 3.54254
+LDB: ============== END OF LOAD BALANCING =============== 3.5426
+LDB: =============== DONE WITH MIGRATION ================ 3.54267
+Info: Initial time: 1 CPUs 0.0371046 s/step 0.214726 days/ns 56.2969 MB memory
+LDB: ============= START OF LOAD BALANCING ============== 5.37571
+LDB: ============== END OF LOAD BALANCING =============== 5.37578
+LDB: =============== DONE WITH MIGRATION ================ 5.37585
+Info: Initial time: 1 CPUs 0.0366781 s/step 0.212258 days/ns 56.2969 MB memory
+LDB: ============= START OF LOAD BALANCING ============== 7.2351
+LDB: ============== END OF LOAD BALANCING =============== 7.23518
+LDB: =============== DONE WITH MIGRATION ================ 7.23551
+Info: Benchmark time: 1 CPUs 0.037221 s/step 0.215399 days/ns 56.2969 MB memory
+Info: Benchmark time: 1 CPUs 0.0366203 s/step 0.211923 days/ns 56.2969 MB memory
+Info: Benchmark time: 1 CPUs 0.036343 s/step 0.210319 days/ns 56.2969 MB memory
+Info: Benchmark time: 1 CPUs 0.0354727 s/step 0.205282 days/ns 56.2969 MB memory
+Info: Benchmark time: 1 CPUs 0.0357741 s/step 0.207026 days/ns 56.2969 MB memory
+Info: Benchmark time: 1 CPUs 0.0363162 s/step 0.210163 days/ns 56.2969 MB memory
+ENERGY:    1000         0.1430         8.0318         0.4589         0.0000          -9852.2482      1331.7994         0.0000         0.0000      1531.1147          -6980.7006       288.4117     -8511.8153     -6978.0761       284.0896              5.3014        12.1767     27035.8978       -42.2629       -42.3341
+TI:        1000         5.0503         1.0423         3.1518         1.6886              1.0500        -2.4930
+
+ENERGY:    2000         0.1850         5.3860         0.4494         0.0000          -9651.1833      1285.4979         0.0000         0.0000      1580.3778          -6779.2873       297.6913     -8359.6651     -6773.8986       294.0509             88.4554       141.0319     27120.1232         4.2925         4.5554
+TI:        2000         0.9217         0.7613         2.4137         3.2638              0.8119        -2.0647
+
+LDB: ============= START OF LOAD BALANCING ============== 79.0978
+LDB: ============== END OF LOAD BALANCING =============== 79.0978
+LDB: =============== DONE WITH MIGRATION ================ 79.0979
+LDB: ============= START OF LOAD BALANCING ============== 80.9814
+LDB: ============== END OF LOAD BALANCING =============== 80.9815
+LDB: =============== DONE WITH MIGRATION ================ 80.9815
+ENERGY:    3000         1.1473         5.0255         0.1358         0.0000          -9782.9824      1320.2124         0.0000         0.0000      1566.6946          -6889.7667       295.1138     -8456.4613     -6887.1242       299.6034             48.0299        60.2093     27049.0685        -1.6412        -1.9296
+TI:        3000         1.2073         1.0618        -1.3293         3.1056              1.0467        -1.9751
+
+ENERGY:    4000         0.2273         7.5322         0.6452         0.0000          -9685.2310      1262.3191         0.0000         0.0000      1627.1853          -6787.3219       306.5083     -8414.5072     -6783.8989       301.4333            -50.2609       -11.5395     26975.2785        -2.5597        -2.0376
+TI:        4000         3.6063         0.7083         0.3181         0.5556              0.8257        -2.1723
+
+LDB: ============= START OF LOAD BALANCING ============== 153.46
+LDB: ============== END OF LOAD BALANCING =============== 153.46
+LDB: =============== DONE WITH MIGRATION ================ 153.46
+LDB: ============= START OF LOAD BALANCING ============== 155.265
+LDB: ============== END OF LOAD BALANCING =============== 155.265
+LDB: =============== DONE WITH MIGRATION ================ 155.265
+PRESSURE: 5000 -200.549 343.514 -200.597 343.514 29.0367 6.59891 -200.597 6.59891 -361.121
+GPRESSURE: 5000 29.847 204.628 -295.254 326.316 -13.1002 186.11 226.833 -71.7488 -433.972
+PRESSAVG: 5000 -8.48381 9.48661 6.91029 9.48661 25.5701 -31.4637 6.91029 -31.4637 -42.6859
+GPRESSAVG: 5000 -8.63309 9.82603 7.2022 10.8098 25.6721 -31.3571 7.34801 -31.4325 -41.9393
+ENERGY:    5000         0.0652         5.8171         1.1051         0.0000          -9733.3308      1275.1142         0.0000         0.0000      1556.8419          -6894.3873       293.2579     -8451.2291     -6893.0707       299.3944           -177.5446      -139.0751     26959.2622        -0.4946         0.2454
+TI:        5000         2.3089         0.7361         2.7135         1.6790              0.7935        -2.2920
+
+OPENING COORDINATE DCD FILE
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 5000
+The last position output (seq=5000) takes 0.000 seconds, 57.613 MB of memory in use
+ENERGY:    6000         1.2224         5.7114         0.2278         0.0000          -9727.9104      1293.8041         0.0000         0.0000      1551.4725          -6875.4722       292.2465     -8426.9447     -6871.5891       297.3283           -147.3216      -116.5292     27262.7653        12.3474        13.2937
+TI:        6000         1.5998         0.9073        -2.7154         3.2540              0.9492        -2.1817
+
+LDB: ============= START OF LOAD BALANCING ============== 226.503
+LDB: ============== END OF LOAD BALANCING =============== 226.504
+LDB: =============== DONE WITH MIGRATION ================ 226.504
+LDB: ============= START OF LOAD BALANCING ============== 228.455
+LDB: ============== END OF LOAD BALANCING =============== 228.455
+LDB: =============== DONE WITH MIGRATION ================ 228.455
+ENERGY:    7000         0.7893         8.8031         1.5924         0.0000          -9807.9482      1319.1678         0.0000         0.0000      1534.8711          -6942.7244       289.1193     -8477.5955     -6940.9176       293.9715            -17.7232        69.0503     27047.4171        -7.0757        -7.4697
+TI:        7000         2.1298         1.0453        -2.1168         4.2043              1.0404        -1.9595
+
+ENERGY:    8000         0.0359         4.8969         0.4811         0.0000          -9770.2312      1304.8380         0.0000         0.0000      1534.0836          -6925.8957       288.9710     -8459.9793     -6926.2099       291.3088            -74.6761       -57.7304     27383.1268        14.6200        14.3907
+TI:        8000         1.1789         1.0389         2.7649         2.5141              1.0987        -2.1906
+
+LDB: ============= START OF LOAD BALANCING ============== 300.267
+LDB: ============== END OF LOAD BALANCING =============== 300.267
+LDB: =============== DONE WITH MIGRATION ================ 300.267
+LDB: ============= START OF LOAD BALANCING ============== 302.139
+LDB: ============== END OF LOAD BALANCING =============== 302.139
+LDB: =============== DONE WITH MIGRATION ================ 302.139
+ENERGY:    9000         0.3414         1.9883         0.2875         0.0000          -9687.1153      1273.7537         0.0000         0.0000      1628.6405          -6782.1039       306.7824     -8410.7444     -6777.8722       294.8377           -119.6131      -102.7120     27182.1836        -7.1079        -7.0830
+TI:        9000         0.6885         1.0774        -2.3445         0.9069              1.1062        -2.0670
+
+PRESSURE: 10000 182.452 24.835 -675.133 24.835 343.065 536.488 -675.133 536.488 5.27372
+GPRESSURE: 10000 235.719 -103.867 -623.287 -207.185 605.24 613.423 -552.909 569.757 -310.253
+PRESSAVG: 10000 17.0529 -26.4628 -26.4389 -26.4628 -26.8803 -16.1694 -26.4389 -16.1694 5.93738
+GPRESSAVG: 10000 17.0925 -26.6493 -26.1226 -26.8322 -27.1771 -15.6811 -26.3822 -16.7597 5.97979
+TIMING: 10000  CPU: 357.592, 0.0357538/step  Wall: 370.062, 0.0370005/step, 0.102779 hours remaining, 57.613281 MB of memory in use.
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:   10000         0.4289        10.5122         0.5796         0.0000          -9747.0311      1290.6832         0.0000         0.0000      1563.7139          -6881.1133       294.5524     -8444.8271     -6876.9599       298.8648            176.9303       176.9021     26658.6809       -19.2671       -19.9730
+TI:       10000         2.3712         0.8516        -0.6849         4.2501              0.7421        -2.2305
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 10000
+The last position output (seq=10000) takes 0.000 seconds, 57.613 MB of memory in use
+LDB: ============= START OF LOAD BALANCING ============== 375.606
+LDB: ============== END OF LOAD BALANCING =============== 375.606
+LDB: =============== DONE WITH MIGRATION ================ 375.606
+LDB: ============= START OF LOAD BALANCING ============== 377.457
+LDB: ============== END OF LOAD BALANCING =============== 377.457
+LDB: =============== DONE WITH MIGRATION ================ 377.457
+ENERGY:   11000         0.2530         4.6711         0.8906         0.0000          -9578.5789      1237.5928         0.0000         0.0000      1613.6282          -6721.5433       303.9546     -8335.1715     -6715.8139       302.2691           -161.8496      -153.1744     27257.5005        25.2597        24.9979
+TI:       11000         2.6116         1.0667         3.1347         1.1762              1.1505        -2.1257
+
+ENERGY:   12000         0.4163         5.4366         2.3570         0.0000          -9722.6891      1276.8394         0.0000         0.0000      1596.8798          -6840.7600       300.7997     -8437.6398     -6837.8739       299.1201            106.6316       154.7781     26811.2007       -16.0387       -16.7325
+TI:       12000         3.3433         1.0315         1.8301         3.0310              1.0236        -1.9473
+
+LDB: ============= START OF LOAD BALANCING ============== 450.537
+LDB: ============== END OF LOAD BALANCING =============== 450.537
+LDB: =============== DONE WITH MIGRATION ================ 450.537
+LDB: ============= START OF LOAD BALANCING ============== 452.588
+LDB: ============== END OF LOAD BALANCING =============== 452.588
+LDB: =============== DONE WITH MIGRATION ================ 452.588
+ENERGY:   13000         0.7581         3.1879         0.1122         0.0000          -9690.5481      1269.5725         0.0000         0.0000      1619.6496          -6797.2677       305.0888     -8416.9173     -6788.4485       298.0237           -217.4896      -169.3669     27259.7143        18.7054        18.8503
+TI:       13000         1.2589         0.9097         5.1619         1.2436              0.9204        -2.0217
+
+ENERGY:   14000         1.3652         6.3185         1.3646         0.0000          -9740.4304      1267.1225         0.0000         0.0000      1581.2176          -6883.0420       297.8495     -8464.2596     -6882.7822       299.0300           -150.6639       -88.7226     26820.6055       -16.8926       -16.6650
+TI:       14000         4.2381         0.9456        -1.2498         3.4925              0.8744        -1.9266
+
+LDB: ============= START OF LOAD BALANCING ============== 524.365
+LDB: ============== END OF LOAD BALANCING =============== 524.365
+LDB: =============== DONE WITH MIGRATION ================ 524.365
+LDB: ============= START OF LOAD BALANCING ============== 526.213
+LDB: ============== END OF LOAD BALANCING =============== 526.213
+LDB: =============== DONE WITH MIGRATION ================ 526.213
+PRESSURE: 15000 258.584 361.693 -44.9885 361.693 27.736 133.157 -44.9885 133.157 -218.946
+GPRESSURE: 15000 400.06 604.664 -32.0992 -254.65 111.569 306.24 -190.593 -99.3921 -312.162
+PRESSAVG: 15000 36.5733 -38.9381 -21.326 -38.9381 71.9678 -42.0351 -21.326 -42.0351 -90.1521
+GPRESSAVG: 15000 35.9987 -38.3299 -21.1654 -38.8515 72.2813 -42.1573 -21.2396 -42.3398 -90.4467
+ENERGY:   15000         0.0008         4.2336         0.5745         0.0000          -9697.6410      1289.6106         0.0000         0.0000      1594.6402          -6808.5811       300.3779     -8403.2213     -6803.5587       300.9064             22.4580        66.4890     27267.8579        19.6146        19.2714
+TI:       15000         0.7696         0.9290        -0.5802         1.6147              0.8679        -2.0660
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 15000
+The last position output (seq=15000) takes 0.000 seconds, 57.613 MB of memory in use
+ENERGY:   16000         0.9527         5.9990         0.2681         0.0000          -9689.9214      1298.9117         0.0000         0.0000      1606.1999          -6777.5901       302.5553     -8383.7900     -6775.4011       300.7815            102.1899       131.8105     27255.5802         0.1159         0.5961
+TI:       16000         2.7712         0.8731        -1.9686         3.1711              1.0033        -2.0183
+
+LDB: ============= START OF LOAD BALANCING ============== 597.862
+LDB: ============== END OF LOAD BALANCING =============== 597.862
+LDB: =============== DONE WITH MIGRATION ================ 597.862
+LDB: ============= START OF LOAD BALANCING ============== 599.697
+LDB: ============== END OF LOAD BALANCING =============== 599.697
+LDB: =============== DONE WITH MIGRATION ================ 599.697
+ENERGY:   17000         0.9904         4.8530         0.8451         0.0000          -9880.9319      1305.5824         0.0000         0.0000      1583.1708          -6985.4902       298.2174     -8568.6610     -6984.4588       301.9355            -92.5503       -74.2583     26835.6250       -16.3897       -16.1739
+TI:       17000         2.8340         0.9236         4.2705         1.9744              0.8529        -2.1853
+
+ENERGY:   18000         1.6441         6.7723         0.2975         0.0000          -9705.4278      1268.5678         0.0000         0.0000      1600.1578          -6827.9882       301.4172     -8428.1460     -6824.1481       296.5373           -144.9729      -170.5442     27252.6351        18.3512        17.7990
+TI:       18000         3.8912         0.9241         0.7961         2.5096              0.8147        -2.0540
+
+LDB: ============= START OF LOAD BALANCING ============== 671.247
+LDB: ============== END OF LOAD BALANCING =============== 671.248
+LDB: =============== DONE WITH MIGRATION ================ 671.248
+LDB: ============= START OF LOAD BALANCING ============== 673.127
+LDB: ============== END OF LOAD BALANCING =============== 673.127
+LDB: =============== DONE WITH MIGRATION ================ 673.127
+ENERGY:   19000         0.4760         8.4510         0.1551         0.0000          -9664.1078      1265.2194         0.0000         0.0000      1585.7548          -6804.0515       298.7041     -8389.8063     -6802.2701       299.8395           -125.2281       -90.5809     27071.0706        -6.5999        -6.2129
+TI:       19000         3.6102         0.9812        -0.2204         2.3542              0.9274        -1.7911
+
+PRESSURE: 20000 118.635 -177.669 -97.8986 -177.669 245.623 -177.628 -97.8986 -177.628 163.043
+GPRESSURE: 20000 222.291 -672.197 -342.396 -54.4276 252.488 61.892 -28.3219 -254.456 189.463
+PRESSAVG: 20000 -29.4666 0.22098 -12.5229 0.22098 3.66307 15.5962 -12.5229 15.5962 22.7035
+GPRESSAVG: 20000 -29.289 -0.224212 -12.8674 0.581919 3.52547 15.7423 -12.3301 16.0888 22.6286
+TIMING: 20000  CPU: 715.342, 0.035775/step  Wall: 735.258, 0.0365195/step, 0 hours remaining, 57.613281 MB of memory in use.
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:   20000         0.5437         5.5756         0.0650         0.0000          -9711.7138      1295.4152         0.0000         0.0000      1580.7421          -6829.3721       297.7599     -8410.1142     -6830.1029       300.9267            175.7673       221.4138     27007.6745        -0.6443        -1.2332
+TI:       20000         1.7257         0.9506         3.5990         2.2504              0.8653        -1.7922
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 20000
+The last position output (seq=20000) takes 0.000 seconds, 57.613 MB of memory in use
+====================================================
+
+WallClock: 735.283386  CPUTime: 715.371582  Memory: 57.613281 MB
+[Partition 0][Node 0] End of program
+TCL: Suspending until startup complete.
+Warning: The following variables were set in the
+Warning: configuration file but will be ignored:
+Warning:    paraTypeCharmm (parameters)
+Info: EXTENDED SYSTEM FILE   /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.xsc
+Info: Tuning parameters to improve CUDASOAintegrate performance
+Info:   Setting margin to 4
+Warning: The Langevin gamma parameters differ over the particles,
+Warning: requiring extra work per step to constrain rigid bonds.
+Warning: Disabling lonepair support due to incompatability with SOA.
+Info: Using SOA integration routine
+Info: Using CUDA SOA integration routine
+Warning: Always using force tables for CUDA nonbonded kernel due to unsupported config parameters.
+Info: SIMULATION PARAMETERS:
+Info: TIMESTEP               2
+Info: NUMBER OF STEPS        0
+Info: STEPS PER CYCLE        10
+Info: PERIODIC CELL BASIS 1  32.7814 0 0
+Info: PERIODIC CELL BASIS 2  -10.9272 30.9067 0
+Info: PERIODIC CELL BASIS 3  -10.9272 -15.4534 26.766
+Info: PERIODIC CELL CENTER   0 0 0
+Info: WRAPPING WATERS AROUND PERIODIC BOUNDARIES ON OUTPUT.
+Info: WRAPPING ALL CLUSTERS AROUND PERIODIC BOUNDARIES ON OUTPUT.
+Info: LOAD BALANCER  Centralized
+Info: LOAD BALANCING STRATEGY  New Load Balancers -- DEFAULT
+Info: LDB PERIOD             2000 steps
+Info: FIRST LDB TIMESTEP     50
+Info: LAST LDB TIMESTEP     -1
+Info: LDB BACKGROUND SCALING 1
+Info: HOM BACKGROUND SCALING 1
+Info: PME BACKGROUND SCALING 1
+Info: MIN ATOMS PER PATCH    40
+Info: EMPTY PATCH LOAD       40 ATOMS
+Info: VELOCITY FILE          /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.vel
+Info: CENTER OF MASS MOVING INITIALLY? NO
+Info: DIELECTRIC             1
+Info: EXCLUDE                SCALED ONE-FOUR
+Info: 1-4 ELECTROSTATICS SCALED BY 0.833333
+Info: MODIFIED 1-4 VDW PARAMETERS WILL BE USED
+Info: DCD FILENAME           /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd
+Info: DCD FREQUENCY          5000
+Info: DCD FIRST STEP         5000
+Info: DCD FILE WILL CONTAIN UNIT CELL DATA
+Info: XST FILENAME           /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.xst
+Info: XST FREQUENCY          5000
+Info: NO VELOCITY DCD OUTPUT
+Info: NO FORCE DCD OUTPUT
+Info: OUTPUT FILENAME        /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1
+Info: BINARY OUTPUT FILES WILL BE USED
+Info: RESTART FILENAME       /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1
+Info: RESTART FREQUENCY      500000
+Info: BINARY RESTART FILES WILL BE USED
+Info: SWITCHING ACTIVE
+Info: SWITCHING ON           10
+Info: SWITCHING OFF          12
+Info: PAIRLIST DISTANCE      13.5
+Info: PAIRLIST SHRINK RATE   0.01
+Info: PAIRLIST GROW RATE     0.01
+Info: PAIRLIST TRIGGER       0.3
+Info: PAIRLISTS PER CYCLE    2
+Info: PAIRLISTS ENABLED
+Info: MARGIN                 4
+Info: HYDROGEN GROUP CUTOFF  2.5
+Info: PATCH DIMENSION        20
+Info: ENERGY OUTPUT STEPS    1000
+Info: ENERGY EVALUATION STEPS    1000
+Info: CROSSTERM ENERGY INCLUDED IN DIHEDRAL
+Info: TIMING OUTPUT STEPS    10000
+Info: PRESSURE OUTPUT STEPS  5000
+Info: THERMODYNAMIC INTEGRATION (TI) ON
+Info: TI LAMBDA VALUE     1
+Info: TI INTRA-ALCHEMICAL NON-BONDED INTERACTIONS WILL BE RETAINED
+Info: TI INTRA-ALCHEMICAL BONDED INTERACTIONS WILL BE RETAINED
+Info: TI VDW SHIFTING COEFFICIENT 5
+Info: TI ELEC. ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 0.55
+Info: TI ELEC. ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0.45 AND LAMBDA = 1
+Info: TI VDW ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 1
+Info: TI VDW ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 1
+Info: TI BOND ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 1 AND LAMBDA = 1
+Info: TI BOND ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 0
+Info: LANGEVIN DYNAMICS ACTIVE
+Info: LANGEVIN TEMPERATURE   300
+Info: LANGEVIN USING BBK INTEGRATOR
+Info: LANGEVIN DAMPING COEFFICIENT IS 5 INVERSE PS
+Info: LANGEVIN DYNAMICS NOT APPLIED TO HYDROGENS
+Warning: Option useGroupPressure is being enabled due to pressure control with rigidBonds.
+Info: LANGEVIN PISTON PRESSURE CONTROL ACTIVE
+Info:        TARGET PRESSURE IS 1.01325 BAR
+Info:     OSCILLATION PERIOD IS 200 FS
+Info:             DECAY TIME IS 100 FS
+Info:     PISTON TEMPERATURE IS 300 K
+Info:       PRESSURE CONTROL IS GROUP-BASED
+Info:    INITIAL STRAIN RATE IS 1.65302e-05 1.65302e-05 1.65302e-05
+Info:       CELL FLUCTUATION IS ISOTROPIC
+Info: PARTICLE MESH EWALD (PME) ACTIVE
+Info: PME TOLERANCE               1e-06
+Info: PME EWALD COEFFICIENT       0.257952
+Info: PME INTERPOLATION ORDER     4
+Info: PME GRID DIMENSIONS         36 36 36
+Info: PME MAXIMUM GRID SPACING    1
+Info: Attempting to read FFTW data from FFTW_NAMD_3.0alpha13_Linux-x86_64-multicore-CUDA.txt
+Info: Optimizing 6 FFT steps.  1... 2... 3... 4... 5... 6...   Done.
+Info: Writing FFTW data to FFTW_NAMD_3.0alpha13_Linux-x86_64-multicore-CUDA.txt
+Info: FULL ELECTROSTATIC EVALUATION FREQUENCY      2
+Info: USING VERLET I (r-RESPA) MTS SCHEME.
+Info: C1 SPLITTING OF LONG RANGE ELECTROSTATICS
+Info: PLACING ATOMS IN PATCHES BY HYDROGEN GROUPS
+Info: RIGID BONDS TO HYDROGEN : ALL
+Info:         ERROR TOLERANCE : 1e-05
+Info:          MAX ITERATIONS : 100
+Info: RIGID WATER USING SETTLE ALGORITHM
+Info: RANDOM NUMBER SEED     1660224127
+Info: USE HYDROGEN BONDS?    NO
+Info: Using AMBER format force field!
+Info: AMBER PARM FILE        /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.prmtop
+Info: COORDINATE PDB         /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: Exclusions in PARM file will be ignored!
+Info: SCNB (VDW SCALING)     2
+Info: USING ARITHMETIC MEAN TO COMBINE L-J SIGMA PARAMETERS
+Info: BINARY COORDINATES     /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.coor
+Info: === Start reading AMBER parm7 format file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.prmtop ===
+Info: Complete reading ATOM_NAME with 2670 fields.
+Info: Complete reading CHARGE with 2670 fields.
+Info: Complete reading ATOMIC_NUMBER with 2670 fields.
+Info: Complete reading MASS with 2670 fields.
+Info: Complete reading ATOM_TYPE_INDEX with 2670 fields.
+Info: Complete reading NUMBER_EXCLUDED_ATOMS with 2670 fields.
+Info: Complete reading NONBONDED_PARM_INDEX with 16 fields.
+Info: Complete reading RESIDUE_LABEL with 887 fields.
+Info: Complete reading RESIDUE_POINTER with 887 fields.
+Info: Complete reading BOND_FORCE_CONSTANT with 4 fields.
+Info: Complete reading BOND_EQUIL_VALUE with 4 fields.
+Info: Complete reading ANGLE_FORCE_CONSTANT with 3 fields.
+Info: Complete reading ANGLE_EQUIL_VALUE with 3 fields.
+Info: Complete reading DIHEDRAL_FORCE_CONSTANT with 2 fields.
+Info: Complete reading DIHEDRAL_PERIODICITY with 2 fields.
+Info: Complete reading DIHEDRAL_PHASE with 2 fields.
+Info: Complete reading SCEE_SCALE_FACTOR with 2 fields.
+Info: Complete reading SCNB_SCALE_FACTOR with 2 fields.
+Info: Complete reading LENNARD_JONES_ACOEF with 10 fields.
+Info: Complete reading LENNARD_JONES_BCOEF with 10 fields.
+Info: Complete reading BONDS_INC_HYDROGEN with 8001 fields.
+Info: Complete reading BONDS_WITHOUT_HYDROGEN with 6 fields.
+Info: Complete reading ANGLES_INC_HYDROGEN with 84 fields.
+Info: Complete reading ANGLES_WITHOUT_HYDROGEN with 4 fields.
+Info: Complete reading DIHEDRALS_INC_HYDROGEN with 120 fields.
+Info: Complete reading DIHEDRALS_WITHOUT_HYDROGEN with 0 fields.
+Info: Complete reading EXCLUDED_ATOMS_LIST with 3602 fields.
+Info: Complete reading HBOND_ACOEF with 1 fields.
+Info: Complete reading HBOND_BCOEF with 1 fields.
+Info: Complete reading AMBER_ATOM_TYPE with 2670 fields.
+Info: Complete reading TREE_CHAIN_CLASSIFICATION with 2670 fields.
+Info: Complete reading ATOMS_PER_MOLECULE with 887 fields.
+Info: Complete reading BOX_DIMENSIONS with 4 fields.
+Info: Complete reading RADIUS_SET with 1 fields.
+Info: Complete reading RADII with 2670 fields.
+Info: Complete reading SCREEN with 2670 fields.
+Info: === Finish reading AMBER parm7 format file. ===
+Warning: Encounter 10-12 H-bond term
+Warning: Found 886 H-H bonds.
+Info: SUMMARY OF PARAMETERS:
+Info: 4 BONDS
+Info: 3 ANGLES
+Info:   3 HARMONIC
+Info:   0 COSINE-BASED
+Info: 2 DIHEDRAL
+Info: 0 IMPROPER
+Info: 0 CROSSTERM
+Info: 0 VDW
+Info: 10 VDW_PAIRS
+Info: 0 NBTHOLE_PAIRS
+Info: Reading pdb file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: TIME FOR READING PDB FILE: 0.00414321
+Info: 
+Info: To read alchdata from file: /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: To read alchflag data from column: 5
+Info: ****************************
+Info: STRUCTURE SUMMARY:
+Info: 2670 ATOMS
+Info: 2669 BONDS
+Info: 21 ANGLES
+Info: 18 DIHEDRALS
+Info: 0 IMPROPERS
+Info: 0 CROSSTERMS
+Info: 0 EXCLUSIONS
+Info: 2667 RIGID BONDS
+Info: ALCH: 4 ATOMS TO DISAPPEAR IN FINAL STATE
+Info: ALCH: 4 ATOMS TO APPEAR IN FINAL STATE
+Info: ALCH: 1 ANGLES LINKING INITIAL AND FINAL ATOMS DELETED
+Info: ALCH: 6 DIHEDRALS LINKING INITIAL AND FINAL ATOMS DELETED
+Info: 5343 DEGREES OF FREEDOM
+Info: 889 HYDROGEN GROUPS
+Info: 4 ATOMS IN LARGEST HYDROGEN GROUP
+Info: 889 MIGRATION GROUPS
+Info: 4 ATOMS IN LARGEST MIGRATION GROUP
+Info: TOTAL MASS = 16007.3 amu
+Info: TOTAL CHARGE = 0.00300001 e
+Info: MASS DENSITY = 0.980196 g/cm^3
+Info: ATOM DENSITY = 0.0984572 atoms/A^3
+Info: *****************************
+Info: Reading from binary file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.coor
+Info: 
+Info: Entering startup at 0.532382 s, 0 MB of memory in use
+Info: Startup phase 0 took 5.025e-05 s, 0 MB of memory in use
+Info: ADDED 2708 IMPLICIT EXCLUSIONS
+Info: Startup phase 1 took 0.000802362 s, 0 MB of memory in use
+Info: NONBONDED TABLE R-SQUARED SPACING: 0.0625
+Info: NONBONDED TABLE SIZE: 769 POINTS
+Info: INCONSISTENCY IN FAST TABLE ENERGY VS FORCE: 0.000325096 AT 11.9556
+Info: INCONSISTENCY IN SCOR TABLE ENERGY VS FORCE: 0.000324844 AT 11.9556
+Info: INCONSISTENCY IN VDWA TABLE ENERGY VS FORCE: 0.0040507 AT 0.251946
+Info: INCONSISTENCY IN VDWB TABLE ENERGY VS FORCE: 0.00150189 AT 0.251946
+Info: Startup phase 2 took 0.000237232 s, 0 MB of memory in use
+Info: Startup phase 3 took 1.9708e-05 s, 0 MB of memory in use
+Info: Startup phase 4 took 2.3029e-05 s, 0 MB of memory in use
+Info: Startup phase 5 took 1.4612e-05 s, 0 MB of memory in use
+Info: PATCH GRID IS 1 (PERIODIC) BY 1 (PERIODIC) BY 1 (PERIODIC)
+Info: PATCH GRID IS 1-AWAY BY 1-AWAY BY 1-AWAY
+Info: Reading from binary file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.vel
+Info: REMOVING COM VELOCITY -0.0849958 0.0772941 -0.175984
+Info: LARGEST PATCH (0) HAS 2670 ATOMS
+Info: TORUS A SIZE 1 USING 0
+Info: TORUS B SIZE 1 USING 0
+Info: TORUS C SIZE 1 USING 0
+Info: TORUS MINIMAL MESH SIZE IS 1 BY 1 BY 1
+Info: Placed 100% of base nodes on same physical node as patch
+Info: Startup phase 6 took 0.000516309 s, 0 MB of memory in use
+Info: Use 3D box decompostion in PME FFT.
+Info: PME using 1 x 1 x 1 pencil grid for FFT and reciprocal sum.
+Info: Startup phase 7 took 9.125e-05 s, 0 MB of memory in use
+Info: Updated CUDA force table with 4096 elements.
+Info: Updated CUDA LJ table with 4 x 4 elements.
+Info: Startup phase 8 took 0.00638147 s, 0 MB of memory in use
+Info: Startup phase 9 took 4.6298e-05 s, 0 MB of memory in use
+Info: Startup phase 10 took 1.7922e-05 s, 0 MB of memory in use
+Info: Startup phase 11 took 0.00844683 s, 0 MB of memory in use
+LDB: Central LB being created...
+Info: Startup phase 12 took 0.00293121 s, 0 MB of memory in use
+Info: CREATING 29 COMPUTE OBJECTS
+Info: Found 15 unique exclusion lists needing 28 bytes
+Info: Startup phase 13 took 0.00228941 s, 0 MB of memory in use
+Info: Startup phase 14 took 5.285e-05 s, 0 MB of memory in use
+Info: Startup phase 15 took 2.3719e-05 s, 0 MB of memory in use
+Info: Finished startup at 0.554326 s, 0 MB of memory in use
+
+TCL: Running for 20000 steps
+TI: RESETTING FOR NEW WINDOW LAMBDA SET TO 1
+TI: WINDOW TO HAVE 0 STEPS OF EQUILIBRATION PRIOR TO TI DATA COLLECTION.
+PRESSURE: 0 -139.638 62.3335 -208.227 62.3322 -488.296 306.418 -208.227 306.424 747.953
+GPRESSURE: 0 -184.462 172.234 -237.398 -130.351 -438.02 228.217 -159.709 272.128 847.857
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:       0         0.7073         4.3464         0.0826         0.0000         -10156.8986      1417.0435         0.0000         0.0000      1452.8615          -7281.8573       273.6714     -8734.7188     -7278.9824       273.6714             40.0063        75.1249     27118.3814        40.0063        75.1249
+TI:           0         1.7021         0.9815         0.1578         1.4964              1.0033        -1.9989
+
+OPENING TI ENERGY OUTPUT FILE
+OPENING EXTENDED SYSTEM TRAJECTORY FILE
+Info: Initial time: 1 CPUs 0.00355167 s/step 48.6531 ns/day 0 MB memory
+Info: Initial time: 1 CPUs 0.00344667 s/step 50.1353 ns/day 0 MB memory
+Info: Initial time: 1 CPUs 0.00392158 s/step 44.0639 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00350876 s/step 49.2482 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00370128 s/step 46.6866 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00412914 s/step 41.849 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00473491 s/step 36.4949 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00482815 s/step 35.7901 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00466632 s/step 37.0313 ns/day 0 MB memory
+ENERGY:    1000         0.4264         6.5891         0.2414         0.0000          -9898.8193      1350.3687         0.0000         0.0000      1577.3967          -6963.7969       297.1297     -8541.1936     -6960.1209       282.6297            366.6568       390.6260     26640.9192       -10.8991         6.8198
+TI:        1000         1.4909         0.9559         1.8348         2.3255              0.9407        -1.9588
+
+ENERGY:    2000         0.1253         3.5356         1.1107         0.0000          -9812.9816      1316.1154         0.0000         0.0000      1533.2369          -6958.8577       288.8115     -8492.0946     -6953.7264       292.8948             78.2245       108.5627     26990.6343       -23.6585        -6.2147
+TI:        2000         1.8415         0.8650        -2.9604         1.4876              0.8943        -2.0847
+
+ENERGY:    3000         1.9709         3.8619         1.6877         0.0000          -9732.4594      1259.6642         0.0000         0.0000      1613.6072          -6851.6675       303.9506     -8465.2747     -6846.6249       298.5981           -574.4890      -517.9766     27413.5874       -41.7258       -24.0194
+TI:        3000         2.4255         0.9713         0.1898         3.3148              0.9094        -2.1693
+
+ENERGY:    4000         0.3546         6.7266         1.0384         0.0000          -9691.8877      1237.2356         0.0000         0.0000      1627.8190          -6818.7135       306.6277     -8446.5326     -6816.4113       297.3951           -644.5640      -578.7988     27228.6827       -11.1903         5.5645
+TI:        4000         2.0864         0.9595        -2.3197         3.7135              0.8412        -1.7206
+
+PRESSURE: 5000 974.438 115.123 660.748 115.137 39.9896 569.581 660.741 569.595 370.275
+GPRESSURE: 5000 886.968 310.627 528.313 69.391 88.9107 314.414 881.64 657.501 492.077
+PRESSAVG: 5000 22.4076 46.033 -40.8004 46.0329 -72.8683 -28.9625 -40.8002 -28.9624 -17.5163
+GPRESSAVG: 5000 41.1191 45.7564 -39.9303 46.1146 -56.4397 -29.63 -41.4391 -29.7907 -0.578677
+ENERGY:    5000         0.3494         6.4290         0.1013         0.0000          -9712.6137      1309.5082         0.0000         0.0000      1571.7353          -6824.4906       296.0633     -8396.2259     -6823.7140       301.0552            461.5677       489.3187     26996.9692       -25.8213        -8.6490
+TI:        5000         2.7710         0.9657        -1.3213         1.1910              0.9880        -2.0081
+
+OPENING COORDINATE DCD FILE
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 5000
+The last position output (seq=5000) takes 0.000 seconds, 0.000 MB of memory in use
+ENERGY:    6000         1.8258         3.3336         0.4730         0.0000          -9680.8606      1232.4681         0.0000         0.0000      1539.0193          -6903.7408       289.9007     -8442.7601     -6902.5085       297.5355           -599.5433      -551.1284     26984.0833         9.8318        28.2912
+TI:        6000         2.5966         0.6921         1.7218         2.0839              0.6425        -1.9536
+
+ENERGY:    7000         0.7286         7.2340         0.1902         0.0000          -9888.1656      1427.3418         0.0000         0.0000      1606.5812          -6846.0898       302.6271     -8452.6710     -6842.4761       297.0045           1366.9483      1373.1746     26605.6288       -10.6526         5.1511
+TI:        7000         1.2270         0.8775        12.7910         4.0831              0.9215        -2.2983
+
+ENERGY:    8000         0.3304         7.1173         0.9996         0.0000          -9717.3571      1258.0102         0.0000         0.0000      1537.4689          -6913.4306       289.6087     -8450.8996     -6912.8462       298.9419           -197.4380      -157.0264     26671.1027       -24.9828        -7.8179
+TI:        8000         2.3724         1.0102         3.6626         1.3218              0.8617        -1.9223
+
+ENERGY:    9000         0.6077         6.2259         1.5793         0.0000          -9738.9751      1317.7406         0.0000         0.0000      1554.5745          -6858.2471       292.8308     -8412.8216     -6855.5166       295.5147            232.9207       295.8379     27108.3634       -48.1896       -29.7220
+TI:        9000         2.9152         0.9948        -2.0635         4.3394              0.9861        -2.2402
+
+PRESSURE: 10000 -73.7228 321.702 44.8662 321.707 16.7363 -59.8753 44.8492 -59.8895 -897.1
+GPRESSURE: 10000 121.961 106.465 169.982 64.9553 -167.92 -137.829 -139.327 -127.116 -822.471
+PRESSAVG: 10000 -2.58301 49.1756 15.2862 49.1754 -35.0852 14.2023 15.2862 14.2023 -14.784
+GPRESSAVG: 10000 14.5939 48.4382 16.7793 46.4828 -19.0171 14.378 17.2202 16.5937 2.7833
+TIMING: 10000  CPU: 46.2935, 0.00462708/step  Wall: 47.9861, 0.00479618/step, 36.0287 ns/days, 0.0133227 hours remaining, 0.000000 MB of memory in use.
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:   10000         0.8669         5.5428         0.6759         0.0000          -9714.7771      1258.9390         0.0000         0.0000      1656.9552          -6791.7974       312.1160     -8448.7526     -6786.5134       299.9240           -318.0289      -289.4767     27484.7096       -13.4271         1.3645
+TI:       10000         0.4855         0.8721        -0.8885         3.4843              0.9132        -1.7745
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 10000
+The last position output (seq=10000) takes 0.000 seconds, 0.000 MB of memory in use
+ENERGY:   11000         0.6943         5.8107         0.2037         0.0000          -9695.4372      1269.0861         0.0000         0.0000      1568.4342          -6851.2082       295.4415     -8419.6423     -6850.5424       296.4602             42.6571        96.6483     26866.1268       -17.0347         0.3257
+TI:       11000         0.8987         0.8125         2.7354         2.9208              0.8447        -2.0822
+
+ENERGY:   12000         0.7342         4.3039         0.4649         0.0000          -9745.0829      1367.4552         0.0000         0.0000      1615.1683          -6756.9564       304.2447     -8372.1247     -6754.6976       298.0872            852.6456       900.0806     27123.3334         9.3590        26.4405
+TI:       12000         2.7034         1.0507         2.8556         1.6445              1.1378        -2.3602
+
+ENERGY:   13000         1.7325         5.2625         0.5533         0.0000          -9632.7576      1220.3858         0.0000         0.0000      1583.4582          -6821.3653       298.2715     -8404.8235     -6816.8037       302.2907           -653.3920      -613.2005     27354.2216       -11.3434         5.8654
+TI:       13000         2.6880         0.7623        -2.9254         3.7362              0.8021        -2.0180
+
+ENERGY:   14000         0.5774         6.7758         0.2237         0.0000          -9788.1979      1315.8005         0.0000         0.0000      1600.5670          -6864.2534       301.4943     -8464.8204     -6858.3720       301.0016            -39.9620       -38.3000     27295.4986        15.1877        29.8697
+TI:       14000         1.5293         0.9886        -2.2206         4.1673              1.0633        -1.5771
+
+PRESSURE: 15000 -227.903 8.81547 -293.68 8.83124 -154.643 203.633 -293.69 203.634 -662.743
+GPRESSURE: 15000 -199.752 179.329 -250.207 23.0207 -7.67821 292.174 -436.404 5.93826 -646.154
+PRESSAVG: 15000 -13.9768 16.2936 -10.9602 16.2936 14.5316 -41.2301 -10.9601 -41.2303 -22.8226
+GPRESSAVG: 15000 1.55558 15.6978 -10.6901 15.3353 32.8776 -41.2505 -12.6979 -42.078 -6.43419
+ENERGY:   15000         0.0701         3.4736         0.7601         0.0000          -9660.8019      1257.4397         0.0000         0.0000      1556.3366          -6842.7220       293.1627     -8399.0585     -6842.0292       296.8738           -348.4298      -284.5280     27250.7496       -33.2816       -15.8363
+TI:       15000         1.5418         0.7619        -0.8864         0.8013              0.7211        -1.9378
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 15000
+The last position output (seq=15000) takes 0.000 seconds, 0.000 MB of memory in use
+ENERGY:   16000         0.0170         3.2100         1.2810         0.0000          -9751.0180      1334.9963         0.0000         0.0000      1632.7419          -6778.7719       307.5550     -8411.5137     -6772.7402       299.1923            377.4829       405.6229     27348.1739       -37.1102       -20.4638
+TI:       16000         2.0482         1.0289         2.2745         0.9243              0.9218        -2.3500
+
+ENERGY:   17000         0.1047         3.8435         0.3888         0.0000          -9609.3227      1223.1109         0.0000         0.0000      1583.1775          -6798.6973       298.2187     -8381.8748     -6794.3201       303.5779           -616.9157      -581.0368     27324.2690       -62.5810       -47.4124
+TI:       17000         0.9070         1.0970         6.5974         0.9463              1.2048        -1.9589
+
+ENERGY:   18000         0.5401         8.1202         0.6916         0.0000          -9649.4601      1211.9375         0.0000         0.0000      1509.3819          -6918.7888       284.3180     -8428.1707     -6912.5826       297.9624           -660.9221      -621.4823     26790.5443         7.6769        22.9574
+TI:       18000         3.8627         0.9167         0.6494         4.2356              0.7628        -2.0384
+
+ENERGY:   19000         0.3565         6.2629         1.2398         0.0000          -9871.3182      1389.8628         0.0000         0.0000      1594.8109          -6878.7851       300.4100     -8473.5960     -6878.2917       296.8355            466.6457       506.5260     27262.4482       -14.0744         2.6766
+TI:       19000         2.3928         0.9875         0.6814         2.8449              0.9742        -1.8686
+
+PRESSURE: 20000 372.425 -87.1134 280.767 -87.1207 503.847 72.6442 280.765 72.6227 -264.301
+GPRESSURE: 20000 152.064 -52.384 469.409 -330.068 527.048 -256.11 -5.92824 333.33 -4.53015
+PRESSAVG: 20000 -28.5137 -5.76834 -6.36893 -5.76825 -5.33637 -12.6787 -6.36879 -12.6788 -46.1266
+GPRESSAVG: 20000 -11.0185 -6.5628 -8.60394 -6.34837 9.59407 -10.4314 -6.678 -10.9062 -31.5467
+TIMING: 20000  CPU: 90.9737, 0.00446803/step  Wall: 94.65, 0.0046664/step, 37.0307 ns/days, 0 hours remaining, 0.000000 MB of memory in use.
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:   20000         0.4956         6.8096         0.5668         0.0000          -9899.0857      1355.6758         0.0000         0.0000      1548.2032          -6987.3347       291.6306     -8535.5379     -6983.2891       292.0432            203.9903       224.8605     27038.7462       -27.2058       -12.7096
+TI:       20000         3.5289         0.8139         0.8798         2.6518              0.8630        -1.8871
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 20000
+The last position output (seq=20000) takes 0.000 seconds, 0.000 MB of memory in use
+====================================================
+
+WallClock: 95.204086  CPUTime: 91.521095  Memory: 0.000000 MB
+[Partition 0][Node 0] End of program
+TCL: Suspending until startup complete.
+Warning: The following variables were set in the
+Warning: configuration file but will be ignored:
+Warning:    paraTypeCharmm (parameters)
+Info: EXTENDED SYSTEM FILE   /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.xsc
+Info: Tuning parameters to improve CUDASOAintegrate performance
+Info:   Setting margin to 4
+Warning: The Langevin gamma parameters differ over the particles,
+Warning: requiring extra work per step to constrain rigid bonds.
+Warning: Disabling lonepair support due to incompatability with SOA.
+Info: Using SOA integration routine
+Info: Using CUDA SOA integration routine
+Warning: Always using force tables for CUDA nonbonded kernel due to unsupported config parameters.
+Info: SIMULATION PARAMETERS:
+Info: TIMESTEP               2
+Info: NUMBER OF STEPS        0
+Info: STEPS PER CYCLE        10
+Info: PERIODIC CELL BASIS 1  33.161 0 0
+Info: PERIODIC CELL BASIS 2  -11.0537 31.2646 0
+Info: PERIODIC CELL BASIS 3  -11.0537 -15.6323 27.0759
+Info: PERIODIC CELL CENTER   0 0 0
+Info: WRAPPING WATERS AROUND PERIODIC BOUNDARIES ON OUTPUT.
+Info: WRAPPING ALL CLUSTERS AROUND PERIODIC BOUNDARIES ON OUTPUT.
+Info: LOAD BALANCER  Centralized
+Info: LOAD BALANCING STRATEGY  New Load Balancers -- DEFAULT
+Info: LDB PERIOD             2000 steps
+Info: FIRST LDB TIMESTEP     50
+Info: LAST LDB TIMESTEP     -1
+Info: LDB BACKGROUND SCALING 1
+Info: HOM BACKGROUND SCALING 1
+Info: PME BACKGROUND SCALING 1
+Info: MIN ATOMS PER PATCH    40
+Info: EMPTY PATCH LOAD       40 ATOMS
+Info: VELOCITY FILE          /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.vel
+Info: CENTER OF MASS MOVING INITIALLY? NO
+Info: DIELECTRIC             1
+Info: EXCLUDE                SCALED ONE-FOUR
+Info: 1-4 ELECTROSTATICS SCALED BY 0.833333
+Info: MODIFIED 1-4 VDW PARAMETERS WILL BE USED
+Info: DCD FILENAME           /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd
+Info: DCD FREQUENCY          5000
+Info: DCD FIRST STEP         5000
+Info: DCD FILE WILL CONTAIN UNIT CELL DATA
+Info: XST FILENAME           /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.xst
+Info: XST FREQUENCY          5000
+Info: NO VELOCITY DCD OUTPUT
+Info: NO FORCE DCD OUTPUT
+Info: OUTPUT FILENAME        /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1
+Info: BINARY OUTPUT FILES WILL BE USED
+Info: RESTART FILENAME       /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1
+Info: RESTART FREQUENCY      500000
+Info: BINARY RESTART FILES WILL BE USED
+Info: SWITCHING ACTIVE
+Info: SWITCHING ON           10
+Info: SWITCHING OFF          12
+Info: PAIRLIST DISTANCE      13.5
+Info: PAIRLIST SHRINK RATE   0.01
+Info: PAIRLIST GROW RATE     0.01
+Info: PAIRLIST TRIGGER       0.3
+Info: PAIRLISTS PER CYCLE    2
+Info: PAIRLISTS ENABLED
+Info: MARGIN                 4
+Info: HYDROGEN GROUP CUTOFF  2.5
+Info: PATCH DIMENSION        20
+Info: ENERGY OUTPUT STEPS    1000
+Info: ENERGY EVALUATION STEPS    1000
+Info: CROSSTERM ENERGY INCLUDED IN DIHEDRAL
+Info: TIMING OUTPUT STEPS    10000
+Info: PRESSURE OUTPUT STEPS  5000
+Info: THERMODYNAMIC INTEGRATION (TI) ON
+Info: TI LAMBDA VALUE     1
+Info: TI INTRA-ALCHEMICAL NON-BONDED INTERACTIONS WILL BE RETAINED
+Info: TI INTRA-ALCHEMICAL BONDED INTERACTIONS WILL BE RETAINED
+Info: TI VDW SHIFTING COEFFICIENT 5
+Info: TI ELEC. ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 0.55
+Info: TI ELEC. ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0.45 AND LAMBDA = 1
+Info: TI VDW ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 1
+Info: TI VDW ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 1
+Info: TI BOND ACTIVE FOR ANNIHILATED PARTICLES BETWEEN LAMBDA = 1 AND LAMBDA = 1
+Info: TI BOND ACTIVE FOR EXNIHILATED PARTICLES BETWEEN LAMBDA = 0 AND LAMBDA = 0
+Info: LANGEVIN DYNAMICS ACTIVE
+Info: LANGEVIN TEMPERATURE   300
+Info: LANGEVIN USING BBK INTEGRATOR
+Info: LANGEVIN DAMPING COEFFICIENT IS 5 INVERSE PS
+Info: LANGEVIN DYNAMICS NOT APPLIED TO HYDROGENS
+Warning: Option useGroupPressure is being enabled due to pressure control with rigidBonds.
+Info: LANGEVIN PISTON PRESSURE CONTROL ACTIVE
+Info:        TARGET PRESSURE IS 1.01325 BAR
+Info:     OSCILLATION PERIOD IS 200 FS
+Info:             DECAY TIME IS 100 FS
+Info:     PISTON TEMPERATURE IS 300 K
+Info:       PRESSURE CONTROL IS GROUP-BASED
+Info:    INITIAL STRAIN RATE IS -2.02991e-05 -2.02991e-05 -2.02991e-05
+Info:       CELL FLUCTUATION IS ISOTROPIC
+Info: PARTICLE MESH EWALD (PME) ACTIVE
+Info: PME TOLERANCE               1e-06
+Info: PME EWALD COEFFICIENT       0.257952
+Info: PME INTERPOLATION ORDER     4
+Info: PME GRID DIMENSIONS         36 36 36
+Info: PME MAXIMUM GRID SPACING    1
+Info: Attempting to read FFTW data from FFTW_NAMD_3.0alpha13_Linux-x86_64-multicore-CUDA.txt
+Info: Optimizing 6 FFT steps.  1... 2... 3... 4... 5... 6...   Done.
+Info: Writing FFTW data to FFTW_NAMD_3.0alpha13_Linux-x86_64-multicore-CUDA.txt
+Info: FULL ELECTROSTATIC EVALUATION FREQUENCY      2
+Info: USING VERLET I (r-RESPA) MTS SCHEME.
+Info: C1 SPLITTING OF LONG RANGE ELECTROSTATICS
+Info: PLACING ATOMS IN PATCHES BY HYDROGEN GROUPS
+Info: RIGID BONDS TO HYDROGEN : ALL
+Info:         ERROR TOLERANCE : 1e-05
+Info:          MAX ITERATIONS : 100
+Info: RIGID WATER USING SETTLE ALGORITHM
+Info: RANDOM NUMBER SEED     1660224805
+Info: USE HYDROGEN BONDS?    NO
+Info: Using AMBER format force field!
+Info: AMBER PARM FILE        /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.prmtop
+Info: COORDINATE PDB         /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: Exclusions in PARM file will be ignored!
+Info: SCNB (VDW SCALING)     2
+Info: USING ARITHMETIC MEAN TO COMBINE L-J SIGMA PARAMETERS
+Info: BINARY COORDINATES     /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.coor
+Info: === Start reading AMBER parm7 format file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.prmtop ===
+Info: Complete reading ATOM_NAME with 2670 fields.
+Info: Complete reading CHARGE with 2670 fields.
+Info: Complete reading ATOMIC_NUMBER with 2670 fields.
+Info: Complete reading MASS with 2670 fields.
+Info: Complete reading ATOM_TYPE_INDEX with 2670 fields.
+Info: Complete reading NUMBER_EXCLUDED_ATOMS with 2670 fields.
+Info: Complete reading NONBONDED_PARM_INDEX with 16 fields.
+Info: Complete reading RESIDUE_LABEL with 887 fields.
+Info: Complete reading RESIDUE_POINTER with 887 fields.
+Info: Complete reading BOND_FORCE_CONSTANT with 4 fields.
+Info: Complete reading BOND_EQUIL_VALUE with 4 fields.
+Info: Complete reading ANGLE_FORCE_CONSTANT with 3 fields.
+Info: Complete reading ANGLE_EQUIL_VALUE with 3 fields.
+Info: Complete reading DIHEDRAL_FORCE_CONSTANT with 2 fields.
+Info: Complete reading DIHEDRAL_PERIODICITY with 2 fields.
+Info: Complete reading DIHEDRAL_PHASE with 2 fields.
+Info: Complete reading SCEE_SCALE_FACTOR with 2 fields.
+Info: Complete reading SCNB_SCALE_FACTOR with 2 fields.
+Info: Complete reading LENNARD_JONES_ACOEF with 10 fields.
+Info: Complete reading LENNARD_JONES_BCOEF with 10 fields.
+Info: Complete reading BONDS_INC_HYDROGEN with 8001 fields.
+Info: Complete reading BONDS_WITHOUT_HYDROGEN with 6 fields.
+Info: Complete reading ANGLES_INC_HYDROGEN with 84 fields.
+Info: Complete reading ANGLES_WITHOUT_HYDROGEN with 4 fields.
+Info: Complete reading DIHEDRALS_INC_HYDROGEN with 120 fields.
+Info: Complete reading DIHEDRALS_WITHOUT_HYDROGEN with 0 fields.
+Info: Complete reading EXCLUDED_ATOMS_LIST with 3602 fields.
+Info: Complete reading HBOND_ACOEF with 1 fields.
+Info: Complete reading HBOND_BCOEF with 1 fields.
+Info: Complete reading AMBER_ATOM_TYPE with 2670 fields.
+Info: Complete reading TREE_CHAIN_CLASSIFICATION with 2670 fields.
+Info: Complete reading ATOMS_PER_MOLECULE with 887 fields.
+Info: Complete reading BOX_DIMENSIONS with 4 fields.
+Info: Complete reading RADIUS_SET with 1 fields.
+Info: Complete reading RADII with 2670 fields.
+Info: Complete reading SCREEN with 2670 fields.
+Info: === Finish reading AMBER parm7 format file. ===
+Warning: Encounter 10-12 H-bond term
+Warning: Found 886 H-H bonds.
+Info: SUMMARY OF PARAMETERS:
+Info: 4 BONDS
+Info: 3 ANGLES
+Info:   3 HARMONIC
+Info:   0 COSINE-BASED
+Info: 2 DIHEDRAL
+Info: 0 IMPROPER
+Info: 0 CROSSTERM
+Info: 0 VDW
+Info: 10 VDW_PAIRS
+Info: 0 NBTHOLE_PAIRS
+Info: Reading pdb file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: TIME FOR READING PDB FILE: 0.00330212
+Info: 
+Info: To read alchdata from file: /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/build/sys_solv.pdb
+Info: To read alchflag data from column: 5
+Info: ****************************
+Info: STRUCTURE SUMMARY:
+Info: 2670 ATOMS
+Info: 2669 BONDS
+Info: 21 ANGLES
+Info: 18 DIHEDRALS
+Info: 0 IMPROPERS
+Info: 0 CROSSTERMS
+Info: 0 EXCLUSIONS
+Info: 2667 RIGID BONDS
+Info: ALCH: 4 ATOMS TO DISAPPEAR IN FINAL STATE
+Info: ALCH: 4 ATOMS TO APPEAR IN FINAL STATE
+Info: ALCH: 1 ANGLES LINKING INITIAL AND FINAL ATOMS DELETED
+Info: ALCH: 6 DIHEDRALS LINKING INITIAL AND FINAL ATOMS DELETED
+Info: 5343 DEGREES OF FREEDOM
+Info: 889 HYDROGEN GROUPS
+Info: 4 ATOMS IN LARGEST HYDROGEN GROUP
+Info: 889 MIGRATION GROUPS
+Info: 4 ATOMS IN LARGEST MIGRATION GROUP
+Info: TOTAL MASS = 16007.3 amu
+Info: TOTAL CHARGE = 0.00300001 e
+Info: MASS DENSITY = 0.94692 g/cm^3
+Info: ATOM DENSITY = 0.0951147 atoms/A^3
+Info: *****************************
+Info: Reading from binary file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.coor
+Info: 
+Info: Entering startup at 0.444372 s, 0 MB of memory in use
+Info: Startup phase 0 took 4.3036e-05 s, 0 MB of memory in use
+Info: ADDED 2708 IMPLICIT EXCLUSIONS
+Info: Startup phase 1 took 0.000662884 s, 0 MB of memory in use
+Info: NONBONDED TABLE R-SQUARED SPACING: 0.0625
+Info: NONBONDED TABLE SIZE: 769 POINTS
+Info: INCONSISTENCY IN FAST TABLE ENERGY VS FORCE: 0.000325096 AT 11.9556
+Info: INCONSISTENCY IN SCOR TABLE ENERGY VS FORCE: 0.000324844 AT 11.9556
+Info: INCONSISTENCY IN VDWA TABLE ENERGY VS FORCE: 0.0040507 AT 0.251946
+Info: INCONSISTENCY IN VDWB TABLE ENERGY VS FORCE: 0.00150189 AT 0.251946
+Info: Startup phase 2 took 0.000260071 s, 0 MB of memory in use
+Info: Startup phase 3 took 2.6563e-05 s, 0 MB of memory in use
+Info: Startup phase 4 took 2.0672e-05 s, 0 MB of memory in use
+Info: Startup phase 5 took 1.6326e-05 s, 0 MB of memory in use
+Info: PATCH GRID IS 1 (PERIODIC) BY 1 (PERIODIC) BY 1 (PERIODIC)
+Info: PATCH GRID IS 1-AWAY BY 1-AWAY BY 1-AWAY
+Info: Reading from binary file /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/equilibration/eq2.vel
+Info: REMOVING COM VELOCITY -0.127356 -0.179884 -0.026424
+Info: LARGEST PATCH (0) HAS 2670 ATOMS
+Info: TORUS A SIZE 1 USING 0
+Info: TORUS B SIZE 1 USING 0
+Info: TORUS C SIZE 1 USING 0
+Info: TORUS MINIMAL MESH SIZE IS 1 BY 1 BY 1
+Info: Placed 100% of base nodes on same physical node as patch
+Info: Startup phase 6 took 0.000535972 s, 0 MB of memory in use
+Info: Use 3D box decompostion in PME FFT.
+Info: PME using 1 x 1 x 1 pencil grid for FFT and reciprocal sum.
+Info: Startup phase 7 took 9.4169e-05 s, 0 MB of memory in use
+Info: Updated CUDA force table with 4096 elements.
+Info: Updated CUDA LJ table with 4 x 4 elements.
+Info: Startup phase 8 took 0.00354024 s, 0 MB of memory in use
+Info: Startup phase 9 took 3.8863e-05 s, 0 MB of memory in use
+Info: Startup phase 10 took 1.2117e-05 s, 0 MB of memory in use
+Info: Startup phase 11 took 0.00929391 s, 0 MB of memory in use
+LDB: Central LB being created...
+Info: Startup phase 12 took 0.00212847 s, 0 MB of memory in use
+Info: CREATING 29 COMPUTE OBJECTS
+Info: Found 15 unique exclusion lists needing 28 bytes
+Info: Startup phase 13 took 0.00516812 s, 0 MB of memory in use
+Info: Startup phase 14 took 7.86e-05 s, 0 MB of memory in use
+Info: Startup phase 15 took 1.8813e-05 s, 0 MB of memory in use
+Info: Finished startup at 0.466311 s, 0 MB of memory in use
+
+TCL: Running for 20000 steps
+TI: RESETTING FOR NEW WINDOW LAMBDA SET TO 1
+TI: WINDOW TO HAVE 0 STEPS OF EQUILIBRATION PRIOR TO TI DATA COLLECTION.
+PRESSURE: 0 174.098 439.027 320.003 439.018 475.442 -759.795 320.004 -759.794 -401.526
+GPRESSURE: 0 308.666 451.5 193.521 538.327 385.932 -813.975 412.471 -667.82 -346.794
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:       0         0.0328         1.7624         0.1178         0.0000         -10682.0721      1627.8662         0.0000         0.0000      1203.4019          -7848.8909       226.6814     -9052.2928     -7846.6026       226.6814             82.6714       115.9346     28071.3694        82.6714       115.9346
+TI:           0         0.8617         1.0363        -2.0065         0.5537              1.0822        -1.5742
+
+OPENING TI ENERGY OUTPUT FILE
+OPENING EXTENDED SYSTEM TRAJECTORY FILE
+Info: Initial time: 1 CPUs 0.0036644 s/step 47.1565 ns/day 0 MB memory
+Info: Initial time: 1 CPUs 0.00345609 s/step 49.9987 ns/day 0 MB memory
+Info: Initial time: 1 CPUs 0.0036668 s/step 47.1256 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00385626 s/step 44.8103 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00354906 s/step 48.6889 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00388589 s/step 44.4686 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00442183 s/step 39.0789 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00464488 s/step 37.2022 ns/day 0 MB memory
+Info: Benchmark time: 1 CPUs 0.00474417 s/step 36.4236 ns/day 0 MB memory
+ENERGY:    1000         0.0856         2.2802         0.3083         0.0000          -9840.0598      1314.8063         0.0000         0.0000      1502.5458          -7020.0335       283.0303     -8522.5793     -7017.6919       267.1084           -362.7860      -359.9376     27343.9305       -12.5267         4.2228
+TI:        1000         0.8586         0.7838        -2.4818         0.8896              0.7937        -1.7633
+
+ENERGY:    2000         0.4084         5.5108         1.1055         0.0000          -9763.6298      1331.6871         0.0000         0.0000      1554.5652          -6870.3529       292.8290     -8424.9181     -6866.1683       295.9241            271.0300       317.3288     27045.3914       -15.9616        -0.6559
+TI:        2000         3.2054         1.1632         8.5938         1.3936              0.9826        -2.0127
+
+ENERGY:    3000         1.6457         3.3258         0.4041         0.0000          -9805.1852      1378.3038         0.0000         0.0000      1613.2158          -6808.2900       303.8769     -8421.5058     -6809.2078       298.9460            781.4378       789.8772     27142.8913       -37.4825       -20.1852
+TI:        3000         2.2859         0.9812        -0.5578         1.4250              1.0309        -1.6923
+
+ENERGY:    4000         0.1161         4.7093         0.6035         0.0000          -9653.3230      1292.2329         0.0000         0.0000      1617.4421          -6738.2191       304.6730     -8355.6612     -6734.6592       301.7169            163.6731       189.8227     27393.0425        -1.6256        16.1768
+TI:        4000         1.1951         1.0059         1.3832         1.6055              1.0792        -1.9804
+
+PRESSURE: 5000 849.996 166.196 181.787 166.2 -1099.41 390.919 181.783 390.923 981.745
+GPRESSURE: 5000 911.751 440.89 196.515 236.192 -892.998 584.84 243.802 -17.9095 759.677
+PRESSAVG: 5000 36.9835 18.9847 33.0281 18.9846 -31.5546 11.266 33.0282 11.266 -37.505
+GPRESSAVG: 5000 54.1236 18.8611 33.0062 17.6017 -15.9853 12.0501 31.9671 11.7459 -21.5325
+ENERGY:    5000         2.7542         7.5314         2.7704         0.0000          -9570.7111      1262.7664         0.0000         0.0000      1595.9967          -6698.8919       300.6334     -8294.8886     -6694.0501       304.7034            244.1096       259.4768     27121.8717        14.1363        28.1178
+TI:        5000         4.1558         1.1118        -0.3802         6.6789              0.9308        -1.6679
+
+OPENING COORDINATE DCD FILE
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 5000
+The last position output (seq=5000) takes 0.000 seconds, 0.000 MB of memory in use
+ENERGY:    6000         0.0083         5.6151         0.3563         0.0000          -9721.4815      1272.2328         0.0000         0.0000      1549.7792          -6893.4899       291.9275     -8443.2691     -6890.6598       301.2130             58.3295        78.7695     26745.1720       -11.7214         4.8789
+TI:        6000         1.9881         0.9732        -2.0860         2.1376              1.0303        -1.6408
+
+ENERGY:    7000         0.5074         7.4573         0.4190         0.0000          -9737.0665      1340.0870         0.0000         0.0000      1606.0014          -6782.5944       302.5179     -8388.5958     -6779.1383       301.0062            403.7404       428.2409     27486.3860       -35.2864       -18.5139
+TI:        7000         1.3859         1.0106         1.9182         3.7457              1.0499        -2.0664
+
+ENERGY:    8000         0.1828         5.4854         1.6080         0.0000          -9762.1582      1293.1484         0.0000         0.0000      1640.3913          -6821.3422       308.9959     -8461.7335     -6817.9644       299.4322            -48.7346       -21.6002     26936.1961        -4.1709        11.5679
+TI:        8000         0.6780         0.9726         3.3715         5.7170              0.8368        -2.4162
+
+ENERGY:    9000         0.0929         7.8321         1.3565         0.0000          -9700.8144      1309.9942         0.0000         0.0000      1613.6117          -6767.9271       303.9515     -8381.5388     -6765.6705       299.5537            184.3848       227.8475     27361.8654        11.5290        28.7412
+TI:        9000         3.1217         0.9566         9.8577         2.5349              0.8442        -2.4549
+
+PRESSURE: 10000 -39.3968 -101.066 151.743 -101.083 -1075.35 -604.478 151.736 -604.477 -1161.17
+GPRESSURE: 10000 -169.446 -345.275 504.497 196.567 -691.459 -318.139 -7.4305 -735.221 -1342.55
+PRESSAVG: 10000 9.78791 9.41233 -62.1725 9.41245 -15.3298 -20.9816 -62.1724 -20.9816 -13.7933
+GPRESSAVG: 10000 26.321 10.2849 -62.3902 8.63564 2.86953 -22.0363 -62.6139 -22.6926 1.40823
+TIMING: 10000  CPU: 47.0751, 0.00470511/step  Wall: 47.2041, 0.00471807/step, 36.6252 ns/days, 0.0131057 hours remaining, 0.000000 MB of memory in use.
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:   10000         0.2913         5.1932         0.5443         0.0000          -9729.4535      1221.5505         0.0000         0.0000      1570.2908          -6931.5832       295.7912     -8501.8741     -6926.2700       297.5103           -758.6410      -734.4863     27146.9713         7.4244        24.3238
+TI:       10000         3.9919         1.0010        14.5578         0.9985              0.9678        -2.0936
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 10000
+The last position output (seq=10000) takes 0.000 seconds, 0.000 MB of memory in use
+ENERGY:   11000         0.0817         4.4578         0.2710         0.0000          -9765.9643      1317.5612         0.0000         0.0000      1577.7391          -6865.8536       297.1943     -8443.5927     -6864.5778       298.0492            132.8802       148.2620     27163.3476        -4.3394        10.6550
+TI:       11000         0.6993         1.0544        21.3811         1.7204              0.9712        -2.3335
+
+ENERGY:   12000         1.9651         4.3735         1.9130         0.0000          -9720.6024      1256.3217         0.0000         0.0000      1604.2899          -6851.7390       302.1956     -8456.0290     -6845.4839       296.3078           -623.1269      -589.5979     27651.2541       -22.4246        -5.7784
+TI:       12000         3.1827         0.9255         1.8668         2.2368              0.8544        -2.0831
+
+ENERGY:   13000         0.4592         4.6305         0.3122         0.0000          -9596.0255      1236.1513         0.0000         0.0000      1576.5609          -6777.9114       296.9723     -8354.4724     -6774.2835       298.5719           -450.9894      -411.4573     27498.4899       -15.3192         1.4120
+TI:       13000         0.6373         0.8104         6.5612         2.6493              0.7182        -2.1759
+
+ENERGY:   14000         1.6846         5.4536         0.3627         0.0000          -9645.5911      1273.9462         0.0000         0.0000      1613.7971          -6750.3470       303.9864     -8364.1441     -6745.6719       301.3870            123.3507       167.5050     27091.1219        -9.8498         6.3260
+TI:       14000         3.1676         0.8803         3.7050         1.9346              0.9236        -1.9605
+
+PRESSURE: 15000 -19.2065 -224.263 197.116 -224.259 -961.763 341.284 197.106 341.281 -407.888
+GPRESSURE: 15000 -24.3786 -73.6404 140.456 -20.0914 -1028.17 211.831 175.561 99.3384 -219.197
+PRESSAVG: 15000 -48.006 13.7139 -18.9502 13.7138 -46.5781 12.7471 -18.9501 12.747 60.6369
+GPRESSAVG: 15000 -31.4458 14.529 -18.7507 14.8356 -31.7076 12.992 -19.4737 13.8828 77.3304
+ENERGY:   15000         1.0820         8.0353         0.1822         0.0000          -9735.5973      1277.6261         0.0000         0.0000      1599.3352          -6849.3366       301.2622     -8448.6718     -6848.4625       300.4919           -462.9524      -423.9148     27644.2415        -4.6457        11.0137
+TI:       15000         4.2734         1.1643        -2.8939         2.7280              1.1479        -1.6854
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 15000
+The last position output (seq=15000) takes 0.000 seconds, 0.000 MB of memory in use
+ENERGY:   16000         1.5945         4.7235         0.1525         0.0000          -9697.2349      1303.5651         0.0000         0.0000      1541.8473          -6845.3520       290.4334     -8387.1993     -6842.9126       294.7534            367.7961       387.0893     26994.2126       -16.3620        -1.9165
+TI:       16000         1.8472         0.7983        -1.6741         2.7183              0.9048        -2.2287
+
+ENERGY:   17000         1.4069         8.6321         1.3467         0.0000          -9832.6283      1304.7267         0.0000         0.0000      1555.9036          -6960.6122       293.0812     -8516.5159     -6957.3879       297.5204           -148.4733      -135.5637     27143.3907        -8.9424         6.9377
+TI:       17000         3.9785         1.2604         6.9917         2.1447              0.9253        -2.0283
+
+ENERGY:   18000         0.5494         5.7416         0.1403         0.0000          -9777.8494      1350.6084         0.0000         0.0000      1596.9639          -6823.8457       300.8156     -8420.8097     -6817.8222       297.0442            535.2962       583.7081     27061.2416        -8.3893         8.4615
+TI:       18000         1.4486         1.0492        -2.5241         1.6509              1.0272        -1.8838
+
+ENERGY:   19000         0.9378         3.2882         0.6095         0.0000          -9633.3264      1280.4123         0.0000         0.0000      1614.8548          -6733.2238       304.1856     -8348.0786     -6729.0966       302.8592              2.6400        16.5944     27396.6727        12.5392        26.7947
+TI:       19000         1.2363         0.9811         5.4555         1.9365              0.9362        -1.6127
+
+PRESSURE: 20000 -520.196 19.3767 -68.3899 19.3654 -253.442 -86.986 -68.3913 -86.9925 902.522
+GPRESSURE: 20000 -409.273 -10.1946 4.22941 -15.2788 -369.935 -132.909 -188.308 254.665 1023.07
+PRESSAVG: 20000 -21.4842 22.0458 -2.25631 22.0457 6.14274 -13.4987 -2.25638 -13.4987 -27.6135
+GPRESSAVG: 20000 -6.7179 23.3796 -1.54104 21.9016 22.1306 -14.5578 -2.62838 -15.3979 -11.895
+TIMING: 20000  CPU: 92.4149, 0.00453398/step  Wall: 92.6236, 0.00454195/step, 38.0453 ns/days, 0 hours remaining, 0.000000 MB of memory in use.
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL         TOTAL3        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+TITITLE:     TS          BOND1         ELECT1           VDW1          BOND2              ELECT2           VDW2
+
+ENERGY:   20000         0.1074         5.7492         1.1098         0.0000          -9582.6883      1248.3930         0.0000         0.0000      1622.2966          -6705.0323       305.5874     -8327.3289     -6698.5974       305.1718             42.9614        81.2874     27254.2284       -50.4373       -34.4146
+TI:       20000         1.4612         1.0384         0.0908         3.0991              1.0737        -1.5787
+
+WRITING COORDINATES TO DCD FILE /home/a/post_qa/TIES_MD/TIES_MD/examples/ethane_namd/zero_sum/leg1/LAMBDA_1.00/rep0/simulation/sim1.dcd AT STEP 20000
+The last position output (seq=20000) takes 0.000 seconds, 0.000 MB of memory in use
+====================================================
+
+WallClock: 93.089836  CPUTime: 92.877556  Memory: 0.000000 MB
+[Partition 0][Node 0] End of program
