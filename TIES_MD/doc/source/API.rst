@@ -8,11 +8,21 @@ API
 ---
 
 Here we detail all the options in the API and what should be passed. The options that were previously on the command line
-can be passed into the TIES class like so::
+can be passed into the TIES class. A minimal evocation would looks like::
 
     from TIES_MD import TIES
     import os
-    md = TIES(cwd=os.path.abspath('./my_ties_sims'), windows_mask=[0,1], rep_id=0, exp_name='sys_solv')
+    md = TIES(cwd=os.path.abspath('./my_ties_sims'))
+
+``cwd`` points to where the ``TIES.cfg`` file is located and where the simulations are performed, note this must be
+an absolute path. All other arguments will be set to their default values. If we want to change all the arguments then
+the code might look like::
+
+        from TIES_MD import TIES
+        import os
+        md = TIES(cwd=os.path.abspath('./my_ties_sims'), exp_name='sys_solv', windows_mask=[0], devices=[0], rep_id=0)
+
+These arguments have the same definitions as in the :ref:`Command Line` subsection of the tutorial.
 
 Once the TIES class is constructed the options that were previously in TIES.cfg can now be set as attributes of the TIES
 class like so::
@@ -41,7 +51,7 @@ class like so::
     #How many total replicas of each window are run (we recommend at least 5).
     md.total_reps = 3
 
-    #Boolean for if we will split all replicas into separate runs. (True for maximum parallelism)
+    #Boolean for if we will split all replicas into separate runs. (Set to True for maximum parallelism)
     md.split_run = False
 
     #List for where in lambda schedule (0->1) should the electrostatic potentials begin, stop appearing.

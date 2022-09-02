@@ -48,7 +48,7 @@ def main(argv=None):
     if args['--config_file']:
         config_file = args['--config_file']
         input_folder = config_file.split('/')[:-1]
-        input_folder = '/'.join(input_folder)
+        input_folder = os.path.abspath('/'.join(input_folder))
     else:
         input_folder = os.getcwd()
         config_file = input_folder+'/TIES.cfg'

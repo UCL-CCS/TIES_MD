@@ -87,12 +87,21 @@ may be routinely changed during setup.</p>
 <section id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
 <p>Here we detail all the options in the API and what should be passed. The options that were previously on the command line
-can be passed into the TIES class like so:</p>
+can be passed into the TIES class. A minimal evocation would looks like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">TIES_MD</span> <span class="kn">import</span> <span class="n">TIES</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./my_ties_sims&#39;</span><span class="p">),</span> <span class="n">windows_mask</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">rep_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exp_name</span><span class="o">=</span><span class="s1">&#39;sys_solv&#39;</span><span class="p">)</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./my_ties_sims&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">cwd</span></code> points to where the <code class="docutils literal notranslate"><span class="pre">TIES.cfg</span></code> file is located and where the simulations are performed, note this must be
+an absolute path. All other arguments will be set to their default values. If we want to change all the arguments then
+the code might look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">TIES_MD</span> <span class="kn">import</span> <span class="n">TIES</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">TIES</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./my_ties_sims&#39;</span><span class="p">),</span> <span class="n">exp_name</span><span class="o">=</span><span class="s1">&#39;sys_solv&#39;</span><span class="p">,</span> <span class="n">windows_mask</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">devices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rep_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These arguments have the same definitions as in the <a class="reference internal" href="tutorial.html#command-line"><span class="std std-ref">Command Line</span></a> subsection of the tutorial.</p>
 <p>Once the TIES class is constructed the options that were previously in TIES.cfg can now be set as attributes of the TIES
 class like so:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># openmm.unit is needed to set values with units</span>
@@ -119,7 +128,7 @@ class like so:</p>
 <span class="c1">#How many total replicas of each window are run (we recommend at least 5).</span>
 <span class="n">md</span><span class="o">.</span><span class="n">total_reps</span> <span class="o">=</span> <span class="mi">3</span>
 
-<span class="c1">#Boolean for if we will split all replicas into separate runs. (True for maximum parallelism)</span>
+<span class="c1">#Boolean for if we will split all replicas into separate runs. (Set to True for maximum parallelism)</span>
 <span class="n">md</span><span class="o">.</span><span class="n">split_run</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="c1">#List for where in lambda schedule (0-&gt;1) should the electrostatic potentials begin, stop appearing.</span>

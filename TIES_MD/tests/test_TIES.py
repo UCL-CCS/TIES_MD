@@ -95,7 +95,8 @@ class Test_TIES(unittest.TestCase):
         args_dict = copy.deepcopy(test_args)
 
         #make a output dir
-        out_dir = os.path.join('data', 'test_replica-confs', 'tmp') #this is a relative path to make tests work anywhere
+        out_dir = os.path.join('data', 'test_replica-confs', 'tmp') #this is a relative such that CI dir structure is not
+        #in generated conf scripts therfore we can match them.
         Path(out_dir).mkdir(parents=False, exist_ok=True)
 
         #iterate over the variables that effect how confs are written
