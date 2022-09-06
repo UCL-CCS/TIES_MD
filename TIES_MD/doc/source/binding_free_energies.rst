@@ -73,7 +73,7 @@ for how to do this. With ``TIES20`` installed you can use the API as follows to 
     hybrid.prepare_inputs(protein=protein)
 
 
-This will build all the input needed to run these a BFE for the :math:`{ΔΔ G}` between ligandA and
+This will build all the input needed to run a BFE calculation for the :math:`{ΔΔ G}` between ligandA and
 ligandB. However, in order to run at this point the user must execute their own HPC submission scripts or run via the
 command line on a cluster. We can however build own submission scripts and or change any of the simulation setting
 as detailed in the next section.
@@ -145,10 +145,11 @@ the ``ties/ties-ligandA-ligandB/(lig/com)`` directory run::
 Then modify the analysis.cfg file such the legs option is now to ``legs = lig, com`` (the two legs of our cycle). Note,
 configured like this the :math:`{ΔΔ G}` is computed as the :math:`{Δ G}` of the ligand simulation minus the :math:`{Δ G}`
 of the complex simulation, take care this gives you the same :math:`{ΔΔ G}` as you want to compare to in experiment
-and it depends on which ligand is ligandA/B in the cycle. running::
+and it depends on which ligand is ligandA/B in the cycle. Running the following command will once again give
+a ``results.dat`` file as output::
 
     ties_ana
 
-will once again give a ``results.dat`` file as out put this is the same as in the :ref:`Tutorial` section but it now
-contains the :math:`{ΔΔ G}` of each transformation and the associated SEM. The print out on the terminal  will detail
-the individual :math:`{Δ G}` results for each thermodynamic leg.
+``results.dat`` file file will have the same format as in the :ref:`Tutorial` section but it now
+contains the :math:`{ΔΔ G}` of each transformation and the associated standard error of the mean (SEM). The print out on
+the terminal  will detail the individual :math:`{Δ G}` results for each thermodynamic leg.

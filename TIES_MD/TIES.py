@@ -28,7 +28,7 @@ except ImportError:  # OpenMM < 7.6
     from simtk.openmm import Vec3
 
 from functools import partial
-from multiprocess import Pool
+from multiprocess.pool import ThreadPool as Pool
 import numpy as np
 
 import os
@@ -61,7 +61,7 @@ class TIES(object):
 
     '''
     def __init__(self, cwd, exp_name='complex', run_type='class', devices=None, rep_id=None, windows_mask=None,
-                 periodic=True, lam=None, platform='CUDA', **kwargs):
+                 periodic=True, platform='CUDA', lam=None, **kwargs):
         nice_print('TIES')
 
         if run_type == 'class' and kwargs == {}:
@@ -76,8 +76,8 @@ class TIES(object):
               ' for molecular dynamics. PLoS computational biology, 13(7), p.e1005659.\n')
 
         #check all the config file args we need are present
-        args_list = ['engine', 'temperature', 'pressure', 'sampling_per_window', 'equili_per_window', 'methods',
-                     'total_reps', 'split_run', 'elec_edges', 'ster_edges', 'global_lambdas', 'constraint_file',
+        args_list = ['engine', 'temperature', 'pressure', 'sampling_per_window', 'equili_per_window',
+                     'methods', 'total_reps', 'split_run', 'elec_edges', 'ster_edges', 'global_lambdas', 'constraint_file',
                      'constraint_column', 'input_type', 'cell_basis_vec1', 'cell_basis_vec2', 'cell_basis_vec3']
 
         # check we have all required arguments

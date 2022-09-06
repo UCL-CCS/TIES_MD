@@ -31,7 +31,7 @@ usage = """
 TIES_MD
 Command line input should be used as follows...
 Usage:
-TIES_MD [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--rep_id=INT] [--windows_mask=LIST] [--exp_name=STR]...
+TIES_MD [--platform=STRING] [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--rep_id=INT] [--windows_mask=LIST] [--exp_name=STR]...
 """
 
 def main(argv=None):
@@ -95,6 +95,13 @@ def main(argv=None):
     else:
         devices = None
 
+    if args['--platform']:
+        if not_openmm:
+            raise ValueError(not_openmm_msg.format('--platform'))
+        platform = args['--platform']
+    else:
+        platform = 'CUDA'
+
     if args['--rep_id']:
         if not_openmm:
             raise ValueError(not_openmm_msg.format('--rep_id'))
@@ -107,5 +114,5 @@ def main(argv=None):
     # removed this as an option there is no need to expose it for now
     periodic = True
 
-    TIES(input_folder, exp_name, run_type, devices, rep_id, mask, periodic, **args_dict)
+    TIES(input_folder, exp_name, run_type, devices, rep_id, mask, periodic, platform, **args_dict)
 

@@ -8,7 +8,7 @@ API
 ---
 
 Here we detail all the options in the API and what should be passed. The options that were previously on the command line
-can be passed into the TIES class. A minimal evocation would looks like::
+can be passed into the TIES class. A minimal evocation would look like::
 
     from TIES_MD import TIES
     import os

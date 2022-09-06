@@ -469,7 +469,7 @@ class AlchSys(object):
         if self.platform == 'CUDA':
             properties = {'CudaPrecision': 'mixed', 'CudaDeviceIndex': device_id}
         elif self.platform == 'OpenCL':
-            properties = {'OpenCLPrecision': 'mixed', 'OpenCLDeviceIndex': device_id}
+            properties = {'OpenCLPrecision': 'mixed', 'OpenCLDeviceIndex': device_id, 'OpenCLPlatformIndex': '0'}
         elif self.platform == 'CPU':
             properties = {}
         else:
