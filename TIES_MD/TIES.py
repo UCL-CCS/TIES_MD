@@ -28,7 +28,10 @@ except ImportError:  # OpenMM < 7.6
     from simtk.openmm import Vec3
 
 from functools import partial
-from multiprocess.pool import ThreadPool as Pool
+#pool does not work with OpenCL
+from multiprocess.pool import Pool
+#ThreadPool causes inaccurate TI results if multiple threads are used
+from multiprocess.pool import ThreadPool as TPool
 import numpy as np
 
 import os
@@ -159,6 +162,8 @@ class TIES(object):
         if devices is None:
             self.devices = [0]
         else:
+            if platform != 'CUDA':
+                raise ValueError('Currently devices option only works with CUDA in TIES')
             self.devices = devices
 
         self.platform = platform
@@ -574,7 +579,10 @@ class TIES(object):
         func = partial(simulate_system, alch_sys=system, Lam=self.lam, mask=self.windows_mask,
                        cwd=self.cwd, niter=int(self.sampling_per_window/(2.0*unit.picosecond)),
                        equili_steps=int(self.equili_per_window/(2.0*unit.femtoseconds)))
-        pool = Pool(processes=len(self.devices))
+        if self.platform != 'OpenCL':
+            pool = Pool(processes=len(self.devices))
+        else:
+            pool = TPool(processes=len(self.devices))
 
         tic = time.perf_counter()
         simulated = pool.map(func, system_ids) ### MAIN MD
@@ -587,7 +595,7 @@ class TIES(object):
         pool.terminate()
 
         total_sampling = (((self.sampling_per_window + self.equili_per_window)
-                           * self.num_windows * self.reps_per_exec) / len(self.devices)) / unit.nanosecond
+                           * self.num_windows * self.reps_per_exec) / len(set(self.devices))) / unit.nanosecond
 
         speed = total_sampling / total_simulation_time
         speed *= 86400  # seconds in a day

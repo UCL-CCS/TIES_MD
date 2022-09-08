@@ -469,7 +469,8 @@ class AlchSys(object):
         if self.platform == 'CUDA':
             properties = {'CudaPrecision': 'mixed', 'CudaDeviceIndex': device_id}
         elif self.platform == 'OpenCL':
-            properties = {'OpenCLPrecision': 'mixed', 'OpenCLDeviceIndex': device_id, 'OpenCLPlatformIndex': '0'}
+            #init multiple context with OpenCL causes crashes and inaccurate results so limit to just device 0
+            properties = {'OpenCLPrecision': 'mixed', 'OpenCLDeviceIndex': '0', 'OpenCLPlatformIndex': '0'}
         elif self.platform == 'CPU':
             properties = {}
         else:
