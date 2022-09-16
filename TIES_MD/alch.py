@@ -465,20 +465,23 @@ class AlchSys(object):
         integrator = mm.LangevinIntegrator(self.temp, self.friction, self.time_step)
         integrator.setConstraintTolerance(0.00001)
 
-        platform = mm.Platform.getPlatformByName(self.platform)
-        if self.platform == 'CUDA':
-            properties = {'CudaPrecision': 'mixed', 'CudaDeviceIndex': device_id}
-        elif self.platform == 'OpenCL':
-            #init multiple context with OpenCL causes crashes and inaccurate results so limit to just device 0
-            properties = {'OpenCLPrecision': 'mixed', 'OpenCLDeviceIndex': '0', 'OpenCLPlatformIndex': '0'}
-        elif self.platform == 'CPU':
-            properties = {}
+        if self.platform not in ('CUDA', 'OpenCL', 'HIP', 'CPU'):
+            raise ValueError('Unknown platform {} in ties. Please select from CPU/CUDA/OpenCL/HIP'.format(self.platform))
         else:
-            raise ValueError('Unknown platform {} in ties. Please select from CPU/CUDA/OpenCL'.format(self.platform))
+            platform = mm.Platform.getPlatformByName(self.platform)
+
+        properties = {}
+        if self.platform == 'OpenCL':
+            #init multiple context with OpenCL causes crashes and inaccurate (numnerical gradients are badly wrong) results so limit to just device 0
+            properties = {'OpenCLPrecision': 'mixed', 'OpenCLDeviceIndex': '0', 'OpenCLPlatformIndex': '0'}
+        elif self.platform != 'CPU':
+            properties['DeviceIndex'] = device_id
+            properties['Precision'] = 'mixed'
 
         sim = app.Simulation(self.topology_file.topology, system, integrator, platform, properties)
 
         return {'sim': sim, 'integrate': integrator}
+
 
     def debug_force(self, system):
         '''

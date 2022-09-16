@@ -59,7 +59,7 @@ class TIES(object):
     :param windows_mask: list containing ints for start and end range of windows to be run
     :param periodic: boolean determines if the simulation will be periodic
     :param lam: Lambda class, allow passing of custom lambda schedule
-    :param platform: sting determines what platform OpenMM will target allowed values are ['CPU', 'CUDA', 'OpenCL']
+    :param platform: sting determines what platform OpenMM will target allowed values are ['CPU', 'CUDA', 'OpenCL', 'HIP']
     :param **kwargs: dict, containing setting from config file
 
     '''
@@ -162,8 +162,8 @@ class TIES(object):
         if devices is None:
             self.devices = [0]
         else:
-            if platform != 'CUDA':
-                raise ValueError('Currently devices option only works with CUDA in TIES')
+            if platform == 'OpenCL' or platform == 'CPU':
+                raise ValueError('Currently devices option only configured for HIP and CUDA in TIES')
             self.devices = devices
 
         self.platform = platform

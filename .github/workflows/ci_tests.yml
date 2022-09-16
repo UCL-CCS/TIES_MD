@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           environment-file: devtools/conda-envs/test_env.yaml
-          channels: adw62,omnia,conda-forge,defaults
+          channels: omnia,conda-forge,defaults
           activate-environment: test
           auto-update-conda: true
           auto-activate-base: false
