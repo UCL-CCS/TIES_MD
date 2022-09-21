@@ -9,6 +9,7 @@ Subpackages
 
    TIES_MD.eng_scripts
    TIES_MD.openmmtools
+   TIES_MD.tests
    TIES_MD.ties_analysis
 
 Submodules

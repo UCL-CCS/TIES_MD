@@ -55,6 +55,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.html">TIES_MD.eng_scripts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html">TIES_MD.openmmtools package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.tests.html">TIES_MD.tests package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a></li>
 </ul>
 </li>
@@ -134,6 +135,19 @@
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.openmmtools.html#module-TIES_MD.openmmtools">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="TIES_MD.tests.html">TIES_MD.tests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_TI">TIES_MD.tests.test_TI module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_TIES">TIES_MD.tests.test_TIES module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_alch">TIES_MD.tests.test_alch module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_cli">TIES_MD.tests.test_cli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_fep">TIES_MD.tests.test_fep module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_lambdas">TIES_MD.tests.test_lambdas module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_namd">TIES_MD.tests.test_namd module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_openmm">TIES_MD.tests.test_openmm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html">TIES_MD.ties_analysis.engines package</a><ul>
@@ -168,7 +182,7 @@
 <span id="ties-md-ties-module"></span><h2>TIES_MD.TIES module<a class="headerlink" href="#module-TIES_MD.TIES" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="TIES_MD.TIES.TIES">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">TIES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'complex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'class'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">windows_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CUDA'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.TIES.</span></span><span class="sig-name descname"><span class="pre">TIES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'complex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'class'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">windows_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CUDA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.TIES.TIES" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to control TIES protocol, initializes variables and calls functions to start simulation or write input scripts</p>
 <dl class="field-list simple">
@@ -182,7 +196,7 @@
 <li><p><strong>windows_mask</strong> – list containing ints for start and end range of windows to be run</p></li>
 <li><p><strong>periodic</strong> – boolean determines if the simulation will be periodic</p></li>
 <li><p><strong>lam</strong> – Lambda class, allow passing of custom lambda schedule</p></li>
-<li><p><strong>platform</strong> – sting determines what platform OpenMM will target allowed values are [‘CPU’, ‘CUDA’, ‘OpenCL’]</p></li>
+<li><p><strong>platform</strong> – sting determines what platform OpenMM will target allowed values are [‘CPU’, ‘CUDA’, ‘OpenCL’, ‘HIP’]</p></li>
 <li><p><strong>**kwargs</strong> – <p>dict, containing setting from config file</p>
 </p></li>
 </ul>

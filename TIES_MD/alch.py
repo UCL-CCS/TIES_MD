@@ -482,7 +482,6 @@ class AlchSys(object):
 
         return {'sim': sim, 'integrate': integrator}
 
-
     def debug_force(self, system):
         '''
         Function which removes all but nonbonded forces while maintaining NPT ensemble

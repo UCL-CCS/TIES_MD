@@ -253,3 +253,33 @@ would look something like::
     {'OpenMM_FEP': {'ethane': {'zero_sum': [-0.023, 0.023]}},
       'OpenMM_TI': {'ethane': {'zero_sum': [0.003, 0.076]}}}
 
+To complement this main output ``TIES_analysis`` will also produce analysis figures which should help in determining the
+validity and accuracy of calculations. ``TIES_analysis`` will place these figures in a new directory named
+``analysis/engine/method/system/ligand/thermodynamic_leg/``
+
+.. image:: _static/images/analysis.png
+  :align: center
+  :width: 600
+  :alt: Alternative text
+
+Panel a) pertains to FEP results and measures the overlap in phase space between alchemical states (λ index).
+If the off diagonal element of this matrix are less then 0.03 then this can serve as a warning to the user if their
+states are too far apart. Please see the work of `Mey et al. <https://arxiv.org/pdf/2008.03067.pdf>`_ for more
+details on this analysis.
+
+Panel b) pertains to TI results and shows gradient of the potential with respect to the alchemical controlling
+parameter (λ) rapid changes in this gradient warn the user that the results may be inaccurate. As an example see the
+following figure:
+
+.. image:: _static/images/TI_grad.jpeg
+  :align: center
+  :width: 600
+  :alt: Alternative text
+
+
+Panel a) show the analysis for a calculation where the gradient of 'λ sterics disappear' is changing too quickly in
+states 12 - 13. This will lead to inaccuracies in numerical integration used in the TI method. Panel b) shows the
+results from a simulation of the same chemical system with modified alchemical settings which soften how the Van der Waals
+forces are removed. This `softening <http://alchemistry.org/wiki/Constructing_a_Pathway_of_Intermediate_States#Soft_Core_Potentials>`_
+is a common in alchemical methods and default in our implementation of ``TIES``, please see our ``TIES``
+`paper <https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.2c00114>`_ for more details.

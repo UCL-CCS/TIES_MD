@@ -320,6 +320,24 @@ would look something like:</p>
   <span class="s1">&#39;OpenMM_TI&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ethane&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;zero_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.076</span><span class="p">]}}}</span>
 </pre></div>
 </div>
+<p>To complement this main output <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> will also produce analysis figures which should help in determining the
+validity and accuracy of calculations. <code class="docutils literal notranslate"><span class="pre">TIES_analysis</span></code> will place these figures in a new directory named
+<code class="docutils literal notranslate"><span class="pre">analysis/engine/method/system/ligand/thermodynamic_leg/</span></code></p>
+<a class="reference internal image-reference" href="_images/analysis.png"><img alt="Alternative text" class="align-center" src="_images/analysis.png" style="width: 600px;" /></a>
+<p>Panel a) pertains to FEP results and measures the overlap in phase space between alchemical states (λ index).
+If the off diagonal element of this matrix are less then 0.03 then this can serve as a warning to the user if their
+states are too far apart. Please see the work of <a class="reference external" href="https://arxiv.org/pdf/2008.03067.pdf">Mey et al.</a> for more
+details on this analysis.</p>
+<p>Panel b) pertains to TI results and shows gradient of the potential with respect to the alchemical controlling
+parameter (λ) rapid changes in this gradient warn the user that the results may be inaccurate. As an example see the
+following figure:</p>
+<a class="reference internal image-reference" href="_images/TI_grad.jpeg"><img alt="Alternative text" class="align-center" src="_images/TI_grad.jpeg" style="width: 600px;" /></a>
+<p>Panel a) show the analysis for a calculation where the gradient of ‘λ sterics disappear’ is changing too quickly in
+states 12 - 13. This will lead to inaccuracies in numerical integration used in the TI method. Panel b) shows the
+results from a simulation of the same chemical system with modified alchemical settings which soften how the Van der Waals
+forces are removed. This <a class="reference external" href="http://alchemistry.org/wiki/Constructing_a_Pathway_of_Intermediate_States#Soft_Core_Potentials">softening</a>
+is a common in alchemical methods and default in our implementation of <code class="docutils literal notranslate"><span class="pre">TIES</span></code>, please see our <code class="docutils literal notranslate"><span class="pre">TIES</span></code>
+<a class="reference external" href="https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.2c00114">paper</a> for more details.</p>
 </section>
 </section>
 
