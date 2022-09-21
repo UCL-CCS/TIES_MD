@@ -1,0 +1,77 @@
+TIES\_MD.tests package
+======================
+
+Submodules
+----------
+
+TIES\_MD.tests.test\_TI module
+------------------------------
+
+.. automodule:: TIES_MD.tests.test_TI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+TIES\_MD.tests.test\_TIES module
+--------------------------------
+
+.. automodule:: TIES_MD.tests.test_TIES
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+TIES\_MD.tests.test\_alch module
+--------------------------------
+
+.. automodule:: TIES_MD.tests.test_alch
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+TIES\_MD.tests.test\_cli module
+-------------------------------
+
+.. automodule:: TIES_MD.tests.test_cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+TIES\_MD.tests.test\_fep module
+-------------------------------
+
+.. automodule:: TIES_MD.tests.test_fep
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+TIES\_MD.tests.test\_lambdas module
+-----------------------------------
+
+.. automodule:: TIES_MD.tests.test_lambdas
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+TIES\_MD.tests.test\_namd module
+--------------------------------
+
+.. automodule:: TIES_MD.tests.test_namd
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+TIES\_MD.tests.test\_openmm module
+----------------------------------
+
+.. automodule:: TIES_MD.tests.test_openmm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: TIES_MD.tests
+   :members:
+   :undoc-members:
+   :show-inheritance:

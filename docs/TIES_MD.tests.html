@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIES_MD.tests package &mdash; TIES_MD 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TIES_MD.ties_analysis package" href="TIES_MD.ties_analysis.html" />
+    <link rel="prev" title="TIES_MD.openmmtools package" href="TIES_MD.openmmtools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #D7ECD9" >
+            <a href="index.html" class="icon icon-home"> TIES_MD
+            <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">TIES MD API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binding_free_energies.html">Binding Free Energy Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelization.html">Parallelization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPC_submissions.html">HPC Submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/UCL-CCS/TIES_MD">🚀Github</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">TIES_MD</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="TIES_MD.html">TIES_MD package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="TIES_MD.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.html">TIES_MD.eng_scripts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html">TIES_MD.openmmtools package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TIES_MD.tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD.TIES">TIES_MD.TIES module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD.alch">TIES_MD.alch module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD.cli">TIES_MD.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD.lambdas">TIES_MD.lambdas module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.html#module-TIES_MD">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #D7ECD9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TIES_MD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">TIES_MD</a> &raquo;</li>
+          <li><a href="TIES_MD.html">TIES_MD package</a> &raquo;</li>
+      <li>TIES_MD.tests package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/TIES_MD.tests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ties-md-tests-package">
+<h1>TIES_MD.tests package<a class="headerlink" href="#ties-md-tests-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-TIES_MD.tests.test_TI">
+<span id="ties-md-tests-test-ti-module"></span><h2>TIES_MD.tests.test_TI module<a class="headerlink" href="#module-TIES_MD.tests.test_TI" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TI.Test_TI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_TI.</span></span><span class="sig-name descname"><span class="pre">Test_TI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TI.Test_TI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TI.Test_TI.test_bootstrapping">
+<span class="sig-name descname"><span class="pre">test_bootstrapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TI.Test_TI.test_bootstrapping" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TI.Test_TI.test_intergration">
+<span class="sig-name descname"><span class="pre">test_intergration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TI.Test_TI.test_intergration" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TI.get_data">
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_TI.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TI.get_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-TIES_MD.tests.test_TIES">
+<span id="ties-md-tests-test-ties-module"></span><h2>TIES_MD.tests.test_TIES module<a class="headerlink" href="#module-TIES_MD.tests.test_TIES" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TIES.Test_TIES">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_TIES.</span></span><span class="sig-name descname"><span class="pre">Test_TIES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TIES.Test_TIES" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TIES.Test_TIES.test_analysis_cfg">
+<span class="sig-name descname"><span class="pre">test_analysis_cfg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TIES.Test_TIES.test_analysis_cfg" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TIES.Test_TIES.test_api">
+<span class="sig-name descname"><span class="pre">test_api</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TIES.Test_TIES.test_api" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TIES.Test_TIES.test_build_dirs">
+<span class="sig-name descname"><span class="pre">test_build_dirs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TIES.Test_TIES.test_build_dirs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TIES.Test_TIES.test_hpc_sub">
+<span class="sig-name descname"><span class="pre">test_hpc_sub</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TIES.Test_TIES.test_hpc_sub" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TIES.Test_TIES.test_initialization">
+<span class="sig-name descname"><span class="pre">test_initialization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TIES.Test_TIES.test_initialization" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TIES.Test_TIES.test_namd_conf">
+<span class="sig-name descname"><span class="pre">test_namd_conf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TIES.Test_TIES.test_namd_conf" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_TIES.Test_TIES.test_update_cfg">
+<span class="sig-name descname"><span class="pre">test_update_cfg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_TIES.Test_TIES.test_update_cfg" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TIES_MD.tests.test_alch">
+<span id="ties-md-tests-test-alch-module"></span><h2>TIES_MD.tests.test_alch module<a class="headerlink" href="#module-TIES_MD.tests.test_alch" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.Test_Alch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_alch.</span></span><span class="sig-name descname"><span class="pre">Test_Alch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.Test_Alch" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.Test_Alch.test_alch_system">
+<span class="sig-name descname"><span class="pre">test_alch_system</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.Test_Alch.test_alch_system" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.Test_Alch.test_get_alch_atoms">
+<span class="sig-name descname"><span class="pre">test_get_alch_atoms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.Test_Alch.test_get_alch_atoms" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.Test_Alch.test_get_constraints">
+<span class="sig-name descname"><span class="pre">test_get_constraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.Test_Alch.test_get_constraints" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.Test_Alch.test_grads">
+<span class="sig-name descname"><span class="pre">test_grads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.Test_Alch.test_grads" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.Test_Alch.test_read_pdb">
+<span class="sig-name descname"><span class="pre">test_read_pdb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.Test_Alch.test_read_pdb" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.Test_Alch.test_run_sim">
+<span class="sig-name descname"><span class="pre">test_run_sim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.Test_Alch.test_run_sim" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.null_cross_region_interactions">
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_alch.</span></span><span class="sig-name descname"><span class="pre">null_cross_region_interactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appearing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disappearing</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.null_cross_region_interactions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.reduce_to_nonbonded">
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_alch.</span></span><span class="sig-name descname"><span class="pre">reduce_to_nonbonded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.reduce_to_nonbonded" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_alch.turn_off_interactions">
+<span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_alch.</span></span><span class="sig-name descname"><span class="pre">turn_off_interactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appearing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disappearing</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_alch.turn_off_interactions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-TIES_MD.tests.test_cli">
+<span id="ties-md-tests-test-cli-module"></span><h2>TIES_MD.tests.test_cli module<a class="headerlink" href="#module-TIES_MD.tests.test_cli" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_cli.Test_CLI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_cli.</span></span><span class="sig-name descname"><span class="pre">Test_CLI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_cli.Test_CLI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_cli.Test_CLI.test_read_cfg">
+<span class="sig-name descname"><span class="pre">test_read_cfg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_cli.Test_CLI.test_read_cfg" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TIES_MD.tests.test_fep">
+<span id="ties-md-tests-test-fep-module"></span><h2>TIES_MD.tests.test_fep module<a class="headerlink" href="#module-TIES_MD.tests.test_fep" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_fep.Test_MBAR">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_fep.</span></span><span class="sig-name descname"><span class="pre">Test_MBAR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_fep.Test_MBAR" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_fep.Test_MBAR.test_mbar">
+<span class="sig-name descname"><span class="pre">test_mbar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_fep.Test_MBAR.test_mbar" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TIES_MD.tests.test_lambdas">
+<span id="ties-md-tests-test-lambdas-module"></span><h2>TIES_MD.tests.test_lambdas module<a class="headerlink" href="#module-TIES_MD.tests.test_lambdas" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_lambdas.Test_Lambdas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_lambdas.</span></span><span class="sig-name descname"><span class="pre">Test_Lambdas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_lambdas.Test_Lambdas" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_lambdas.Test_Lambdas.test_lambda">
+<span class="sig-name descname"><span class="pre">test_lambda</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_lambdas.Test_Lambdas.test_lambda" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TIES_MD.tests.test_namd">
+<span id="ties-md-tests-test-namd-module"></span><h2>TIES_MD.tests.test_namd module<a class="headerlink" href="#module-TIES_MD.tests.test_namd" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_namd.Test_NAMD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_namd.</span></span><span class="sig-name descname"><span class="pre">Test_NAMD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_namd.Test_NAMD" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_namd.Test_NAMD.test_alch_read">
+<span class="sig-name descname"><span class="pre">test_alch_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_namd.Test_NAMD.test_alch_read" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_namd.Test_NAMD.test_collating">
+<span class="sig-name descname"><span class="pre">test_collating</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_namd.Test_NAMD.test_collating" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TIES_MD.tests.test_openmm">
+<span id="ties-md-tests-test-openmm-module"></span><h2>TIES_MD.tests.test_openmm module<a class="headerlink" href="#module-TIES_MD.tests.test_openmm" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_openmm.Test_OpenMM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TIES_MD.tests.test_openmm.</span></span><span class="sig-name descname"><span class="pre">Test_OpenMM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_openmm.Test_OpenMM" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TIES_MD.tests.test_openmm.Test_OpenMM.test_collating">
+<span class="sig-name descname"><span class="pre">test_collating</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.tests.test_openmm.Test_OpenMM.test_collating" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TIES_MD.tests">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-TIES_MD.tests" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="TIES_MD.openmmtools.html" class="btn btn-neutral float-left" title="TIES_MD.openmmtools package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="TIES_MD.ties_analysis.html" class="btn btn-neutral float-right" title="TIES_MD.ties_analysis package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, UCL CCS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
