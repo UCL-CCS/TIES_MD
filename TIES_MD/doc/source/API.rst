@@ -20,7 +20,7 @@ the code might look like::
 
         from TIES_MD import TIES
         import os
-        md = TIES(cwd=os.path.abspath('./my_ties_sims'), exp_name='sys_solv', windows_mask=[0], devices=[0], rep_id=0)
+        md = TIES(cwd=os.path.abspath('./my_ties_sims'), exp_name='sys_solv', windows_mask=[0, 1], devices=[0], rep_id=0)
 
 These arguments have the same definitions as in the :ref:`Command Line` subsection of the tutorial.
 
