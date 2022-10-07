@@ -16,11 +16,12 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="TIES_MD.ties_analysis.engines package" href="TIES_MD.ties_analysis.engines.html" />
-    <link rel="prev" title="TIES_MD.tests package" href="TIES_MD.tests.html" /> 
+    <link rel="prev" title="TIES_MD.openmmtools package" href="TIES_MD.openmmtools.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,7 +56,6 @@
 <li class="toctree-l3 current"><a class="reference internal" href="TIES_MD.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.html">TIES_MD.eng_scripts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html">TIES_MD.openmmtools package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TIES_MD.tests.html">TIES_MD.tests package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">TIES_MD.ties_analysis package</a></li>
 </ul>
 </li>
@@ -105,15 +105,58 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html">TIES_MD.ties_analysis.engines package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines.namd">TIES_MD.ties_analysis.engines.namd module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines.openmm">TIES_MD.ties_analysis.engines.openmm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines.namd">TIES_MD.ties_analysis.engines.namd module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.namd.NAMD"><code class="docutils literal notranslate"><span class="pre">NAMD</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.namd.NAMD.collate_data"><code class="docutils literal notranslate"><span class="pre">NAMD.collate_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.namd.NAMD.run_analysis"><code class="docutils literal notranslate"><span class="pre">NAMD.run_analysis()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.namd.get_iter"><code class="docutils literal notranslate"><span class="pre">get_iter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.namd.get_replica"><code class="docutils literal notranslate"><span class="pre">get_replica()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.namd.get_window"><code class="docutils literal notranslate"><span class="pre">get_window()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.namd.read_alch_file"><code class="docutils literal notranslate"><span class="pre">read_alch_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines.openmm">TIES_MD.ties_analysis.engines.openmm module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.openmm.Lambdas"><code class="docutils literal notranslate"><span class="pre">Lambdas</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.openmm.Lambdas.update_attrs_from_schedule"><code class="docutils literal notranslate"><span class="pre">Lambdas.update_attrs_from_schedule()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.openmm.OpenMM"><code class="docutils literal notranslate"><span class="pre">OpenMM</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.openmm.OpenMM.collate_data"><code class="docutils literal notranslate"><span class="pre">OpenMM.collate_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.openmm.OpenMM.run_analysis"><code class="docutils literal notranslate"><span class="pre">OpenMM.run_analysis()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.openmm.get_replica"><code class="docutils literal notranslate"><span class="pre">get_replica()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#TIES_MD.ties_analysis.engines.openmm.get_window"><code class="docutils literal notranslate"><span class="pre">get_window()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.engines.html#module-TIES_MD.ties_analysis.engines">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html">TIES_MD.ties_analysis.methods package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods.FEP">TIES_MD.ties_analysis.methods.FEP module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods.TI">TIES_MD.ties_analysis.methods.TI module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods.FEP">TIES_MD.ties_analysis.methods.FEP module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis"><code class="docutils literal notranslate"><span class="pre">MBAR_Analysis</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.analysis"><code class="docutils literal notranslate"><span class="pre">MBAR_Analysis.analysis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.decorrelate_data"><code class="docutils literal notranslate"><span class="pre">MBAR_Analysis.decorrelate_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.plot_overlap_mat"><code class="docutils literal notranslate"><span class="pre">MBAR_Analysis.plot_overlap_mat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.replica_analysis"><code class="docutils literal notranslate"><span class="pre">MBAR_Analysis.replica_analysis()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods.TI">TIES_MD.ties_analysis.methods.TI module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.TI.TI_Analysis"><code class="docutils literal notranslate"><span class="pre">TI_Analysis</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.TI.TI_Analysis.analysis"><code class="docutils literal notranslate"><span class="pre">TI_Analysis.analysis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.TI.TI_Analysis.intergrate"><code class="docutils literal notranslate"><span class="pre">TI_Analysis.intergrate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.TI.TI_Analysis.plot_du_by_dl"><code class="docutils literal notranslate"><span class="pre">TI_Analysis.plot_du_by_dl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.TI.compute_bs_error"><code class="docutils literal notranslate"><span class="pre">compute_bs_error()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#TIES_MD.ties_analysis.methods.TI.get_lam_diff"><code class="docutils literal notranslate"><span class="pre">get_lam_diff()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.methods.html#module-TIES_MD.ties_analysis.methods">Module contents</a></li>
 </ul>
 </li>
@@ -228,7 +271,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="TIES_MD.tests.html" class="btn btn-neutral float-left" title="TIES_MD.tests package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="TIES_MD.openmmtools.html" class="btn btn-neutral float-left" title="TIES_MD.openmmtools package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="TIES_MD.ties_analysis.engines.html" class="btn btn-neutral float-right" title="TIES_MD.ties_analysis.engines package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

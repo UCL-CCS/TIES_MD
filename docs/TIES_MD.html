@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -55,15 +56,43 @@
 <li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.eng_scripts.html">TIES_MD.eng_scripts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html">TIES_MD.openmmtools package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TIES_MD.tests.html">TIES_MD.tests package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD.TIES">TIES_MD.TIES module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD.alch">TIES_MD.alch module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD.cli">TIES_MD.cli module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD.lambdas">TIES_MD.lambdas module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD.TIES">TIES_MD.TIES module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.TIES.TIES"><code class="docutils literal notranslate"><span class="pre">TIES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.TIES.get_box_vectors"><code class="docutils literal notranslate"><span class="pre">get_box_vectors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.TIES.get_header_and_run"><code class="docutils literal notranslate"><span class="pre">get_header_and_run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.TIES.nice_print"><code class="docutils literal notranslate"><span class="pre">nice_print()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.TIES.read_config"><code class="docutils literal notranslate"><span class="pre">read_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD.alch">TIES_MD.alch module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.AlchSys"><code class="docutils literal notranslate"><span class="pre">AlchSys</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.PDB_line"><code class="docutils literal notranslate"><span class="pre">PDB_line</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.System_ID"><code class="docutils literal notranslate"><span class="pre">System_ID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.add_simulation_reporters"><code class="docutils literal notranslate"><span class="pre">add_simulation_reporters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.equilibriation"><code class="docutils literal notranslate"><span class="pre">equilibriation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.get_alchemical_atoms"><code class="docutils literal notranslate"><span class="pre">get_alchemical_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.get_constraints"><code class="docutils literal notranslate"><span class="pre">get_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.minimization"><code class="docutils literal notranslate"><span class="pre">minimization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.preproduction"><code class="docutils literal notranslate"><span class="pre">preproduction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.remove_simulation_reporters"><code class="docutils literal notranslate"><span class="pre">remove_simulation_reporters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.alch.simulate_system"><code class="docutils literal notranslate"><span class="pre">simulate_system()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD.cli">TIES_MD.cli module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD.lambdas">TIES_MD.lambdas module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.lambdas.Lambdas"><code class="docutils literal notranslate"><span class="pre">Lambdas</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.lambdas.appear_func"><code class="docutils literal notranslate"><span class="pre">appear_func()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.lambdas.disappear_func"><code class="docutils literal notranslate"><span class="pre">disappear_func()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#TIES_MD.lambdas.get_line"><code class="docutils literal notranslate"><span class="pre">get_line()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-TIES_MD">Module contents</a></li>
 </ul>
 </li>
@@ -131,21 +160,29 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="TIES_MD.openmmtools.html">TIES_MD.openmmtools package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.openmmtools.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.openmmtools.html#module-TIES_MD.openmmtools.alchemy">TIES_MD.openmmtools.alchemy module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.openmmtools.html#module-TIES_MD.openmmtools">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.openmmtools.html#module-TIES_MD.openmmtools.alchemy">TIES_MD.openmmtools.alchemy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.AlchemicalStateError"><code class="docutils literal notranslate"><span class="pre">AlchemicalStateError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAbsoluteAlchemicalFactory"><code class="docutils literal notranslate"><span class="pre">ModifiedAbsoluteAlchemicalFactory</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.apply_to_context"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.apply_to_context()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.apply_to_system"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.apply_to_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.check_system_consistency"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.check_system_consistency()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.from_system"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.from_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.get_alchemical_variable"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.get_alchemical_variable()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.get_function_variable"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.get_function_variable()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.lambda_angles"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.lambda_angles</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.lambda_bonds"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.lambda_bonds</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.lambda_electrostatics"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.lambda_electrostatics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.lambda_sterics"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.lambda_sterics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.lambda_torsions"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.lambda_torsions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.set_alchemical_parameters"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.set_alchemical_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.set_alchemical_variable"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.set_alchemical_variable()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.openmmtools.html#TIES_MD.openmmtools.alchemy.ModifiedAlchemicalState.set_function_variable"><code class="docutils literal notranslate"><span class="pre">ModifiedAlchemicalState.set_function_variable()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="TIES_MD.tests.html">TIES_MD.tests package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_TI">TIES_MD.tests.test_TI module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_TIES">TIES_MD.tests.test_TIES module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_alch">TIES_MD.tests.test_alch module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_cli">TIES_MD.tests.test_cli module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_fep">TIES_MD.tests.test_fep module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_lambdas">TIES_MD.tests.test_lambdas module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_namd">TIES_MD.tests.test_namd module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests.test_openmm">TIES_MD.tests.test_openmm module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.tests.html#module-TIES_MD.tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.openmmtools.html#module-TIES_MD.openmmtools">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a><ul>
@@ -167,8 +204,24 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis.config">TIES_MD.ties_analysis.config module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis.ties_analysis">TIES_MD.ties_analysis.ties_analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis.config">TIES_MD.ties_analysis.config module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.config.Config.get_options"><code class="docutils literal notranslate"><span class="pre">Config.get_options()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.config.read_config"><code class="docutils literal notranslate"><span class="pre">read_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis.ties_analysis">TIES_MD.ties_analysis.ties_analysis module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.ties_analysis.Analysis"><code class="docutils literal notranslate"><span class="pre">Analysis</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.ties_analysis.Analysis.run"><code class="docutils literal notranslate"><span class="pre">Analysis.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.ties_analysis.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.ties_analysis.make_exp"><code class="docutils literal notranslate"><span class="pre">make_exp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIES_MD.ties_analysis.html#TIES_MD.ties_analysis.ties_analysis.nice_print"><code class="docutils literal notranslate"><span class="pre">nice_print()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="TIES_MD.ties_analysis.html#module-TIES_MD.ties_analysis">Module contents</a></li>
 </ul>
 </li>

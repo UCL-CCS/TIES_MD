@@ -2,6 +2,8 @@
 
 import unittest
 import numpy as np
+import site, os
+
 from TIES_MD.ties_analysis.engines.namd import *
 
 

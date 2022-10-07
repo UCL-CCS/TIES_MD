@@ -350,5 +350,4 @@ def turn_off_interactions(state, system, appearing, disappearing):
                         force.setExceptionParameters(idx, a, b, 0, sig, eps)
 
 if __name__ == '__main__':
-
     unittest.main()
