@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TIES_MD.ties_analysis.engines package &mdash; TIES_MD 1.0 documentation</title>
@@ -11,10 +11,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -29,12 +28,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #D7ECD9" >
-            <a href="index.html" class="icon icon-home"> TIES_MD
-            <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            TIES_MD
+              <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -84,11 +87,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">TIES_MD</a> &raquo;</li>
-          <li><a href="TIES_MD.html">TIES_MD package</a> &raquo;</li>
-          <li><a href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a> &raquo;</li>
-      <li>TIES_MD.ties_analysis.engines package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">TIES_MD</a></li>
+          <li class="breadcrumb-item"><a href="TIES_MD.html">TIES_MD package</a></li>
+          <li class="breadcrumb-item"><a href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a></li>
+      <li class="breadcrumb-item active">TIES_MD.ties_analysis.engines package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/TIES_MD.ties_analysis.engines.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -111,7 +114,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to perform TIES analysis on NAMD results</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>method</strong> – str, ‘TI’ or ‘FEP’</p></li>
 <li><p><strong>output</strong> – str, pointing to base dir of where output will be writen</p></li>
@@ -133,7 +136,7 @@ you wish to inspect convergence for</p></li>
 <span class="sig-name descname"><span class="pre">collate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.namd.NAMD.collate_data" title="Permalink to this definition"></a></dt>
 <dd><p>Function to iterate over replica and window dirs reading NAMD alch file and building numpy array of potentials</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_root</strong> – str, file path point to base dir for results files</p></li>
 <li><p><strong>prot</strong> – str, name of dir for protein</p></li>
@@ -141,7 +144,7 @@ you wish to inspect convergence for</p></li>
 <li><p><strong>leg</strong> – str, name of dir for thermo leg</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>numpy.array for all potential collected</p>
 </dd>
 </dl>
@@ -152,7 +155,7 @@ you wish to inspect convergence for</p></li>
 <span class="sig-name descname"><span class="pre">run_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.namd.NAMD.run_analysis" title="Permalink to this definition"></a></dt>
 <dd><p>Function to run the analysis for each method allowed for this engine.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_root</strong> – str, file path point to base dir for results files</p></li>
 <li><p><strong>temp</strong> – float for temperature in units of kelvin (not used in NAMD as FEP not implemented)</p></li>
@@ -161,7 +164,7 @@ you wish to inspect convergence for</p></li>
 <li><p><strong>leg</strong> – str, name of dir for thermo leg</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of floats, [dg, stdev(dg)]</p>
 </dd>
 </dl>
@@ -174,10 +177,10 @@ you wish to inspect convergence for</p></li>
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.engines.namd.</span></span><span class="sig-name descname"><span class="pre">get_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_loc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.namd.get_iter" title="Permalink to this definition"></a></dt>
 <dd><p>Function to get the number of gradient samples in an NAMD alch file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>file_loc</strong> – file path to alch file</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>int for the number of gradient samples</p>
 </dd>
 </dl>
@@ -188,10 +191,10 @@ you wish to inspect convergence for</p></li>
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.engines.namd.</span></span><span class="sig-name descname"><span class="pre">get_replica</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.namd.get_replica" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to sort directory paths by specific index in file name</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>string</strong> – File path to results file</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>int for the replica id i.e. rep0 return 0</p>
 </dd>
 </dl>
@@ -202,10 +205,10 @@ you wish to inspect convergence for</p></li>
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.engines.namd.</span></span><span class="sig-name descname"><span class="pre">get_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.namd.get_window" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to sort directory paths by specific index in file name</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>string</strong> – File path to results file</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>float for the window value i.e. LAMBDA_0.00 return 0.00</p>
 </dd>
 </dl>
@@ -216,14 +219,14 @@ you wish to inspect convergence for</p></li>
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.engines.namd.</span></span><span class="sig-name descname"><span class="pre">read_alch_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namd_ver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.namd.read_alch_file" title="Permalink to this definition"></a></dt>
 <dd><p>Function for reading different NAMD ver. alch files</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_path</strong> – str, location of namd alch file</p></li>
 <li><p><strong>namd_ver</strong> – float, new or old used to specify what format of namd alch file we are looking at (old &lt;= 2.12)</p></li>
 <li><p><strong>iterations</strong> – int, Number sample in alch file</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>numpy array, contains potentials from one namd alch file</p>
 </dd>
 </dl>
@@ -238,7 +241,7 @@ you wish to inspect convergence for</p></li>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class: holds the information about a lambda schedule in an easily queryable format</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vdw_a</strong> – list, Contains floats for values of VDW appearing lambdas</p></li>
 <li><p><strong>vdw_d</strong> – list, Contains floats for values of VDW disappearing lambdas</p></li>
@@ -261,7 +264,7 @@ you wish to inspect convergence for</p></li>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to perform TIES analysis on OpenMM_TIES results</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>method</strong> – str, ‘TI’ or ‘FEP’</p></li>
 <li><p><strong>output</strong> – str, pointing to base dir of where output will be writen</p></li>
@@ -283,7 +286,7 @@ you wish to inspect convergence for</p></li>
 <span class="sig-name descname"><span class="pre">collate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.openmm.OpenMM.collate_data" title="Permalink to this definition"></a></dt>
 <dd><p>Function to iterate over replica and window dirs reading OpenMM outputs and building numpy array of potentials</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_root</strong> – str, file path point to base dir for results files</p></li>
 <li><p><strong>prot</strong> – str, name of dir for protein</p></li>
@@ -291,7 +294,7 @@ you wish to inspect convergence for</p></li>
 <li><p><strong>leg</strong> – str, name of dir for thermo leg</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.array() containing all the data in the result files concatenated</p>
 </dd>
 </dl>
@@ -302,7 +305,7 @@ you wish to inspect convergence for</p></li>
 <span class="sig-name descname"><span class="pre">run_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.openmm.OpenMM.run_analysis" title="Permalink to this definition"></a></dt>
 <dd><p>Function to run the analysis for each method allowed for this engine.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_root</strong> – str, file path point to base dir for results files</p></li>
 <li><p><strong>temp</strong> – float for temperature in units of kelvin</p></li>
@@ -311,7 +314,7 @@ you wish to inspect convergence for</p></li>
 <li><p><strong>leg</strong> – str, name of dir for thermo leg</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of floats, [dg, stdev(dg)]</p>
 </dd>
 </dl>
@@ -324,10 +327,10 @@ you wish to inspect convergence for</p></li>
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.engines.openmm.</span></span><span class="sig-name descname"><span class="pre">get_replica</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.openmm.get_replica" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to sort directory paths by specific index in file name</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>string</strong> – File path to results file</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>int for the replica id i.e. rep0 return 0</p>
 </dd>
 </dl>
@@ -338,10 +341,10 @@ you wish to inspect convergence for</p></li>
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.engines.openmm.</span></span><span class="sig-name descname"><span class="pre">get_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.engines.openmm.get_window" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to sort directory paths by specific index in file name</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>string</strong> – File path to results file</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>float for the window value i.e. LAMBDA_0.00 return 0.00</p>
 </dd>
 </dl>

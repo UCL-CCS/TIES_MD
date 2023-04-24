@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TIES_MD.ties_analysis.methods package &mdash; TIES_MD 1.0 documentation</title>
@@ -11,10 +11,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -28,12 +27,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #D7ECD9" >
-            <a href="index.html" class="icon icon-home"> TIES_MD
-            <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            TIES_MD
+              <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -83,11 +86,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">TIES_MD</a> &raquo;</li>
-          <li><a href="TIES_MD.html">TIES_MD package</a> &raquo;</li>
-          <li><a href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a> &raquo;</li>
-      <li>TIES_MD.ties_analysis.methods package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">TIES_MD</a></li>
+          <li class="breadcrumb-item"><a href="TIES_MD.html">TIES_MD package</a></li>
+          <li class="breadcrumb-item"><a href="TIES_MD.ties_analysis.html">TIES_MD.ties_analysis package</a></li>
+      <li class="breadcrumb-item active">TIES_MD.ties_analysis.methods package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/TIES_MD.ties_analysis.methods.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -110,7 +113,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for MBAR analysis</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>MBARs</strong> – numpy array for all results</p></li>
 <li><p><strong>temp</strong> – float for temperature in units of kelvin</p></li>
@@ -126,14 +129,14 @@
 <span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_kln</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_windows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.analysis" title="Permalink to this definition"></a></dt>
 <dd><p>Process a matrix of potentials passes to this function as u_kln or process self.data which is matrix of all replicas</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>u_kln</strong> – numpy array matrix of potentials for one replica</p></li>
 <li><p><strong>N_k</strong> – list of ints, specifies which entry in u_kln should be read up to for each window</p></li>
 <li><p><strong>mask_windows</strong> – list of ints, can be used to specify what windows to remove from u_kln</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list, containing dG and associated error calculated by MBAR</p>
 </dd>
 </dl>
@@ -144,10 +147,10 @@
 <span class="sig-name descname"><span class="pre">decorrelate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decorrelate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.decorrelate_data" title="Permalink to this definition"></a></dt>
 <dd><p>Decorrolate time series data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>decorrelate</strong> – boolean, True if we want decorrelated data else False</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>turple, (np matrix containing decorrelated data, list of ints for end of decorrelated data in matrix)</p>
 </dd>
 </dl>
@@ -158,7 +161,7 @@
 <span class="sig-name descname"><span class="pre">plot_overlap_mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.plot_overlap_mat" title="Permalink to this definition"></a></dt>
 <dd><p>Make a plot of the overlap matrix for this simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mat</strong> – numpy array, overlap matrix to make a plot for</p></li>
 <li><p><strong>rep_id</strong> – int, what replica are we looking at</p></li>
@@ -172,7 +175,7 @@
 <span class="sig-name descname"><span class="pre">replica_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_convg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_convg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_windows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.FEP.MBAR_Analysis.replica_analysis" title="Permalink to this definition"></a></dt>
 <dd><p>Function to make analysis of result from MBAR considering each trajectory as one replica</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>distributions</strong> – bool, Do we want to calculate the dG for each rep individually</p></li>
 <li><p><strong>rep_convg</strong> – list of ints, what number of reps do we want results for.</p></li>
@@ -180,7 +183,7 @@
 <li><p><strong>mask_windows</strong> – list of ints, can be used to specify what windows to remove.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>containing average of bootstrapped dG and SEM</p>
 </dd>
 </dl>
@@ -197,7 +200,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for thermodynamic integration analysis</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>grads</strong> – numpy array for all results</p></li>
 <li><p><strong>lambdas</strong> – Lambda class containing schedule</p></li>
@@ -211,7 +214,7 @@
 <span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_convg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_convg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_windows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.TI.TI_Analysis.analysis" title="Permalink to this definition"></a></dt>
 <dd><p>Perform TI analysis</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>distributions</strong> – bool, Do we want to calculate the dG for each rep individually</p></li>
 <li><p><strong>rep_convg</strong> – list of ints, what number of reps do we want results for.</p></li>
@@ -219,7 +222,7 @@
 <li><p><strong>mask_windows</strong> – list of ints, can be used to specify what windows to remove.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list, dG calculated by TI and associated standard deviation</p>
 </dd>
 </dl>
@@ -230,13 +233,13 @@
 <span class="sig-name descname"><span class="pre">intergrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambdas</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.TI.TI_Analysis.intergrate" title="Permalink to this definition"></a></dt>
 <dd><p>Function to perform numerical integration.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> – numpy array of averaged gradients</p></li>
 <li><p><strong>lambdas</strong> – class, contains information about lambda schedule</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>turple of dicts, {lambda_parameters: free energy}, {lambda_parameters: free energy variance} for
 each lambda parameter</p>
 </dd>
@@ -248,7 +251,7 @@ each lambda parameter</p>
 <span class="sig-name descname"><span class="pre">plot_du_by_dl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.TI.TI_Analysis.plot_du_by_dl" title="Permalink to this definition"></a></dt>
 <dd><p>Function to plot dU/dlam vs state with include calculations for ci</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -261,10 +264,10 @@ each lambda parameter</p>
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.methods.TI.</span></span><span class="sig-name descname"><span class="pre">compute_bs_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replicas</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.TI.compute_bs_error" title="Permalink to this definition"></a></dt>
 <dd><p>compute bootstrapped average and variance</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>replicas</strong> – list, values of average dU/dlam in each replica</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>turple of floats, average and var of boot strapped result</p>
 </dd>
 </dl>
@@ -275,10 +278,10 @@ each lambda parameter</p>
 <span class="sig-prename descclassname"><span class="pre">TIES_MD.ties_analysis.methods.TI.</span></span><span class="sig-name descname"><span class="pre">get_lam_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda_array</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TIES_MD.ties_analysis.methods.TI.get_lam_diff" title="Permalink to this definition"></a></dt>
 <dd><p>Compute difference between adjacent lambdas</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>lambda_array</strong> – list of ints</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>numpy array for differences in input</p>
 </dd>
 </dl>

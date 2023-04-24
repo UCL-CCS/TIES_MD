@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TIES_MD.openmmtools package &mdash; TIES_MD 1.0 documentation</title>
@@ -11,10 +11,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -29,12 +28,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #D7ECD9" >
-            <a href="index.html" class="icon icon-home"> TIES_MD
-            <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            TIES_MD
+              <img src="_static/TIES_logov2.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -84,10 +87,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">TIES_MD</a> &raquo;</li>
-          <li><a href="TIES_MD.html">TIES_MD package</a> &raquo;</li>
-      <li>TIES_MD.openmmtools package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">TIES_MD</a></li>
+          <li class="breadcrumb-item"><a href="TIES_MD.html">TIES_MD package</a></li>
+      <li class="breadcrumb-item active">TIES_MD.openmmtools package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/TIES_MD.openmmtools.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -133,10 +136,13 @@ context : openmm.Context</p>
 <blockquote>
 <div><p>The context to set.</p>
 </div></blockquote>
+<section id="raises">
+<h3>Raises<a class="headerlink" href="#raises" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>AlchemicalStateError</dt><dd><p>If the context does not have the required lambda global variables.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -149,10 +155,13 @@ system : openmm.System</p>
 <blockquote>
 <div><p>The system to modify.</p>
 </div></blockquote>
+<section id="id1">
+<h3>Raises<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>AlchemicalStateError</dt><dd><p>If the system does not have the required lambda global variables.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -167,10 +176,13 @@ system : openmm.System</p>
 <blockquote>
 <div><p>The system to test.</p>
 </div></blockquote>
+<section id="id2">
+<h3>Raises<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>AlchemicalStateError</dt><dd><p>If the system is not consistent with this state.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -189,6 +201,8 @@ version of the alchemical parameters with the name
 <code class="docutils literal notranslate"><span class="pre">parameter_name</span> <span class="pre">+</span> <span class="pre">'_'</span> <span class="pre">+</span> <span class="pre">parameters_name_suffix</span></code>.</p>
 </dd>
 </dl>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
 <p>The AlchemicalState object representing the alchemical state of
 the system.
 Raises
@@ -198,6 +212,7 @@ AlchemicalStateError</p>
 <div><p>If the same parameter has different values in the system, or
 if the system has no lambda parameters.</p>
 </div></blockquote>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -208,14 +223,20 @@ if the system has no lambda parameters.</p>
 <blockquote>
 <div><p>This is deprecated. Use <code class="docutils literal notranslate"><span class="pre">get_function_variable</span></code> instead.</p>
 </div></blockquote>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>variable_name<span class="classifier">str</span></dt><dd><p>The name of the alchemical variable.</p>
 </dd>
 </dl>
+</section>
+<section id="id3">
+<h3>Returns<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>variable_value<span class="classifier">float</span></dt><dd><p>The value of the alchemical variable.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -231,10 +252,13 @@ variable_name : str</p>
 <blockquote>
 <div><p>The name of the function variable.</p>
 </div></blockquote>
+<section id="id4">
+<h3>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>variable_value<span class="classifier">float</span></dt><dd><p>The value of the function variable.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py attribute">
@@ -289,12 +313,15 @@ new_value : float</p>
 <blockquote>
 <div><p>This is deprecated. Use <code class="docutils literal notranslate"><span class="pre">set_function_variable</span></code> instead.</p>
 </div></blockquote>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>variable_name<span class="classifier">str</span></dt><dd><p>The name of the alchemical variable.</p>
 </dd>
 <dt>new_value<span class="classifier">float</span></dt><dd><p>The new value for the variable.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
