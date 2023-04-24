@@ -212,7 +212,7 @@ class Test_Alch(unittest.TestCase):
 
 
                 #check equal
-                self.assertEqual(round(energy_1, 3), round(energy_2, 3),
+                self.assertEqual(round(energy_1, 4), round(energy_2, 4),
                                  'energy not being calculated correctly in state {}'.format(param_vals_i))
 
 

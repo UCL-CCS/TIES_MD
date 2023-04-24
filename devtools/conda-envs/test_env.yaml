@@ -7,7 +7,7 @@ channels:
 dependencies:
   - docopt
   - multiprocess
-  - numpy <= 1.23.5
+  - numpy<1.24
   - openmm
   - pymbar=4.0.1
   - scipy

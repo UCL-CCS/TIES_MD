@@ -119,7 +119,7 @@ class AlchSys(object):
         else:
             #these slower setting were used here to https://pubs.acs.org/doi/full/10.1021/acs.jctc.2c00114 reproduce NAMD sims
             self.friction = 0.3 / unit.picosecond
-            self.time_step = 2 * unit.femtosecond
+            self.time_step = 2.0 * unit.femtosecond
             system = self.topology_file.createSystem(nonbondedMethod=nonbondedMethod, nonbondedCutoff=1.2 * unit.nanometers,
                                                      switchDistance=1.0 * unit.nanometers, constraints=app.HBonds, rigidWater=True,
                                                      ewaldErrorTolerance=0.00001)
