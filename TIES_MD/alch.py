@@ -54,22 +54,19 @@ class AlchSys(object):
     :param absolute: boolean determines if we are doing an absolute calculation
     :param periodic: boolean determines if we are doing PME or CutoffNonPeriodic
     :param platform: sting determines what platform OpenMM will target allowed values are ['CPU', 'CUDA', 'OpenCL']
+    :param fast: bool, will deviate from NAMD setting at use fastest recommended settings for simulation
     :param debug: bool, removes all forces but nonbonded for testing
 
     Note: GROMACS input and Absolute calculations are currently not tested.
 
     '''
     def __init__(self, cwd, name, temperature, pressure, constraint_file, constraint_column, methods,
-                 basis_vectors, input_type='AMBER', absolute=False, periodic=True, platform='CUDA', debug=False):
+                 basis_vectors, input_type='AMBER', absolute=False, periodic=True, platform='CUDA', fast=False, debug=False):
 
         self.absolute = absolute
         self.platform = platform
         self.temp = temperature
         self.pressure = pressure
-
-        ##System constants, these can be passed as arguments later
-        self.friction = 0.3 / unit.picosecond
-        self.time_step = 2.0 * unit.femtosecond
 
         if not os.path.exists(os.path.join(cwd, 'build')):
             raise FileNotFoundError('build directory {} found not to exist'.format(os.path.join(cwd, 'build')))
@@ -113,20 +110,26 @@ class AlchSys(object):
         else:
             nonbondedMethod = app.CutoffNonPeriodic
 
-        system = self.topology_file.createSystem(nonbondedMethod=nonbondedMethod , nonbondedCutoff=1.2 * unit.nanometers,
-                                                 constraints=app.HBonds, rigidWater=True, ewaldErrorTolerance=0.00001)
+        if fast:
+            self.friction = 1 / unit.picosecond
+            self.time_step = 4.0 * unit.femtosecond
+            system = self.topology_file.createSystem(nonbondedMethod=nonbondedMethod, nonbondedCutoff=1.0 * unit.nanometers,
+                                                     switchDistance=0.9 * unit.nanometers, constraints=app.HBonds, rigidWater=True,
+                                                     hydrogenMass=1.5 * unit.amu)
+        else:
+            #these slower setting were used here to https://pubs.acs.org/doi/full/10.1021/acs.jctc.2c00114 reproduce NAMD sims
+            self.friction = 0.3 / unit.picosecond
+            self.time_step = 2 * unit.femtosecond
+            system = self.topology_file.createSystem(nonbondedMethod=nonbondedMethod, nonbondedCutoff=1.2 * unit.nanometers,
+                                                     switchDistance=1.0 * unit.nanometers, constraints=app.HBonds, rigidWater=True,
+                                                     ewaldErrorTolerance=0.00001)
+            #grab nonbonded force from system
+            for force_index, force in enumerate(system.getForces()):
+                if isinstance(force, mm.NonbondedForce):
+                    nonbonded_force = force
 
-        #grab nonbonded force from system
-        for force_index, force in enumerate(system.getForces()):
-            if isinstance(force, mm.NonbondedForce):
-                nonbonded_force = force
-
-        # add switching function to nonbonded
-        nonbonded_force.setSwitchingDistance(1.0 * unit.nanometers)
-        nonbonded_force.setUseSwitchingFunction(True)
-
-        #Turn off dispertion correction to match namd
-        nonbonded_force.setUseDispersionCorrection(False)
+            #Turn off dispertion correction to match namd
+            nonbonded_force.setUseDispersionCorrection(False)
 
         #Extract indexs of appearing and disappearing atoms from input PDB file
         #If using gromacs how can we get this information?
@@ -462,7 +465,7 @@ class AlchSys(object):
         :return: dict, containing OpenMM simulation and integrator.
         '''
 
-        integrator = mm.LangevinIntegrator(self.temp, self.friction, self.time_step)
+        integrator = mm.LangevinMiddleIntegrator(self.temp, self.friction, self.time_step)
         integrator.setConstraintTolerance(0.00001)
 
         if self.platform not in ('CUDA', 'OpenCL', 'HIP', 'CPU'):

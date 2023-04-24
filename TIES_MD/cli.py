@@ -31,7 +31,8 @@ usage = """
 TIES_MD
 Command line input should be used as follows...
 Usage:
-TIES_MD [--platform=STRING] [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--rep_id=INT] [--windows_mask=LIST] [--exp_name=STR]...
+TIES_MD [--platform=STRING] [--devices=LIST] [--run_type=STRING] [--config_file=STRING] [--rep_id=INT]
+ [--windows_mask=LIST] [--fast=BOOL] [--exp_name=STR]...
 """
 
 def main(argv=None):
@@ -111,8 +112,16 @@ def main(argv=None):
         rep_id = None
         print(msg.format('node id string', 'None'))
 
+    if args['--fast']:
+        if args['--fast'].lower() in ['1', 'true', 'yes']:
+            fast = True
+        else:
+            fast = False
+    else:
+        fast = False
+
     # removed this as an option there is no need to expose it for now
     periodic = True
 
-    TIES(input_folder, exp_name, run_type, devices, rep_id, mask, periodic, platform, **args_dict)
+    TIES(input_folder, exp_name, run_type, devices, rep_id, mask, periodic, platform, fast, **args_dict)
 

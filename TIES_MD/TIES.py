@@ -60,11 +60,12 @@ class TIES(object):
     :param periodic: boolean determines if the simulation will be periodic
     :param lam: Lambda class, allow passing of custom lambda schedule
     :param platform: sting determines what platform OpenMM will target allowed values are ['CPU', 'CUDA', 'OpenCL', 'HIP']
+    :param fast: bool, Do we want safe or fast settings for MD simulations
     :param **kwargs: dict, containing setting from config file
 
     '''
     def __init__(self, cwd, exp_name='complex', run_type='class', devices=None, rep_id=None, windows_mask=None,
-                 periodic=True, platform='CUDA', lam=None, **kwargs):
+                 periodic=True, platform='CUDA', fast=False, lam=None, **kwargs):
         nice_print('TIES')
 
         if run_type == 'class' and kwargs == {}:
@@ -170,6 +171,7 @@ class TIES(object):
         self.cwd = cwd
         self.rep_id = rep_id
         self.periodic = periodic
+        self.fast = fast
 
         #run through api logic
         for prop in api_sensitive:
@@ -556,7 +558,7 @@ class TIES(object):
 
         system = AlchSys(self.cwd, self.exp_name, self.temperature, self.pressure, self.constraint_file,
                          self.constraint_column, self.methods, self.basis_vectors, self.input_type, self.absolute,
-                         self.periodic, self.platform)
+                         self.periodic, self.platform, self.fast)
 
         if self.split_run:
             system_ids = [System_ID(self.devices[0], self.rep_id)]

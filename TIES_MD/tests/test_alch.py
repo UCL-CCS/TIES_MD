@@ -162,8 +162,9 @@ class Test_Alch(unittest.TestCase):
                          Vec3(*cell_basis_vec2) * unit.angstrom,
                          Vec3(*cell_basis_vec3) * unit.angstrom]
 
-            ties_system = AlchSys(cwd, exp_name, temp, pressure, None, args_dict['constraint_column'], args_dict['methods'],
-                             basis_vec, input_type='AMBER', absolute=False, periodic=True, platform=GLOBAL_PALT, debug=True)
+            ties_system = AlchSys(cwd, exp_name, temp, pressure, None, args_dict['constraint_column'],
+                                  args_dict['methods'], basis_vec, input_type='AMBER', absolute=False, periodic=True,
+                                  platform=GLOBAL_PALT, fast=False, debug=True)
             NPT = ties_system.build_simulation(ties_system.NPT_alchemical_system, '0')
             NPT['sim'].context.setPositions(ties_system .positions_file.positions)
 
@@ -173,10 +174,9 @@ class Test_Alch(unittest.TestCase):
             positions_file = mm.app.pdbfile.PDBFile(coord_file)
             topology_file = mm.app.AmberPrmtopFile(top_file)
             nonbondedMethod = app.PME
-            openmm_system = topology_file.createSystem(nonbondedMethod=nonbondedMethod,
-                                                 nonbondedCutoff=1.2 * unit.nanometers,
-                                                 constraints=app.HBonds, rigidWater=True,
-                                                 ewaldErrorTolerance=0.00001)
+            openmm_system = topology_file.createSystem(nonbondedMethod=nonbondedMethod, nonbondedCutoff=1.2 * unit.nanometers,
+                                                     switchDistance=1.0 * unit.nanometers, constraints=app.HBonds, rigidWater=True,
+                                                     ewaldErrorTolerance=0.00001)
             openmm_system.setDefaultPeriodicBoxVectors(*basis_vec)
             openmm_system.addForce(mm.MonteCarloBarostat(pressure, temp, 25))
             null_cross_region_interactions(openmm_system, atoms[0], atoms[1])
@@ -187,9 +187,6 @@ class Test_Alch(unittest.TestCase):
                 if isinstance(force, mm.NonbondedForce):
                     nonbonded_force = force
 
-            # add switching function to nonbonded
-            nonbonded_force.setSwitchingDistance(1.0 * unit.nanometers)
-            nonbonded_force.setUseSwitchingFunction(True)
             nonbonded_force.setUseDispersionCorrection(False)
 
             #Iterate over states and check the energies are what we would expect
@@ -204,7 +201,7 @@ class Test_Alch(unittest.TestCase):
                 turn_off_interactions(param_vals_i, test_sys, atoms[0], atoms[1])
                 friction = 0.3 / unit.picosecond
                 time_step = 2.0 * unit.femtosecond
-                integrator = mm.LangevinIntegrator(temp, friction, time_step)
+                integrator = mm.LangevinMiddleIntegrator(temp, friction, time_step)
                 integrator.setConstraintTolerance(0.00001)
                 platform = mm.Platform.getPlatformByName(GLOBAL_PALT)
                 properties = {}
